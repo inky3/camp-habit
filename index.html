@@ -1085,7 +1085,7 @@ if(a==='amode'){NET.mode=k;NET.msg=''}
 if(a==='asubmit'||a==='alink'||a==='agoogle'){e.preventDefault();authAct(a);return}
 if(a==='guest'){NET.guest=true;try{localStorage.setItem('ch-guest','1')}catch(_){}}
 if(a==='signin'){NET.guest=false;NET.msg='';try{localStorage.removeItem('ch-guest')}catch(_){}}
-if(a==='signout'){clearTimeout(pushT);NET.sb.auth.signOut().finally(()=>{NET.user=null;NET.on=false;NET.groups=[];NET.gid=null;NET.board=null;NET.gload=false;let l=null;try{l=JSON.parse(localStorage.getItem(KEY))}catch(_){}S=l||fresh();normS();IS.lv=-1;IS.ek='';IS.occ=null;tab='today';render()});return}
+if(a==='signout'){clearTimeout(pushT);sett=false;NET.sb.auth.signOut().finally(()=>{NET.user=null;NET.on=false;NET.groups=[];NET.gid=null;NET.board=null;NET.gload=false;let l=null;try{l=JSON.parse(localStorage.getItem(KEY))}catch(_){}S=l||fresh();normS();IS.lv=-1;IS.ek='';IS.occ=null;tab='today';render()});return}
 if(a==='install'&&NET.inst){NET.inst.prompt();NET.inst=null}
 if(a==='gsel'){NET.gid=k;NET.board=null;loadBoard()}
 if(a==='gref'){loadGroups();say('Refreshing…')}
