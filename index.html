@@ -174,6 +174,11 @@ textarea{width:100%;font:13px/1.4 ui-monospace,monospace;border:2px solid var(--
 .qopt span{flex:1;min-width:0}.qopt b{display:block}.qopt small{display:block;color:var(--mute);font-size:14px;font-weight:400}.qopt.on{background:var(--sun);color:#2a2140}.qopt.on small{color:#4a3f5e}
 .qopt.plan:not(.on){opacity:.55}.qmsg{background:color-mix(in srgb,var(--ok) 15%,var(--card));border-radius:12px;padding:10px 12px;margin:8px 0 0;font-weight:500}
 h3.slot{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);margin:18px 2px 8px}
+.ruler{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin:6px 0}.ruler button{min-height:44px;padding:0;background:var(--card);color:var(--ink);font-weight:600}.ruler button.on{background:var(--sun);color:#2a2140}
+.qopt.plan{padding:0;flex-direction:column;align-items:stretch;gap:0}.qopt.plan .pbody{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:transparent;border:0;color:inherit;padding:10px 14px 6px;min-height:0;font-weight:500}
+.qopt.plan .cue{align-self:flex-start;margin:0 14px 10px 54px;min-height:32px;padding:2px 10px;font-size:13px;border-radius:999px;background:rgba(255,250,240,.7);color:#2a2140;border:2px dashed #2a2140}
+.psum{margin:8px 0}.psum ul{margin:8px 0 0;padding-left:18px;color:var(--mute);font-size:14px}.psum li{margin:3px 0}
+small.hcue{color:var(--ok)!important;font-weight:600}.whyc{display:flex;gap:8px;align-items:center;margin:-4px 2px 12px;color:var(--mute);font-size:14px;font-style:italic}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style></head><body>
 <main><div class="sky"><div class="row"><div><h1 class="px" id="ttl">Camp Habit</h1><p id="sub"></p></div><button class="plus" id="plus" data-a="open" aria-label="Add a habit"></button></div>
@@ -257,7 +262,7 @@ const goal=h=>h.u==='amt'||h.u==='count'?h.g:1;
 const isDone=h=>prog(h)>=goal(h)-1e-9;
 const amtC=(h,n)=>Math.round(n*Q(h).eq*RATE*mult(h));
 const di=()=>(new Date().getDay()+6)%7;
-const blank=()=>({id:null,p:'reading',n:'',u:'time',m:20,g:10,st:5,days:[...ALL],slot:''});
+const blank=()=>({id:null,p:'reading',n:'',u:'time',m:20,g:10,st:5,days:[...ALL],slot:'',cue:''});
 const remain=h=>Math.max(0,h.m*60000-(Date.now()-h.start));
 const fmt=ms=>{const t=Math.ceil(ms/1000);return Math.floor(t/60)+':'+String(t%60).padStart(2,'0')};
 const dk=d=>d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
@@ -434,52 +439,80 @@ if(F.u==='time')return F.m+' min × '+RATE+' × '+d[0]+' (×'+d[1]+') = '+b+' co
 if(F.u==='once')return 'One tap = '+b+' coins ('+d[0]+')'+pk;
 if(F.u==='amt')return F.g+' '+ul(F)+' (about '+Math.round(F.g*q.eq)+' min) × '+RATE+' × '+d[0]+' (×'+d[1]+') = '+b+' coins'+pk;
 return F.g+' '+ul(F)+': '+[1,2,3].map(k=>Math.max(1,Math.round(k*d[1]))).join(', ')+'… = '+b+' coins'+pk}
-const GOALS=[['fit','Get fitter','run',['walk','pushups','run','gym']],['read','Read and learn','reading',['reading','language','study']],['calm','Calm my mind','meditate',['meditate','journal','screen']],['sleep','Sleep better','moon',['sleep','screen','meditate']],['eat','Eat healthier','fruit',['water','fruit','cook']],['home','Build a routine','bed',['bed','tidy','teeth']],['create','Get creative','music',['draw','music','journal']],['work','Study or career','deep',['study','deep','coding']]];
+const GOALS=[['energy','More energy','sun',['walk','run','cycle','swim'],'Moving most days lifts your mood and energy the same day.'],['fit','A stronger body','gym',['pushups','gym','run','swim']],['calm','Less stress','meditate',['meditate','journal','screen']],['sleep','Better sleep','moon',['sleep','screen','meditate'],'Good sleep was the strongest link to feeling good the next day.'],['eat','Eat healthier','fruit',['fruit','cook','water'],'About 5 servings of fruit and veg a day was linked to better mood.'],['read','A sharper mind','reading',['reading','language','study']],['home','A tidier life','bed',['tidy','bed','cook']],['create','More creativity','music',['draw','music','journal']],['work','Progress at work or school','deep',['deep','study','coding']]];
+const NOWDO=[['bed','Make my bed'],['water','Drink enough water'],['walk','Walk or exercise'],['reading','Read'],['sleep','Sleep on time'],['meditate','Meditate'],['teeth','Brush teeth twice'],['none','Not much yet']];
 const FEEL=[['great','Thriving','Feeling great and ready for more','star'],['ok','Doing okay','Pretty good, with room to grow','check'],['stuck','A bit stuck','I want to get moving again','restart'],['low','Low energy','Tired lately, I need gentle steps','moon'],['over','Overwhelmed','There’s a lot going on right now','none']];
+const LOAD=[['light','Pretty free'],['medium','Normal busy'],['heavy','Very full']];
+const BARR=[['time','Not enough time','We’ll keep sessions short.'],['forget','I forget','Each habit is linked to something you already do.'],['energy','Too tired','Main habits are a bit gentler.'],['motivation','Lose motivation','Variety, coins and friends help keep it fun.'],['phone','Phone and distractions','We added a phone-free habit.'],['schedule','My days change a lot','Habits can happen any time of day.'],['bored','I get bored','Your plan mixes different kinds of habits.']];
 const OFTEN=[['daily','Every day','A little each day',[0,1,2,3,4,5,6]],['most','Most days','5 days a week',[0,1,2,3,4]],['few','A few times a week','3 days a week',[0,2,4]],['weekly','Once a week','One bigger session',[5]]];
 const WAY=[['small','Small steps','Short and easy to keep'],['mix','A mix','Some short, some longer'],['big','Bigger sessions','Fewer, longer sessions']];
 const PACE=[['easy','Easy','Gentle start, low pressure'],['normal','Normal pace','Steady and balanced'],['hard','Hard','Push yourself'],['extreme','Extreme','Go all in']];
-const TIMES=[['m','Morning'],['a','Afternoon'],['e','Evening']],SLOTL={m:'Morning',a:'Afternoon',e:'Evening','':'Anytime'};
-const FEELMSG={great:'Love that energy. Let’s put it to work.',ok:'Nice. Small upgrades add up fast.',stuck:'That’s normal. We’ll start with easy wins to get you moving.',low:'We’ll keep it light. Small wins still count.',over:'Then we’ll start small. One or two habits is plenty for now.'};
-const SLOTDEF={bed:'m',teeth:'m',vit:'m',meditate:'m',sleep:'e',screen:'e',journal:'e'};
-const obNew=redo=>{const g=S.goals||{};return{step:0,redo:!!redo,manual:false,goals:redo?[...(g.goals||[])]:[],feel:redo?g.feel:null,often:redo?g.often:null,way:redo?g.way:null,pace:redo?g.pace:null,time:redo?g.time:null,plan:[],picks:['bed','water','reading']}};
-const obSteps=()=>OB.redo?['goals','feel','often','pace',OB.manual?'pick':'plan']:['you','goals','feel','often','pace',OB.manual?'pick':'plan','how'];
+const WIN=[['m','Morning'],['a','Midday'],['e','Evening'],['n','Before bed']],SLOTL={m:'Morning',a:'Afternoon',e:'Evening','':'Anytime'};
+const CUES={m:['After I wake up','After brushing my teeth','After my morning coffee'],a:['After lunch','After class or work'],e:['After I get home','After dinner'],n:['Before bed','After I put my phone away'],'':['Any time today']};
+const FEELMSG={great:'Love that energy. Let’s put it to work.',ok:'Nice. Small upgrades add up fast.',stuck:'That’s normal. We’ll start with easy wins to get you moving.',low:'We’ll keep it light. Small wins still count.',over:'Then we’ll start small. Little habits are plenty for now.'};
+const QUICK={home:['bed'],eat:['water'],sleep:['sleep'],energy:['water'],fit:['water'],calm:['bed'],read:['bed'],create:['bed'],work:['bed']};
+const HWIN={bed:'m',teeth:'m',vit:'m',meditate:'m',sleep:'n',screen:'n',journal:'n',water:'',fruit:''};
+const obNew=redo=>{const g=S.goals||{};return{step:0,redo:!!redo,manual:false,goals:redo?[...(g.goals||[])].filter(x=>GOALS.some(y=>y[0]===x)):[],now:redo?[...(g.now||[])]:[],feel:redo?g.feel:null,load:redo?g.load:null,imp:redo?g.imp:null,conf:redo?g.conf:null,why:redo?(g.why||''):'',barr:redo?[...(g.barr||[])]:[],often:redo?g.often:null,way:redo?g.way:null,pace:redo?g.pace:null,wins:redo?[...(g.wins||[])]:[],plan:[],picks:['bed','water','reading']}};
+const obSteps=()=>{const q=['goals','now','feel','ruler','barr','often','pace',OB.manual?'pick':'plan'];return OB.redo?q:['you',...q,'how']};
 const daysLbl=d=>d.length===7?'Every day':d.length===5&&[0,1,2,3,4].every(i=>d.includes(i))?'Weekdays':d.map(i=>DAYL[i]).join(', ');
-function makePlan(){const g=OB.goals.length?OB.goals:['home'],PI=Math.max(0,['easy','normal','hard','extreme'].indexOf(OB.pace||'normal')),of=OFTEN.find(o=>o[0]===(OB.often||'daily')),gentle=OB.feel==='low'||OB.feel==='over',way=OB.way||'mix';
-let n={daily:4,most:4,few:3,weekly:2}[of[0]];if(gentle)n=Math.min(n,of[0]==='weekly'?1:2);else if(way==='small')n+=1;if(way==='big')n=Math.max(1,n-1);
-const picks=[];for(let r=0;r<4&&picks.length<n;r++)for(const id of g){const k=(GOALS.find(x=>x[0]===id)||GOALS[5])[3][r];if(k&&!picks.includes(k)&&picks.length<n)picks.push(k)}
-const pi=gentle?Math.min(PI,1):PI,base=[10,20,30,45][pi],wm=Math.min(gentle?1.5:9,{small:.75,mix:1,big:1.5}[way]*(of[0]==='weekly'?2:1)),am=Math.min(gentle?1:9,[.5,1,1.5,2][pi]*(way==='big'?1.5:1)),r5=x=>Math.max(5,Math.round(x/5)*5);
-return picks.map(k=>{const q=P(k),u=q.modes[0],o={u,days:[...of[3]],slot:SLOTDEF[k]||OB.time||''};
+const winToSlot=w=>w==='n'?'e':w||'';
+function makePlan(){const goals=OB.goals.length?OB.goals:['home'],PI=Math.max(0,['easy','normal','hard','extreme'].indexOf(OB.pace||'normal')),of=OFTEN.find(o=>o[0]===(OB.often||'daily')),gentle=OB.feel==='low'||OB.feel==='over',way=OB.way||'mix',B=OB.barr,conf=OB.conf||6,wins=OB.wins.length?OB.wins:['e'];
+let core={light:3,medium:3,heavy:2}[OB.load||'medium'];if(PI===3)core++;if(of[0]==='weekly')core=Math.min(core,2);if(way==='big')core=Math.max(1,core-1);if(gentle||conf<=3)core=Math.min(core,2);
+let pi=PI;if(gentle||B.includes('energy'))pi=Math.max(0,Math.min(pi,1));if(conf<=3)pi=0;
+const short=B.includes('time')||conf<=4,base=[10,20,30,45][pi],wm=Math.min(gentle?1.5:9,{small:.75,mix:1,big:1.5}[way]*(of[0]==='weekly'?2:1)*(short?.5:1)),am=Math.min(gentle?1:9,[.5,1,1.5,2][pi]*(way==='big'?1.5:1)*(short?.6:1)),r5=x=>Math.max(5,Math.round(x/5)*5);
+const used=new Set(),coreK=[];for(let r=0;r<4&&coreK.length<core;r++)for(const id of goals){const k=(GOALS.find(x=>x[0]===id)||GOALS[6])[3][r];if(k&&!used.has(k)&&coreK.length<core){coreK.push(k);used.add(k)}}
+if(B.includes('phone')&&!used.has('screen')){coreK.push('screen');used.add('screen')}
+const quickK=[];OB.now.filter(k=>k!=='none'&&P(k).modes[0]!=='time'&&!used.has(k)).forEach(k=>{if(quickK.length<2){quickK.push(k);used.add(k)}});
+for(const id of goals)for(const k of QUICK[id]||[]){if(quickK.length<2&&!used.has(k)){quickK.push(k);used.add(k)}}
+for(const k of ['water','bed','teeth']){if(quickK.length<2&&!used.has(k)){quickK.push(k);used.add(k)}}
+let wi=0;const mk=(k,kind)=>{const q=P(k),u=q.modes[0];let w=(k in HWIN)?HWIN[k]:wins[(wi++)%wins.length];if(B.includes('schedule')&&!(k in HWIN))w='';
+const o={u,days:kind==='quick'?[0,1,2,3,4,5,6]:[...of[3]],slot:winToSlot(w),cue:CUES[w]?CUES[w][0]:''};
 if(u==='time')o.m=Math.min(120,r5(base*wm));
 if(u==='amt'){const U=UNITS[q.u];let v=q.g*am;v=U.inc?Math.max(.5,Math.round(v*2)/2):Math.max(1,Math.round(v));o.g=v;o.st=Math.min(q.st,v)}
-if(u==='count'){const t={water:[6,8,10,12],fruit:[3,5,6,8]}[k];o.g=t?t[pi]:q.g}
-return{k,on:true,o}})}
-const planLine=it=>{const q=P(it.k),o=it.o;return (o.u==='time'?o.m+' min':o.u==='once'?'One tap':o.g+' '+(o.u==='count'?q.cu:UNITS[q.u].l))+' · '+daysLbl(o.days)+' · '+SLOTL[o.slot||'']};
-function onbHtml(){const L=obSteps(),key=L[OB.step],dots=`<div class="obd">${L.map((_,i)=>`<i class="${i===OB.step?'on':''}"></i>`).join('')}</div>`,back=OB.step>0||OB.redo?`<button class="ghost" data-a="${OB.step>0?'obb':'obcancel'}">${OB.step>0?'Back':'Cancel'}</button>`:'';
+if(u==='count'){const t={water:[6,8,8,10],fruit:[3,5,5,6]}[k];o.g=t?t[kind==='quick'?Math.min(pi,1):pi]:q.g}
+return{k,on:true,kind,o,w}};
+return coreK.map(k=>mk(k,'core')).concat(quickK.map(k=>mk(k,'quick')))}
+function planMins(pl){let m=0;pl.filter(x=>x.on).forEach(it=>{const o=it.o,q=P(it.k),per=o.u==='time'?o.m:o.u==='amt'?Math.round(o.g*q.eq):o.u==='count'?2:2;m+=per*o.days.length});return m}
+function planWhy(){const L=[];const g=OB.goals.map(id=>GOALS.find(x=>x[0]===id)).filter(x=>x&&x[4]);if(g[0])L.push(g[0][4]);OB.barr.forEach(b=>{const x=BARR.find(y=>y[0]===b);if(x)L.push(x[2])});
+if(OB.feel==='low'||OB.feel==='over')L.push('Main habits are kept short and gentle for now.');if((OB.conf||6)<=4)L.push('You weren’t sure you could stick to it, so we made each habit smaller. Easy to grow later.');
+L.push('Quick wins take a minute and give you coins every day.');return L.slice(0,4)}
+const planLine=it=>{const q=P(it.k),o=it.o;return (o.u==='time'?o.m+' min':o.u==='once'?'One tap':o.g+' '+(o.u==='count'?q.cu:UNITS[q.u].l))+' · '+daysLbl(o.days)};
+const fmtM=m=>m>=60?Math.floor(m/60)+'h '+(m%60?m%60+'m':''):m+' min';
+function onbHtml(){const L=obSteps(),key=L[OB.step],dots=`<div class="obd">${L.map((_,i)=>`<i class="${i===OB.step?'on':''}"></i>`).join('')}</div>`,back=OB.step>0||OB.redo?`<button class="ghost" data-a="${OB.step>0?'obb':'obcancel'}">${OB.step>0?'Back':'Cancel'}</button>`:'<span></span>';
 const opt=(a,k,on,t,d,ic)=>`<button class="qopt ${on?'on':''}" data-a="${a}" data-k="${k}" aria-pressed="${on}">${ic?ico(ic,24):''}<span><b>${t}</b>${d?`<small>${d}</small>`:''}</span></button>`;
+const chip=(a,k,on,t)=>`<button data-a="${a}" data-k="${k}" class="${on?'on':''}" aria-pressed="${on}">${t}</button>`;
+const nav=(ok,label)=>`<div class="row2" style="margin-top:14px">${back}<button data-a="obn" ${ok?'':'disabled'}>${label||'Next'}</button></div>`;
+const ruler=(a,v)=>`<div class="ruler">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<button data-a="${a}" data-k="${n}" class="${v===n?'on':''}" aria-label="${n} out of 10" aria-pressed="${v===n}">${n}</button>`).join('')}</div>`;
 let b;
 if(key==='you')b=`<h2 class="px">Welcome to Camp Habit</h2><p class="mut">Finish real-life habits, earn coins, and grow your own little island.</p>
 <div class="card hero">${hero(S.eq,112,1)}<div style="flex:1;min-width:0"><div class="lbl" style="margin-top:0">Your name</div><input id="pn2" value="${esc(S.name==='You'?'':S.name||'')}" maxlength="20" placeholder="Your name" aria-label="Your name"></div></div>
 <div class="lbl">Skin</div><div class="chips">${SKINS.map(c=>`<button data-a="skin" data-k="${c}" class="${(S.eq.skin||SKINS[1])===c?'on':''}" aria-label="Skin tone"><span class="swc" style="background:${c}"></span></button>`).join('')}</div>
-<div class="lbl">You are</div><div class="chips">${[['m','Male'],['f','Female']].map(([k,l])=>`<button data-a="body" data-k="${k}" class="${(S.eq.body||'m')===k?'on':''}" aria-pressed="${(S.eq.body||'m')===k}">${l}</button>`).join('')}</div>
-<div class="lbl">Hair</div><div class="chips">${['short','long','bob','ponytail'].map(k=>`<button data-a="wear" data-k="${k}" class="${S.eq.hstyle===k?'on':''}">${CAT[k].n}</button>`).join('')}${['brown','black','blonde','ginger'].map(k=>`<button data-a="wear" data-k="${k}" class="${S.eq.hair===k?'on':''}" aria-label="${CAT[k].n} hair"><span class="swc" style="background:${CAT[k].c}"></span></button>`).join('')}</div>
-<button data-a="obn" style="width:100%;margin-top:16px">Next</button>`;
-else if(key==='goals')b=`<h2 class="px">What do you want to work on?</h2><p class="mut">Pick up to 3.</p><div class="pgrid">${GOALS.map(([k,t,ic])=>`<button data-a="obg" data-k="${k}" class="${OB.goals.includes(k)?'on':''}" aria-pressed="${OB.goals.includes(k)}">${ico(ic,24)}${t}</button>`).join('')}</div>
-<div class="row2" style="margin-top:14px">${back||'<span></span>'}<button data-a="obn" ${OB.goals.length?'':'disabled'}>Next</button></div>`;
+<div class="lbl">You are</div><div class="chips">${[['m','Male'],['f','Female']].map(([k,l])=>chip('body',k,(S.eq.body||'m')===k,l)).join('')}</div>
+<div class="lbl">Hair</div><div class="chips">${['short','long','bob','ponytail'].map(k=>chip('wear',k,S.eq.hstyle===k,CAT[k].n)).join('')}${['brown','black','blonde','ginger'].map(k=>`<button data-a="wear" data-k="${k}" class="${S.eq.hair===k?'on':''}" aria-label="${CAT[k].n} hair"><span class="swc" style="background:${CAT[k].c}"></span></button>`).join('')}</div>
+<button data-a="obn" style="width:100%;margin-top:16px">Next</button><p class="mut" style="text-align:center;margin:10px 0 0">Next, about 8 quick questions to build your plan.</p>`;
+else if(key==='goals')b=`<h2 class="px">What would make your life better?</h2><p class="mut">Pick up to 3. Think about how you want to feel, not just what to do.</p><div class="pgrid">${GOALS.map(([k,t,ic])=>`<button data-a="obg" data-k="${k}" class="${OB.goals.includes(k)?'on':''}" aria-pressed="${OB.goals.includes(k)}">${ico(ic,24)}${t}</button>`).join('')}</div>${nav(OB.goals.length)}`;
+else if(key==='now')b=`<h2 class="px">What do you already do?</h2><p class="mut">Pick any you do most days. We’ll build on them instead of starting from zero.</p><div class="chips">${NOWDO.map(([k,t])=>chip('obnow',k,OB.now.includes(k),t)).join('')}</div>${nav(OB.now.length)}`;
 else if(key==='feel')b=`<h2 class="px">How do you feel about yourself lately?</h2><p class="mut">There’s no wrong answer. It helps us choose how hard to start.</p>
 <div class="qlist">${FEEL.map(([k,t,d,ic])=>opt('obf',k,OB.feel===k,t,d,ic)).join('')}</div>${OB.feel?`<p class="qmsg">${FEELMSG[OB.feel]}</p>`:''}
-<div class="row2" style="margin-top:14px">${back}<button data-a="obn" ${OB.feel?'':'disabled'}>Next</button></div>`;
+<div class="lbl">How full is your week?</div><div class="seg">${LOAD.map(([k,t])=>chip('obload',k,OB.load===k,t)).join('')}</div>${nav(OB.feel&&OB.load)}`;
+else if(key==='ruler')b=`<h2 class="px">How much does this matter to you?</h2><p class="mut">1 is not at all, 10 is a lot.</p>${ruler('obimp',OB.imp)}
+<div class="lbl">How sure are you that you’ll stick with it?</div>${ruler('obconf',OB.conf)}
+<div class="lbl">Why does it matter to you? <span class="mut" style="font-weight:400">(optional)</span></div><input id="obwhy" maxlength="80" value="${esc(OB.why)}" placeholder="So I can keep up with my kids" aria-label="Your reason">
+<p class="mut" style="margin:6px 0 0;font-size:14px">We’ll show this when you need a push.</p>${nav(OB.imp&&OB.conf)}`;
+else if(key==='barr')b=`<h2 class="px">What usually gets in the way?</h2><p class="mut">Pick up to 3. Your plan will work around them.</p><div class="qlist">${BARR.map(([k,t])=>opt('obbar',k,OB.barr.includes(k),t)).join('')}</div>${nav(true,OB.barr.length?'Next':'Skip')}`;
 else if(key==='often')b=`<h2 class="px">How often will you work on it?</h2><div class="qlist">${OFTEN.map(([k,t,d])=>opt('obo',k,OB.often===k,t,d)).join('')}</div>
-<div class="lbl">How do you like to improve?</div><div class="qlist">${WAY.map(([k,t,d])=>opt('obw',k,OB.way===k,t,d)).join('')}</div>
-<div class="row2" style="margin-top:14px">${back}<button data-a="obn" ${OB.often&&OB.way?'':'disabled'}>Next</button></div>`;
+<div class="lbl">How do you like to improve?</div><div class="qlist">${WAY.map(([k,t,d])=>opt('obw',k,OB.way===k,t,d)).join('')}</div>${nav(OB.often&&OB.way)}`;
 else if(key==='pace')b=`<h2 class="px">How hard do you want it?</h2><p class="mut">This sets how long and how much each habit asks of you. Harder habits pay more coins.</p>
 <div class="qlist">${PACE.map(([k,t,d],i)=>opt('obpace',k,OB.pace===k,t,d+' · about '+[10,20,30,45][i]+' min per session')).join('')}</div>
-<div class="lbl">When are you usually free?</div><div class="seg">${TIMES.map(([k,t])=>`<button data-a="obtime" data-k="${k}" class="${OB.time===k?'on':''}" aria-pressed="${OB.time===k}">${t}</button>`).join('')}</div>
-<div class="row2" style="margin-top:14px">${back}<button data-a="obn" ${OB.pace&&OB.time?'':'disabled'}>See my plan</button></div>`;
-else if(key==='plan'){const on=OB.plan.filter(x=>x.on).length;b=`<h2 class="px">Your starter plan</h2><p class="mut">${OB.feel==='low'||OB.feel==='over'?'We kept it light so it’s easy to start. ':''}Tap a habit to leave it out. You can change everything later.</p>
-<div class="qlist">${OB.plan.map((it,i)=>`<button class="qopt plan ${it.on?'on':''}" data-a="obt" data-k="${i}" aria-pressed="${it.on}">${ico(P(it.k).i,28)}<span><b>${P(it.k).n}</b><small>${planLine(it)}</small></span>${it.on?ico('check',20):''}</button>`).join('')}</div>
+<div class="lbl">When do you usually have time?</div><p class="mut" style="margin:0 0 6px;font-size:14px">Pick all that fit.</p><div class="chips">${WIN.map(([k,t])=>chip('obwin',k,OB.wins.includes(k),t)).join('')}</div>${nav(OB.pace&&OB.wins.length,'See my plan')}`;
+else if(key==='plan'){const on=OB.plan.filter(x=>x.on),mins=planMins(OB.plan);
+const rowP=(it,i)=>`<div class="qopt plan ${it.on?'on':''}"><button class="pbody" data-a="obt" data-k="${i}" aria-pressed="${it.on}">${ico(P(it.k).i,28)}<span><b>${P(it.k).n}</b><small>${planLine(it)}</small></span>${it.on?ico('check',20):''}</button>${it.o.cue?`<button class="cue" data-a="obcue" data-k="${i}" aria-label="Change when: ${it.o.cue}">${it.o.cue}</button>`:''}</div>`;
+b=`<h2 class="px">Your plan</h2><div class="card psum"><b class="px">${on.length} habits · about ${fmtM(Math.round(mins/7))} a day</b><ul>${planWhy().map(t=>`<li>${t}</li>`).join('')}</ul></div>
+<div class="lbl">Main habits</div><div class="qlist">${OB.plan.map((it,i)=>it.kind==='core'?rowP(it,i):'').join('')}</div>
+<div class="lbl">Quick wins</div><div class="qlist">${OB.plan.map((it,i)=>it.kind==='quick'?rowP(it,i):'').join('')}</div>
+<p class="mut" style="font-size:14px;margin:4px 0 0">Tap a habit to leave it out. Tap the “after…” tag to change when you’ll do it.</p>
 <button class="ghost" data-a="obmanual" style="width:100%;margin-top:10px;border:0">Pick my own habits instead</button>
-<div class="row2" style="margin-top:8px">${back}<button data-a="${OB.redo?'obdone':'obn'}" ${on?'':'disabled'}>${OB.redo?'Add to my habits ('+on+')':'Use this plan ('+on+')'}</button></div>`}
+<div class="row2" style="margin-top:8px">${back}<button data-a="${OB.redo?'obdone':'obn'}" ${on.length?'':'disabled'}>${OB.redo?'Add to my habits ('+on.length+')':'Use this plan ('+on.length+')'}</button></div>`}
 else if(key==='pick')b=`<h2 class="px">Pick your habits</h2><p class="mut">Start small. You can add or change habits any time with the + button.</p>
 <div class="pgrid">${PRESETS.filter(x=>x.k!=='custom').map(x=>`<button data-a="obp" data-k="${x.k}" class="${OB.picks.includes(x.k)?'on':''}" aria-pressed="${OB.picks.includes(x.k)}">${ico(x.i,24)}${x.n}</button>`).join('')}</div>
 <button class="ghost" data-a="obauto" style="width:100%;margin-top:10px;border:0">Back to my suggested plan</button>
@@ -488,11 +521,12 @@ else b=`<h2 class="px">How it works</h2>
 <div class="cel-i">${ico('today',32)}<div><b>Finish habits</b><span>Each one pays coins. Harder habits pay more.</span></div></div>
 <div class="cel-i">${ico('shop',32)}<div><b>Spend coins</b><span>Every shop item does something on your island.</span></div></div>
 <div class="cel-i">${ico('island',32)}<div><b>Walk your island</b><span>It grows as you earn points. Finish your day and a bottle washes ashore.</span></div></div>
+<p class="qmsg">New habits take about two months to feel automatic. Missing a day is fine. Just pick it back up.</p>
 <div class="row2" style="margin-top:14px">${back}<button data-a="obdone">Start</button></div>`;
 return `<div class="bd"><div class="panel ob" role="dialog" aria-modal="true" aria-label="${OB.redo?'Goal quiz':'Welcome'}">${dots}${b}</div></div>`}
-function obFinish(){const items=OB.manual?OB.picks.map(k=>({k,on:true,o:{}})):OB.plan.filter(x=>x.on);
-S.goals={goals:OB.goals,feel:OB.feel,often:OB.often,way:OB.way,pace:OB.pace,time:OB.time,at:Date.now()};
-const mk=(id,it)=>{const h=mkH(id,P(it.k).n,it.k,it.o);h.slot=it.o.slot!=null?it.o.slot:(SLOTDEF[it.k]||OB.time||'');return h};
+function obFinish(){const items=OB.manual?OB.picks.map(k=>({k,on:true,o:{slot:winToSlot(HWIN[k]||''),cue:''}})):OB.plan.filter(x=>x.on);
+S.goals={goals:OB.goals,now:OB.now,feel:OB.feel,load:OB.load,imp:OB.imp,conf:OB.conf,why:(OB.why||'').trim(),barr:OB.barr,often:OB.often,way:OB.way,pace:OB.pace,wins:OB.wins,at:Date.now()};
+const mk=(id,it)=>{const h=mkH(id,P(it.k).n,it.k,it.o);h.slot=it.o.slot||'';h.cue=it.o.cue||'';return h};
 if(OB.redo){const have=S.habits.filter(h=>!h.arch).map(h=>h.p);let added=0;items.forEach(it=>{if(have.includes(it.k))return;S.habits.push(mk(S.nid++,it));added++});say(added?'Added '+added+' habit'+(added>1?'s':''):'You already have these habits');OB=obNew();tab='today';vd=di();return}
 S.habits=items.map((it,i)=>mk(i+1,it));S.nid=items.length+1;if(!S.name)S.name='You';S.onb=1;tab='today';vd=di();say('Welcome to camp, '+(S.name||'friend')+'!');OB=obNew()}
 
@@ -533,6 +567,7 @@ ${F.u==='time'?`<div class="lbl">Time (minutes)</div><div class="chips">${[1,5,1
 ${F.u==='amt'?`<div class="lbl">Goal per day (${U.l})</div><div class="chips">${U.goals.map(n=>`<button data-a="goal" data-k="${n}" class="${F.g===n?'on':''}">${n}</button>`).join('')}</div>${slider('hg',F.g,sinc(q.u),gmax[q.u],sinc(q.u),U.l)}
 <div class="lbl">Each tap adds</div><div class="chips">${U.steps.map(n=>`<button data-a="step" data-k="${n}" class="${F.st===n?'on':''}">${n}</button>`).join('')}</div>`:''}
 ${F.u==='count'?`<div class="lbl">Goal per day (${ul(F)})</div><div class="chips">${[4,6,8,10].map(n=>`<button data-a="goal" data-k="${n}" class="${F.g===n?'on':''}">${n}</button>`).join('')}</div>${slider('hg',F.g,1,12,1,ul(F))}`:''}
+<div class="lbl">When will you do it? <span class="mut" style="font-weight:400">(optional)</span></div><input id="hcue" value="${esc(F.cue||'')}" maxlength="40" placeholder="After dinner" aria-label="When you’ll do it">
 <div class="lbl">Time of day</div><div class="chips">${['','m','a','e'].map(k=>`<button data-a="slot" data-k="${k}" class="${(F.slot||'')===k?'on':''}">${SLOTL[k]}</button>`).join('')}</div>
 <div class="lbl">Repeat on</div><div class="chips days">${DAYN.map((n,i)=>`<button data-a="day" data-k="${i}" class="${F.days.includes(i)?'on':''}" aria-label="${DAYL[i]}" aria-pressed="${F.days.includes(i)}">${n}</button>`).join('')}</div>
 <div class="pv" id="pv">${pvText()}</div><p class="mut pvh">${note}</p>
@@ -551,7 +586,7 @@ bar=`<span class="bar"><i style="width:${Math.min(100,n/g*100)}%"></i><b id="gb$
 else if(h.u==='count'){sm=fmtN(n)+'/'+g+' '+ul(h)+' · '+D+tag;ac=`<button class="ghost" data-a="undo" data-k="${h.id}" aria-label="Remove last" ${h.log.length?'':'disabled'}>−</button><button data-a="inc" data-k="${h.id}">+1</button>`;bar=`<span class="bar"><i style="width:${Math.min(100,n/g*100)}%"></i></span>`}
 else if(h.u==='once'){sm=D+tag;ac=`<button data-a="once" data-k="${h.id}">Done</button>`}
 else{sm=h.m+' min · '+D+tag;ac=run?`<button class="go" id="tm${h.id}" data-a="fin" data-k="${h.id}" ${rem>0?'disabled':''}>${rem>0?fmt(rem):'Finish'}</button><button class="ghost" data-a="rs" data-k="${h.id}" aria-label="Restart timer">${ico('restart',20)}</button>`:`<button data-a="go" data-k="${h.id}">Start</button>`}
-return `<div class="hab ${fin?'done':''}"><span class="ic">${ico(fin?'check':hi(h),32)}</span><span class="nm" data-a="edit" data-k="${h.id}" role="button" tabindex="0" aria-label="Edit ${esc(h.n)}"><b>${esc(h.n)}</b><small>${sm}</small>${bar}</span>${rw}<div class="ft">${dots(h)}<span class="acts">${ac}</span></div></div>`}
+return `<div class="hab ${fin?'done':''}"><span class="ic">${ico(fin?'check':hi(h),32)}</span><span class="nm" data-a="edit" data-k="${h.id}" role="button" tabindex="0" aria-label="Edit ${esc(h.n)}"><b>${esc(h.n)}</b>${h.cue&&!fin?`<small class="hcue">${esc(h.cue)}</small>`:''}<small>${sm}</small>${bar}</span>${rw}<div class="ft">${dots(h)}<span class="acts">${ac}</span></div></div>`}
 function roRow(h,date){const dn=S.hist.some(e=>e.h===h.id&&e.f&&sod(e.t)===sod(date)),fut=sod(date)>sod(Date.now());
 return `<div class="hab ${dn?'done':''}"><span class="ic">${ico(dn?'check':hi(h),32)}</span><span class="nm" data-a="edit" data-k="${h.id}" role="button" tabindex="0" aria-label="Edit ${esc(h.n)}"><b>${esc(h.n)}</b><small>${summary(h)}</small></span><span class="rw">${ico('coin')}+${tot(h)[0]}</span><div class="ft">${dots(h)}<span class="pill2">${dn?'Done':fut?'Planned':'Not done'}</span></div></div>`}
 const bkCode=()=>'CAMP1.'+btoa(unescape(encodeURIComponent(JSON.stringify(S))));
@@ -859,7 +894,7 @@ document.getElementById('nv').innerHTML=[['today','today','Today'],['island','is
 renderSheet();const v=document.getElementById('v');
 if(tab==='today'){
 const strip=`<div class="wk">${DAYN.map((n,i)=>{const d=dayDate(i),has=all.some(h=>h.days.includes(i));return `<button data-a="vd" data-k="${i}" class="${vd===i?'on':''} ${i===di()?'td':''}" aria-label="${DAYL[i]} ${d.getDate()}" aria-pressed="${vd===i}"><span>${n}</span><b>${d.getDate()}</b><i class="${has?'y':''}"></i></button>`}).join('')}</div>`;
-v.innerHTML=strip+(hs.length?groupHs(hs,h=>isT?row(h):roRow(h,dayDate(vd))):'<div class="card">Nothing scheduled for this day. '+(isT?'Tap + to add a habit.':'Enjoy the rest day.')+'</div>')+
+v.innerHTML=strip+(isT&&S.goals&&S.goals.why&&dn<hs.length?`<div class="whyc">${ico('star',16)}<span>Your why: ${esc(S.goals.why)}</span></div>`:'')+(hs.length?groupHs(hs,h=>isT?row(h):roRow(h,dayDate(vd))):'<div class="card">Nothing scheduled for this day. '+(isT?'Tap + to add a habit.':'Enjoy the rest day.')+'</div>')+
 (isT&&hs.length?'<div class="mut" style="margin:-2px 2px 0">Tap a habit’s name to edit it. Swipe a number to change it, then tap the number to add.</div>':'')}
 
 if(tab==='island'){const placed=Object.values(S.pl),free=S.inv.filter(i=>CAT[i].t==='island'&&!CAT[i].follow&&!placed.includes(i)),lv=islLv(),nx=LVP[lv+1],pr=nx?(S.points-LVP[lv])/(nx-LVP[lv])*100:100,bt=bottleTile(),act=Object.keys(CATS).filter(c=>pct(c)>0).map(c=>'+'+pct(c)+'% '+CATS[c][1]);
@@ -890,7 +925,7 @@ v.innerHTML=`<div class="pcard ${S.eq.banner}"><div>${hero(S.eq,128,1)}</div><di
 <h2>Stats</h2><div class="seg5">${pers.map(([k,l])=>`<button data-a="pd" data-k="${k}" class="${pd===k?'on':''}">${l}</button>`).join('')}</div>
 <div class="stats"><div class="card"><b class="px">${s.c}</b>coins earned</div><div class="card"><b class="px">${s.p}</b>points</div><div class="card"><b class="px">${s.f}</b>habits finished</div><div class="card"><b class="px">${s.d}</b>active days</div></div>
 <h2>Last 7 days</h2><div class="card"><div class="bars">${bars.map(x=>`<div title="${x.c} coins"><i style="height:${Math.max(3,x.c/mx*75)}%"></i>${x.l}</div>`).join('')}</div></div>
-<h2>Your goals</h2><div class="card">${S.goals?`<div class="tags" style="margin:0 0 8px">${S.goals.goals.map(g=>`<i>${(GOALS.find(x=>x[0]===g)||[0,g])[1]}</i>`).join('')}</div><p class="mut" style="margin:0 0 10px">${(PACE.find(x=>x[0]===S.goals.pace)||[0,''])[1]} · ${(OFTEN.find(x=>x[0]===S.goals.often)||[0,''])[1]} · ${SLOTL[S.goals.time||'']}</p>`:'<p class="mut" style="margin-top:0">Answer a few questions and we’ll suggest habits that fit you.</p>'}<button class="${S.goals?'ghost':''}" data-a="obredo" style="width:100%">${S.goals?'Retake the goal quiz':'Take the goal quiz'}</button></div>
+<h2>Your goals</h2><div class="card">${S.goals?`<div class="tags" style="margin:0 0 8px">${S.goals.goals.map(g=>`<i>${(GOALS.find(x=>x[0]===g)||[0,g])[1]}</i>`).join('')}</div><p class="mut" style="margin:0 0 10px">${(PACE.find(x=>x[0]===S.goals.pace)||[0,''])[1]} · ${(OFTEN.find(x=>x[0]===S.goals.often)||[0,''])[1]}${S.goals.why?'<br>Your why: '+esc(S.goals.why):''}</p>`:'<p class="mut" style="margin-top:0">Answer a few questions and we’ll suggest habits that fit you.</p>'}<button class="${S.goals?'ghost':''}" data-a="obredo" style="width:100%">${S.goals?'Retake the goal quiz':'Take the goal quiz'}</button></div>
 <h2>Bonuses</h2><div class="card">${(()=>{const w=activeDays(since('week')),mo=activeDays(mStart()),mn=mNeed();return `<div class="row2"><b>This week</b><span class="mut">${S.bon.w===wk()?'Earned +100':Math.min(w,5)+' of 5 active days'}</span></div><span class="bar" style="height:8px;margin:6px 0 12px"><i style="width:${Math.min(100,w/5*100)}%"></i></span>
 <div class="row2"><b>This month</b><span class="mut">${S.bon.m===mKey()?'Earned +400':Math.min(mo,mn)+' of '+mn+' active days'}</span></div><span class="bar" style="height:8px;margin-top:6px"><i style="width:${Math.min(100,mo/mn*100)}%"></i></span>
 <p class="mut" style="margin:10px 0 0">An active day is any day you finish at least one habit. Weekly pays 100 coins, monthly pays 400 coins and a badge.</p>`})()}
@@ -925,8 +960,13 @@ if(a==='gleave'){const g=NET.groups.find(x=>x.id===k);if(!confirmBox('Leave '+(g
 if(a==='celx'||a==='celgo'){document.querySelectorAll('.cel').forEach(x=>x.remove());if(a==='celgo'){tab='island';scrollTo(0,0)}}
 if(a==='obn'){const L=obSteps();if(L[OB.step]==='pace')OB.plan=makePlan();OB.step=Math.min(L.length-1,OB.step+1)}if(a==='obb')OB.step=Math.max(0,OB.step-1);
 if(a==='obg'){OB.goals=OB.goals.includes(k)?OB.goals.filter(x=>x!==k):OB.goals.length<3?[...OB.goals,k]:(say('Pick up to 3'),OB.goals)}
-if(a==='obf')OB.feel=k;if(a==='obo')OB.often=k;if(a==='obw')OB.way=k;if(a==='obpace')OB.pace=k;if(a==='obtime')OB.time=k;
+if(a==='obnow'){if(k==='none')OB.now=OB.now.includes('none')?[]:['none'];else{OB.now=OB.now.filter(x=>x!=='none');OB.now=OB.now.includes(k)?OB.now.filter(x=>x!==k):[...OB.now,k]}}
+if(a==='obf')OB.feel=k;if(a==='obload')OB.load=k;if(a==='obimp')OB.imp=+k;if(a==='obconf')OB.conf=+k;
+if(a==='obbar'){OB.barr=OB.barr.includes(k)?OB.barr.filter(x=>x!==k):OB.barr.length<3?[...OB.barr,k]:(say('Pick up to 3'),OB.barr)}
+if(a==='obo')OB.often=k;if(a==='obw')OB.way=k;if(a==='obpace')OB.pace=k;
+if(a==='obwin')OB.wins=OB.wins.includes(k)?OB.wins.filter(x=>x!==k):[...OB.wins,k];
 if(a==='obt'){const it=OB.plan[+k];if(it)it.on=!it.on}
+if(a==='obcue'){const it=OB.plan[+k];if(it){const all=[].concat(...['m','a','e','n'].map(w=>CUES[w].map(c=>[w,c]))),i=all.findIndex(x=>x[1]===it.o.cue),nx=all[(i+1)%all.length];it.o.cue=nx[1];it.o.slot=winToSlot(nx[0])}}
 if(a==='obmanual')OB.manual=true;if(a==='obauto'){OB.manual=false;if(!OB.plan.length)OB.plan=makePlan()}
 if(a==='obredo'){OB=obNew(true)}if(a==='obcancel'){OB=obNew()}
 if(a==='obp'){OB.picks=OB.picks.includes(k)?OB.picks.filter(x=>x!==k):[...OB.picks,k]}
@@ -962,7 +1002,7 @@ if(a==='log'){lg=+k;const h=S.habits.find(x=>x.id===lg);lv=Math.min(left(h),h.st
 if(a==='lq')lv=+k;
 if(a==='nudge'){const[id,d]=k.split('|'),el=document.getElementById(id);setSl(id,+el.value+(+d)*(+el.step));return}
 if(a==='ladd'){const h=S.habits.find(x=>x.id===lg);roll(h);const v=Math.min(left(h),Math.max(0,+lv||0));if(!v)return say('Enter an amount first');add(h,v);lg=null}
-if(a==='edit'){pko=false;const h=S.habits.find(x=>x.id==k);F={id:h.id,p:h.p,n:h.n===P(h.p).n?'':h.n,u:h.u,m:h.m,g:h.g,st:h.st,days:[...h.days],slot:h.slot||''};open=true}
+if(a==='edit'){pko=false;const h=S.habits.find(x=>x.id==k);F={id:h.id,p:h.p,n:h.n===P(h.p).n?'':h.n,u:h.u,m:h.m,g:h.g,st:h.st,days:[...h.days],slot:h.slot||'',cue:h.cue||''};open=true}
 if(['go','rs','fin','once','inc','undo'].includes(a)){const h=S.habits.find(x=>x.id==k);roll(h);
 if(a==='go'){if(isDone(h))return;h.start=Date.now();h.rdy=false;say('Timer started')}
 else if(a==='rs'){h.start=Date.now();h.rdy=false;say('Timer restarted')}
@@ -974,8 +1014,8 @@ if(a==='arch'){S.habits.find(x=>x.id==k).arch=true;open=false;F=blank();say('Hab
 if(a==='add'){const q=P(F.p);F.n=document.getElementById('hn').value.trim();if(F.p==='custom'&&!F.n)return say('Name your habit first');
 const n=F.n||q.n,hm=document.getElementById('hm'),hg=document.getElementById('hg');
 if(hm)F.m=Math.min(240,Math.max(1,Math.round(+hm.value)||F.m));if(hg)F.g=Math.min(1000,Math.max(1,+hg.value||F.g));
-if(F.id!=null){const h=S.habits.find(x=>x.id===F.id);if((h.p!==F.p||h.u!==F.u)&&h.log.length)return say('Undo today’s progress before changing the habit type');Object.assign(h,{n,p:F.p,u:F.u,m:F.m,g:F.g,st:F.st,days:[...F.days],slot:F.slot||''});say('Changes saved')}
-else{S.habits.push({id:S.nid++,n,p:F.p,u:F.u,m:F.m,g:F.g,st:F.st,days:[...F.days],slot:F.slot||'',cd:day(),log:[],start:0});say('Habit added')}
+if(F.id!=null){const h=S.habits.find(x=>x.id===F.id);if((h.p!==F.p||h.u!==F.u)&&h.log.length)return say('Undo today’s progress before changing the habit type');Object.assign(h,{n,p:F.p,u:F.u,m:F.m,g:F.g,st:F.st,days:[...F.days],slot:F.slot||'',cue:(F.cue||'').trim()});say('Changes saved')}
+else{S.habits.push({id:S.nid++,n,p:F.p,u:F.u,m:F.m,g:F.g,st:F.st,days:[...F.days],slot:F.slot||'',cue:(F.cue||'').trim(),cd:day(),log:[],start:0});say('Habit added')}
 F=blank();open=false}
 if(a==='buy'){const c=CAT[k];if(c.req)return say(c.req.txt+' to earn this');if(c.lv&&c.lv>islLv()+1)return say('Reach island level '+c.lv+' to unlock this');if(NET.on&&c.p>0&&!S.inv.includes(k)){if(NET.busy)return;if(S.coins<c.p)return say('Need '+(c.p-S.coins)+' more coins');netBuy(k);return}if(!S.inv.includes(k)){if(S.coins<c.p)return say('Need '+(c.p-S.coins)+' more coins');S.coins-=c.p;S.inv.push(k);snd('buy');say('Bought '+c.n+(c.t==='island'?(c.follow?'. It’s waiting for you on the island.':'. Place it with Build on your island.'):''))}
 if(c.t!=='island')S.eq[c.t]=k}
@@ -983,6 +1023,8 @@ if(a==='reset'&&confirm('Erase all progress?')){S=fresh();tab='today';vd=di();OB
 save();render()});
 document.addEventListener('input',e=>{const i=e.target.id;if(i==='hn')F.n=e.target.value;
 if(i==='pn'||i==='pn2'){S.name=e.target.value;save()}
+if(i==='obwhy')OB.why=e.target.value;
+if(i==='hcue')F.cue=e.target.value;
 if(i==='an'||i==='ae'||i==='ap')NET.f[i]=e.target.value;
 if(['la','hm','hg'].includes(i))setSl(i,+e.target.value)});
 document.addEventListener('change',e=>{if(e.target.id==='hp'){const q=P(e.target.value);F.p=q.k;F.u=q.modes[0];F.g=q.g||8;F.st=q.st||1;F.days=[...(q.dd||ALL)];renderSheet()}});
