@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <script src="vendor/supabase.js"></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Kanit:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f6ecdc;--card:#fffaf0;--ink:#2a2140;--mute:#6b6480;--line:#2a2140;--sun:#f6d35a;--glow:#e8923c;--ok:#2f8f6a;--night:#2a2140;--dusk:#4a5a78;--leaf:#2f6f6a;--leaf2:#285f5b;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -21,7 +21,7 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 :root[data-theme="dark"]{--bg:#1e1a33;--card:#2b2646;--ink:#f4e9d8;--mute:#a9a3c0;--line:#4a4470}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font:17px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;padding-bottom:88px}
-.px{font-family:'Pixelify Sans',ui-monospace,monospace}
+.px{font-family:'Pixelify Sans','Kanit',ui-monospace,monospace}
 main{max-width:480px;margin:0 auto;padding:0 16px 16px}
 .sky{margin:0 -16px 16px;padding:18px 16px 20px;color:#fff;background:radial-gradient(rgba(42,33,64,.35) 1px,transparent 1.2px) 0 0/4px 4px,linear-gradient(180deg,#2a2140 0%,#4a5a78 45%,#e8923c 100%)}
 .sky .row{display:flex;justify-content:space-between;align-items:flex-start}
@@ -96,7 +96,7 @@ nav button b{line-height:0;margin-bottom:2px}nav button.on{color:var(--ink);back
 .bars i{display:block;width:100%;background:var(--glow);border-radius:4px 4px 0 0;min-height:3px}
 .swc{display:inline-block;width:22px;height:22px;border-radius:50%;border:2px solid var(--line);vertical-align:middle}
 .sl{display:flex;align-items:center;gap:10px;margin:6px 0}
-.sl .big{font-family:'Pixelify Sans',monospace;font-size:34px;min-width:84px;text-align:center;line-height:1}.sl .big small{display:block;font-family:system-ui,sans-serif;font-size:13px;color:var(--mute)}
+.sl .big{font-family:'Pixelify Sans','Kanit',monospace;font-size:34px;min-width:84px;text-align:center;line-height:1}.sl .big small{display:block;font-family:system-ui,'Kanit',sans-serif;font-size:13px;color:var(--mute)}
 .sl button{width:48px;height:48px;min-height:0;padding:0;border-radius:50%;font-size:24px;flex:none}
 input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:44px;background:transparent;border:0;padding:0;min-height:0}
 input[type=range]::-webkit-slider-runnable-track{height:10px;border-radius:5px;background:linear-gradient(90deg,var(--glow) var(--f,0%),color-mix(in srgb,var(--ink) 15%,transparent) var(--f,0%));border:2px solid var(--line)}
@@ -127,7 +127,7 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
 .lvb{position:absolute;left:8px;top:8px;background:rgba(42,33,64,.8);color:#fffaf0;padding:2px 10px;border-radius:8px;font-size:15px;pointer-events:none}
 .bub{position:absolute;transform:translate(-50%,-100%);background:#fffaf0;color:#2a2140;border:2px solid #2a2140;border-radius:10px;padding:6px 10px;font-size:14px;line-height:1.3;width:max-content;max-width:210px;pointer-events:none;box-shadow:3px 3px 0 #2a2140;text-align:center}
 .bub span,.bub small{display:block}.bub small{color:#6b6480;margin-top:2px}.bub .res{color:#2f8f4a;font-weight:600}.bub button{pointer-events:auto;margin-top:6px;min-height:40px;padding:4px 14px;width:100%}
-.bub b{display:block;font-family:'Pixelify Sans',monospace;font-size:15px}
+.bub b{display:block;font-family:'Pixelify Sans','Kanit',monospace;font-size:15px}
 .ibar{display:flex;gap:8px;margin:10px 0}.ibar button{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .ibar button.ghost{background:var(--card);color:var(--ink)}
 .seg2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0 4px}.seg2 button{background:var(--card);color:var(--ink)}.seg2 button.on{background:var(--sun);color:#2a2140}
@@ -142,6 +142,15 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
 .cel-c{position:relative;background:var(--bg);color:var(--ink);border:2px solid var(--line);border-radius:18px;padding:18px;width:100%;max-width:380px;box-shadow:5px 5px 0 #2a2140}
 .cel-c h2{margin:0 0 10px;font-size:24px;text-align:center}.cel-i{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-top:2px dashed color-mix(in srgb,var(--line) 30%,transparent)}
 .cel-i b{display:block}.cel-i span{color:var(--mute);font-size:15px}.cel-b{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.obpage{position:fixed;inset:0;z-index:20;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}
+.obin{max-width:480px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;padding:calc(14px + env(safe-area-inset-top,0px)) 18px 0}
+.obin>.obd{margin:4px 0 14px}.obin h2.px{font-size:24px;line-height:1.25}
+.obnav{position:sticky;bottom:0;margin-top:auto;padding:16px 0 calc(16px + env(safe-area-inset-bottom,0px));background:linear-gradient(to bottom,transparent,var(--bg) 30%)}
+.obin>.obnav{margin-top:auto}.obin .qlist+.obnav,.obin .pgrid+.obnav{margin-top:auto}
+.obhero{display:flex;justify-content:center;margin:6vh 0 6px}.obhero svg{width:72px;height:72px}
+.qopt .langb,.langb{flex:none!important;width:44px;display:inline-grid;place-items:center;min-width:40px;height:32px;border-radius:8px;border:2px solid var(--line);font-weight:700}
+.lseg{display:inline-flex;gap:4px}.lseg button{padding:6px 12px;min-height:0}.obin>.lseg{align-self:flex-end}
+body.th{line-height:1.5}body.th .px{letter-spacing:0}
 .ob h2{margin:6px 0 6px}.obd{display:flex;gap:6px;justify-content:center}.obd i{width:8px;height:8px;border-radius:50%;background:var(--line);opacity:.3}.obd i.on{opacity:1;background:var(--glow)}
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:13px}.cal b{font-size:12px;color:var(--mute)}
 .cal i{font-style:normal;aspect-ratio:1;display:grid;place-items:center;border-radius:8px;color:var(--mute);border:2px solid transparent}
@@ -164,7 +173,7 @@ textarea{width:100%;font:13px/1.4 ui-monospace,monospace;border:2px solid var(--
 .bretro{background:repeating-linear-gradient(90deg,rgba(255,110,200,.35) 0 2px,transparent 2px 20px) 0 100%/100% 42% no-repeat,linear-gradient(180deg,#1a0f33,#5a1f6a 56%,#f06aa0 58%,#2a1040 60%)}
 .lcats{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 8px;margin:0 -2px 4px;scrollbar-width:none}.lcats::-webkit-scrollbar{display:none}
 .lcats button{flex:none;min-height:40px;padding:4px 14px;background:var(--card);color:var(--ink);font-size:15px}.lcats button.on{background:var(--sun);color:#2a2140}
-.bnm{display:block;width:100%;height:48px;border-radius:8px;border:2px solid var(--line)}.ttl{display:grid;place-items:center;min-height:48px;font-family:'Pixelify Sans',monospace;font-size:15px;line-height:1.1;overflow-wrap:anywhere}
+.bnm{display:block;width:100%;height:48px;border-radius:8px;border:2px solid var(--line)}.ttl{display:grid;place-items:center;min-height:48px;font-family:'Pixelify Sans','Kanit',monospace;font-size:15px;line-height:1.1;overflow-wrap:anywhere}
 .lk.lock{opacity:.6}.lk .req{font-size:12px;color:var(--mute);min-height:40px;display:grid;place-items:center}
 .frow{display:flex;align-items:center;gap:12px}.frow .rk{width:18px;font-size:18px}.fav{width:52px;height:52px;border-radius:12px;border:2px solid var(--line);display:grid;place-items:center;flex:none}
 .fn{flex:1;min-width:0}.fn b{display:block}.fn small{color:var(--mute)}
@@ -324,7 +333,7 @@ async function loadGroups(){if(!NET.on)return;NET.gload=true;const{data,error}=a
 NET.groups=data||[];if(!NET.groups.some(g=>g.id===NET.gid))NET.gid=NET.groups[0]?NET.groups[0].id:null;if(NET.gid)await loadBoard();else NET.board=null;if(tab==='friends')render()}
 async function loadBoard(){try{NET.board=await rpc('group_leaderboard',{p_group:NET.gid})}catch(e){NET.board=[]}if(tab==='friends')render()}
 function friendsOnline(){const g=NET.groups.find(x=>x.id===NET.gid);
-const joinForm=`<div class="card"><b>Join with a code</b><p class="mut" style="margin:4px 0 10px">Ask a friend for their 6-letter group code.</p><div class="row2"><input id="gcode" maxlength="6" autocomplete="off" autocapitalize="characters" placeholder="ABC123" aria-label="Group code" style="text-transform:uppercase;letter-spacing:3px;font-family:'Pixelify Sans',monospace"><button data-a="gjoin" style="flex:none">Join</button></div></div>`;
+const joinForm=`<div class="card"><b>Join with a code</b><p class="mut" style="margin:4px 0 10px">Ask a friend for their 6-letter group code.</p><div class="row2"><input id="gcode" maxlength="6" autocomplete="off" autocapitalize="characters" placeholder="ABC123" aria-label="Group code" style="text-transform:uppercase;letter-spacing:3px;font-family:'Pixelify Sans','Kanit',monospace"><button data-a="gjoin" style="flex:none">Join</button></div></div>`;
 const createForm=`<div class="card"><b>Start a friend group</b><p class="mut" style="margin:4px 0 10px">You’ll get a code to share. Up to 20 friends.</p><div class="row2"><input id="gname" maxlength="30" placeholder="Group name" aria-label="Group name"><button data-a="gcreate" style="flex:none">Create</button></div></div>`;
 if(!NET.gload)return '<p class="mut" style="margin-top:16px">Loading your groups…</p>';
 if(!g)return '<div style="height:14px"></div>'+createForm+joinForm+'<p class="mut">The leaderboard counts points from habits only. Perks and items never add points, so it stays fair.</p>';
@@ -336,7 +345,7 @@ ${NET.board?rows||'<p class="mut">No one here yet.</p>':'<p class="mut">Loading�
 <button class="ghost" data-a="gjoinopen" style="width:100%;margin-top:6px">${NET.joinOpen?'Hide':'Join or start another group'}</button>${NET.joinOpen?createForm+joinForm:''}
 <button class="ghost danger" data-a="gleave" data-k="${g.id}">Leave ${esc(g.name)}</button>`}
 function authHtml(){const up=NET.mode==='up',f=NET.f;
-return `<div class="bd"><div class="panel ob" role="dialog" aria-modal="true" aria-label="Sign in"><h2 class="px" style="text-align:center">Camp Habit</h2><p class="mut" style="text-align:center;margin-top:0">Sign in to save your camp online and play with friends.</p>
+return `<div class="obpage" role="dialog" aria-modal="true" aria-label="Sign in"><div class="obin ob">${langSeg()}<div class="obhero">${ico('island',48)}</div><h2 class="px" style="text-align:center">Camp Habit</h2><p class="mut" style="text-align:center;margin-top:0">Sign in to save your camp online and play with friends.</p>
 <div class="seg2" style="margin-top:8px">${[['in','Sign in'],['up','Create account']].map(([k,l])=>`<button data-a="amode" data-k="${k}" class="${NET.mode===k?'on':''}" aria-pressed="${NET.mode===k}">${l}</button>`).join('')}</div>
 <form id="aform" novalidate>${up?`<div class="lbl">Your name</div><input id="an" value="${esc(f.an)}" maxlength="20" autocomplete="nickname" placeholder="What friends will see">`:''}
 <div class="lbl">Email</div><input id="ae" type="email" value="${esc(f.ae)}" autocomplete="email" inputmode="email" placeholder="you@example.com">
@@ -452,8 +461,129 @@ const CUES={m:['After I wake up','After brushing my teeth','After my morning cof
 const FEELMSG={great:'Love that energy. Let’s put it to work.',ok:'Nice. Small upgrades add up fast.',stuck:'That’s normal. We’ll start with easy wins to get you moving.',low:'We’ll keep it light. Small wins still count.',over:'Then we’ll start small. Little habits are plenty for now.'};
 const QUICK={home:['bed'],eat:['water'],sleep:['sleep'],energy:['water'],fit:['water'],calm:['bed'],read:['bed'],create:['bed'],work:['bed']};
 const HWIN={bed:'m',teeth:'m',vit:'m',meditate:'m',sleep:'n',screen:'n',journal:'n',water:'',fruit:''};
+/* ---------- language: English / Thai ---------- */
+const TH={
+'(optional)':'(ไม่บังคับ)','A bit stuck':'รู้สึกติดๆ อยู่','A cozier home. Your message bottles hold more coins.':'บ้านที่อบอุ่นขึ้น ขวดข้อความจะมีเหรียญมากขึ้น',
+'A few times a week':'สัปดาห์ละไม่กี่ครั้ง','A little each day':'ทีละนิดทุกวัน','A little friend who follows you around the island. Pat it once a day.':'เพื่อนตัวน้อยที่เดินตามคุณรอบเกาะ ลูบหัวได้วันละครั้ง',
+'A message in a bottle washed up on your island. Walk over to open it for 30 coins.':'มีขวดข้อความลอยมาเกยเกาะ เดินไปเปิดรับ 30 เหรียญ','A mix':'ผสมกัน','A sharper mind':'สมองที่เฉียบคมขึ้น','A stronger body':'ร่างกายแข็งแรงขึ้น','A tidier life':'ชีวิตที่เป็นระเบียบขึ้น',
+'About 5 servings of fruit and veg a day was linked to better mood.':'การกินผักผลไม้ประมาณวันละ 5 ส่วน เชื่อมโยงกับอารมณ์ที่ดีขึ้น','Account':'บัญชี','Add a habit':'เพิ่มนิสัย','Add habit':'เพิ่มนิสัย',
+'After I wake up':'หลังตื่นนอน','After dinner':'หลังมื้อเย็น','Afternoon':'บ่าย','All time':'ทั้งหมด','After brushing my teeth':'หลังแปรงฟัน','After my morning coffee':'หลังกาแฟตอนเช้า','After lunch':'หลังมื้อกลางวัน','After class or work':'หลังเลิกเรียนหรือเลิกงาน','After I put my phone away':'หลังวางโทรศัพท์',
+'An active day is any day you finish at least one habit. Weekly pays 100 coins, monthly pays 400 coins and a badge.':'วันแอคทีฟคือวันที่คุณทำนิสัยสำเร็จอย่างน้อยหนึ่งอย่าง โบนัสรายสัปดาห์ได้ 100 เหรียญ รายเดือนได้ 400 เหรียญพร้อมเหรียญตรา',
+'Any time today':'เวลาไหนก็ได้วันนี้','Anytime':'เวลาไหนก็ได้','Ask a friend for their 6-letter group code.':'ขอรหัสกลุ่ม 6 ตัวจากเพื่อน','At least 6 characters':'อย่างน้อย 6 ตัวอักษร','Aurora':'แสงเหนือ',
+'Back':'ย้อนกลับ','Back to my suggested plan':'กลับไปใช้แผนที่แนะนำ','Backpack':'กระเป๋าเป้','Backup':'สำรองข้อมูล','Backup code':'รหัสสำรอง','Backup code to restore':'รหัสสำรองเพื่อกู้คืน','Bandana':'ผ้าโพกหัว','Bank':'คลัง','Banner':'แบนเนอร์','Beanie':'หมวกไหมพรม',
+'Before bed':'ก่อนนอน','Better sleep':'นอนหลับดีขึ้น','Bigger sessions':'ครั้งละนานๆ','Black':'ดำ','Black hair':'ผมดำ','Blonde':'บลอนด์','Blonde hair':'ผมบลอนด์','Blue dress':'เดรสสีฟ้า','Blue tee':'เสื้อยืดสีฟ้า','Boat':'เรือ','Bob':'บ็อบ','Body':'รูปร่าง','Bonuses':'โบนัส','Bookshelf':'ชั้นหนังสือ','Bookworm':'หนอนหนังสือ',
+'Bow':'โบว์','Brown':'น้ำตาล','Brown hair':'ผมสีน้ำตาล','Brush teeth':'แปรงฟัน','Brush teeth twice':'แปรงฟันวันละสองครั้ง','Build':'สร้าง','Bun':'มวยผม','Cabin':'กระท่อมไม้','Camp Habit':'Camp Habit','Camper':'นักแคมป์','Campfire':'กองไฟ','Candy':'ลูกกวาด','Cap':'หมวกแก๊ป',
+'Cast a line':'ตกปลา','Cast a line once a day. Some fish are worth more than others.':'ตกปลาได้วันละครั้ง ปลาบางตัวมีค่ามากกว่าตัวอื่น','Cat':'แมว','Cat ears':'หูแมว','Celebration':'ฉลอง','Chill':'ชิลๆ','Choose':'เลือก','Close':'ปิด','Coding':'เขียนโค้ด',
+'Coins = minutes × 3 × difficulty. Finish unlocks when the timer ends.':'เหรียญ = นาที × 3 × ความยาก กดเสร็จได้เมื่อจับเวลาครบ','Cold shower':'อาบน้ำเย็น','Collector':'นักสะสม','Continue with Google':'ดำเนินการต่อด้วย Google','Cook a healthy meal':'ทำอาหารสุขภาพ',
+'Copy code':'คัดลอกรหัส','Copy this code and keep it somewhere safe, like your notes app. Paste it into Restore on any device to bring your camp back.':'คัดลอกรหัสนี้เก็บไว้ในที่ปลอดภัย เช่น แอปโน้ต แล้ววางในช่องกู้คืนบนเครื่องไหนก็ได้เพื่อเอาแคมป์ของคุณกลับมา',
+'Count by':'นับเป็น','Cozy sweater':'สเวตเตอร์อุ่นๆ','Create':'สร้าง','Create account':'สร้างบัญชี','Crown':'มงกุฎ','Curly':'ผมหยิก','Customize':'แต่งตัว','Cycling':'ปั่นจักรยาน',
+'Daily':'รายวัน','Daily counts':'จำนวนรายวัน','Day complete!':'ครบทั้งวันแล้ว!','Daylight':'กลางวัน','Deep work':'ทำงานแบบโฟกัส','Deep work history':'ประวัติ ทำงานแบบโฟกัส',
+'Demo friends. Real groups and invite codes work in the installed app.':'เพื่อนตัวอย่าง กลุ่มและรหัสเชิญจริงใช้ได้ในแอปที่ติดตั้ง','Denim':'ยีนส์','Denim jacket':'แจ็คเก็ตยีนส์','Display name':'ชื่อที่แสดง','Doing okay':'ก็โอเคอยู่','Done':'เสร็จแล้ว','Dots':'จุด','Draw or create':'วาดรูปหรือสร้างสรรค์','Drink enough water':'ดื่มน้ำให้พอ','Drink water':'ดื่มน้ำ',
+'Each habit is linked to something you already do.':'แต่ละนิสัยผูกกับสิ่งที่คุณทำอยู่แล้ว','Each one pays a coin more than the last, times difficulty.':'แต่ละครั้งได้มากกว่าครั้งก่อนหนึ่งเหรียญ คูณความยาก','Each one pays coins. Harder habits pay more.':'ทุกครั้งได้เหรียญ นิสัยที่ยากกว่าได้มากกว่า','Each tap adds':'แตะแต่ละครั้งเพิ่ม',
+'Early bird':'นกตื่นเช้า','Earned':'ได้รับแล้ว','Easier bottles':'ขวดมาง่ายขึ้น','Easy':'ง่าย','Eat fruit or veg':'กินผักหรือผลไม้','Eat healthier':'กินดีขึ้น','Email':'อีเมล','Email me a sign-in link instead':'ส่งลิงก์เข้าสู่ระบบทางอีเมลแทน','Evening':'เย็น',
+'Every Reading habit pays 10% more coins. Tap it to see this week’s reading.':'นิสัยการอ่านทุกอย่างได้เหรียญเพิ่ม 10% แตะเพื่อดูการอ่านสัปดาห์นี้','Every Workout habit pays 20% more coins. Tap it to see this week’s workouts.':'นิสัยออกกำลังกายทุกอย่างได้เหรียญเพิ่ม 20% แตะเพื่อดูการออกกำลังกายสัปดาห์นี้',
+'Every day':'ทุกวัน','every day':'ทุกวัน','Every shop item does something on your island.':'ของทุกชิ้นในร้านใช้งานได้บนเกาะของคุณ','Every unit pays as you log it. Reaching the goal adds a 20% finish bonus. Swipe the number on the habit to pick any amount.':'ได้เหรียญทุกหน่วยที่บันทึก ถึงเป้าหมายได้โบนัสเพิ่ม 20% ปัดตัวเลขบนนิสัยเพื่อเลือกจำนวน',
+'Everything here does something on your island':'ทุกอย่างที่นี่ใช้งานได้บนเกาะของคุณ','Everything you own is placed. Buy more in the shop.':'วางของครบทุกชิ้นแล้ว ซื้อเพิ่มได้ที่ร้าน','Everything is done today. Nice!':'วันนี้ทำครบหมดแล้ว เยี่ยม!','Explorer':'นักสำรวจ','Extras':'อื่นๆ','Extreme':'สุดขีด','Eyes':'ดวงตา',
+'Face mask':'มาสก์หน้า','Feeling great and ready for more':'รู้สึกดีและพร้อมลุยต่อ','Female':'หญิง','Fewer, longer sessions':'น้อยครั้งแต่นานขึ้น','Filled days are days you finished it. Outlined days are when it’s scheduled.':'วันที่ระบายสีคือวันที่ทำสำเร็จ วันที่มีกรอบคือวันที่อยู่ในตาราง',
+'Finish 100 habits':'ทำนิสัยสำเร็จ 100 ครั้ง','Finish 20 reading habits':'อ่านหนังสือสำเร็จ 20 ครั้ง','Finish 20 workouts':'ออกกำลังกายสำเร็จ 20 ครั้ง','Finish habits':'ทำนิสัยให้สำเร็จ','Finish':'เสร็จ','Finish real-life habits, earn coins, and grow your own little island.':'ทำนิสัยดีในชีวิตจริง เก็บเหรียญ แล้วปลูกเกาะเล็กๆ ของคุณเอง',
+'Fishing pond':'บ่อตกปลา','Fitness':'ฟิตเนส','Flower crown':'มงกุฎดอกไม้','Flowers':'ดอกไม้','Forest':'ป่า','Freckles':'กระ','Free':'ฟรี','Friends':'เพื่อน','Gentle start, low pressure':'เริ่มเบาๆ ไม่กดดัน','Ginger':'ส้มอิฐ','Ginger hair':'ผมสีส้มอิฐ','Glasses':'แว่นตา',
+'Go all in':'ทุ่มสุดตัว','Goal per day (glasses)':'เป้าหมายต่อวัน (แก้ว)','Goal per day (km)':'เป้าหมายต่อวัน (กม.)','Goal per day (reps)':'เป้าหมายต่อวัน (ครั้ง)','Goal per day (pages)':'เป้าหมายต่อวัน (หน้า)','Goal per day (laps)':'เป้าหมายต่อวัน (รอบ)','Goal per day (sets)':'เป้าหมายต่อวัน (เซ็ต)','Goal per day (servings)':'เป้าหมายต่อวัน (ส่วน)','Golden':'ทองคำ',
+'Good sleep was the strongest link to feeling good the next day.':'การนอนหลับดีเป็นสิ่งที่เชื่อมโยงกับความรู้สึกดีในวันถัดไปมากที่สุด','Green':'เขียว','Green tee':'เสื้อยืดสีเขียว','Group code':'รหัสกลุ่ม','Group name':'ชื่อกลุ่ม',
+'Guides more bottles to shore: they wash up when you finish 80% of your day, not only 100%.':'นำขวดเข้าฝั่งมากขึ้น: ขวดจะมาเมื่อทำครบ 80% ของวัน ไม่ต้องครบ 100%','Gym rat':'ขาประจำยิม','Gym workout':'เข้ายิม','Habit':'นิสัย','Habit name':'ชื่อนิสัย','Hair':'ผม','Hair color':'สีผม','Hair style':'ทรงผม','Halo':'วงแหวนนางฟ้า','Happy':'ยิ้ม','Hard':'ยาก','Hat':'หมวก','Headphones':'หูฟัง','Hero cape':'ผ้าคลุมฮีโร่','Hide':'ซ่อน','Home':'บ้าน','Home and self':'บ้านและตัวเอง',
+'How do you feel about yourself lately?':'ช่วงนี้คุณรู้สึกกับตัวเองยังไงบ้าง?','How do you like to improve?':'คุณชอบพัฒนาตัวเองแบบไหน?','How full is your week?':'สัปดาห์ของคุณยุ่งแค่ไหน?','How hard do you want it?':'อยากให้ยากแค่ไหน?','How it works':'วิธีการทำงาน','How much does this matter to you?':'เรื่องนี้สำคัญกับคุณแค่ไหน?','How often will you work on it?':'จะทำบ่อยแค่ไหน?','How sure are you that you’ll stick with it?':'มั่นใจแค่ไหนว่าจะทำได้ต่อเนื่อง?',
+'Hustler':'สายขยัน','Hut':'กระท่อม','I forget':'ฉันลืม','I get bored':'ฉันเบื่อง่าย','I want to get moving again':'อยากกลับมาขยับตัวอีกครั้ง','Island':'เกาะ','Island chief':'หัวหน้าเกาะ','It grows as you earn points. Finish your day and a bottle washes ashore.':'เกาะจะโตขึ้นเมื่อคุณได้แต้ม ทำครบทั้งวันแล้วจะมีขวดลอยมาเกยฝั่ง',
+'Jogging':'วิ่งจ็อกกิ้ง','Join':'เข้าร่วม','Join with a code':'เข้าร่วมด้วยรหัส','Journal':'เขียนบันทึก','Khaki':'กากี','Km':'กม.','Language practice':'ฝึกภาษา','Last 7 days':'7 วันล่าสุด','Legend':'ตำนาน','Less':'น้อยลง','Less stress':'เครียดน้อยลง','Lighthouse':'ประภาคาร',
+'Lights up your island at night. After 5 pm, roast a marshmallow once a day.':'ส่องสว่างเกาะตอนกลางคืน หลัง 5 โมงเย็น ย่างมาร์ชเมลโลว์ได้วันละครั้ง','Live sky':'ท้องฟ้าตามเวลาจริง','Long':'ผมยาว','Lose motivation':'หมดแรงจูงใจ','Love that energy. Let’s put it to work.':'ชอบพลังนี้มาก มาใช้มันกันเลย','Low energy':'ไม่ค่อยมีแรง',
+'Main habits':'นิสัยหลัก','Main habits are kept short and gentle for now.':'ตอนนี้นิสัยหลักจะสั้นและเบาๆ ก่อน','Main habits are a bit gentler.':'นิสัยหลักจะเบาลงหน่อย','Make my bed':'เก็บที่นอน','Make your bed':'เก็บที่นอน','Male':'ชาย','Mali':'มะลิ',
+'Marshmallows taste better after 5 pm.':'มาร์ชเมลโลว์อร่อยกว่าหลัง 5 โมงเย็น','Medium':'ปานกลาง','Meditate':'นั่งสมาธิ','Midday':'กลางวัน','Mind':'จิตใจ','Mint':'มิ้นท์','Mohawk':'โมฮอว์ก','Month':'เดือน','Monthly badge: +400 coins':'เหรียญตรารายเดือน: +400 เหรียญ','More':'มากขึ้น','More creativity':'สร้างสรรค์มากขึ้น','More energy':'มีพลังมากขึ้น','Morning':'เช้า','Most days':'เกือบทุกวัน',
+'Moving most days lifts your mood and energy the same day.':'การขยับร่างกายเกือบทุกวันช่วยให้อารมณ์และพลังดีขึ้นได้ตั้งแต่วันนั้น','Mustache':'หนวด','My days change a lot':'ตารางแต่ละวันเปลี่ยนบ่อย','Name':'ชื่อ','Name (optional)':'ชื่อ (ไม่บังคับ)','Navy':'กรมท่า',
+'New habits take about two months to feel automatic. Missing a day is fine. Just pick it back up.':'นิสัยใหม่ใช้เวลาประมาณสองเดือนกว่าจะเป็นอัตโนมัติ พลาดไปวันนึงไม่เป็นไร แค่กลับมาทำต่อ','Next':'ถัดไป','Next, about 8 quick questions to build your plan.':'ต่อไปเป็นคำถามสั้นๆ ประมาณ 8 ข้อเพื่อสร้างแผนของคุณ','Nice. Small upgrades add up fast.':'ดีเลย การพัฒนาเล็กๆ รวมกันแล้วไปได้ไว',
+'Night light':'ไฟกลางคืน','Night owl':'นกฮูกกลางคืน','No hat':'ไม่ใส่หมวก','No one here yet.':'ยังไม่มีใครเลย','No perks active. Place a Bookshelf or Rock on your island.':'ยังไม่มีโบนัส วางชั้นหนังสือหรือก้อนหินบนเกาะของคุณ','Nok':'นก','None':'ไม่มี','Normal busy':'ยุ่งปกติ','Normal pace':'ความเร็วปกติ','Normal':'ปกติ',
+'Not enough time':'ไม่มีเวลา','Not much yet':'ยังไม่ค่อยมี','Ocean':'มหาสมุทร','Ocean blue':'ฟ้าทะเล','On':'เปิด','On island':'อยู่บนเกาะ','Once a week':'สัปดาห์ละครั้ง','One bigger session':'ครั้งเดียวยาวๆ','One tap, and the reward is fixed by the habit.':'แตะครั้งเดียว รางวัลกำหนดตามนิสัย','One tap':'แตะครั้งเดียว',
+'Orange hoodie':'ฮู้ดสีส้ม','Other':'อื่นๆ','Outfit':'ชุด','Overachiever':'ยอดนักทำ','Overalls':'ชุดเอี๊ยม','Overwhelmed':'รู้สึกท่วมท้น','Pages':'หน้า','Palm tree':'ต้นมะพร้าว','Pants':'กางเกง','Party hat':'หมวกปาร์ตี้','Password':'รหัสผ่าน',
+'Paste a backup code. This replaces everything on this device.':'วางรหัสสำรอง ข้อมูลทั้งหมดในเครื่องนี้จะถูกแทนที่','Paste your code here':'วางรหัสที่นี่','Pat':'ลูบหัว','Pet':'สัตว์เลี้ยง','Phone and distractions':'โทรศัพท์และสิ่งรบกวน','Phone-free time':'เวลาปลอดโทรศัพท์','Pick all that fit.':'เลือกทุกข้อที่ตรง',
+'Pick an item, then tap a spot. Tap a placed item to pick it up.':'เลือกของ แล้วแตะจุดที่จะวาง แตะของที่วางแล้วเพื่อเก็บคืน','Pick any you do most days. We’ll build on them instead of starting from zero.':'เลือกสิ่งที่คุณทำเกือบทุกวัน เราจะต่อยอดจากตรงนั้นแทนการเริ่มจากศูนย์','Pick my own habits instead':'เลือกนิสัยเองดีกว่า',
+'Pick up to 3. Think about how you want to feel, not just what to do.':'เลือกได้สูงสุด 3 ข้อ คิดถึงความรู้สึกที่อยากได้ ไม่ใช่แค่สิ่งที่ต้องทำ','Pick up to 3. Your plan will work around them.':'เลือกได้สูงสุด 3 ข้อ แผนของคุณจะออกแบบให้หลบปัญหาเหล่านี้','Pick your habits':'เลือกนิสัยของคุณ','Pigtails':'ผมแกละ','Pink':'ชมพู','Pink dress':'เดรสสีชมพู',
+'Play offline on this device':'เล่นออฟไลน์ในเครื่องนี้','Ponytail':'หางม้า','Practice music':'ฝึกดนตรี','Pretty free':'ค่อนข้างว่าง','Pretty good, with room to grow':'ค่อนข้างดี แต่ยังพัฒนาได้อีก','Profile':'โปรไฟล์','Progress at work or school':'ก้าวหน้าในงานหรือการเรียน','Purple':'ม่วง','Purple hoodie':'ฮู้ดสีม่วง',
+'Push yourself':'ท้าทายตัวเอง','Push-ups':'วิดพื้น','Quick wins':'ชัยชนะเล็กๆ','Raincoat':'เสื้อกันฝน','Reach island level 2':'เกาะถึงเลเวล 2','Reach island level 3':'เกาะถึงเลเวล 3','Reach island level 5':'เกาะถึงเลเวล 5','Read':'อ่าน','Read 10 pages':'อ่านหนังสือ 10 หน้า','Reading':'อ่านหนังสือ','Red':'แดง','Refresh':'รีเฟรช','Remove last':'ลบอันล่าสุด',
+'Repeat on':'ทำซ้ำวัน','Reps':'ครั้ง','Restore':'กู้คืน','Restore camp':'กู้คืนแคมป์','Retake the goal quiz':'ทำแบบทดสอบเป้าหมายใหม่','Retro':'เรโทร','Rock':'ก้อนหิน','Rookie':'มือใหม่','Sail out once a week and come back with treasure.':'ออกเรือสัปดาห์ละครั้งแล้วกลับมาพร้อมสมบัติ','Sakura':'ซากุระ','Save':'บันทึก','Scarf':'ผ้าพันคอ',
+'See my plan':'ดูแผนของฉัน','Selected':'เลือกแล้ว','Send this code to friends. They tap Friends → Join with a code.':'ส่งรหัสนี้ให้เพื่อน แล้วให้เพื่อนแตะ เพื่อน → เข้าร่วมด้วยรหัส','Set sail':'ออกเรือ','Settings':'ตั้งค่า','Shake':'เขย่า','Shake it once a day and a coconut drops.':'เขย่าวันละครั้งแล้วมะพร้าวจะหล่นลงมา','Shop':'ร้านค้า','Short':'ผมสั้น','Short and easy to keep':'สั้นๆ ทำต่อเนื่องได้ง่าย',
+'Sign in':'เข้าสู่ระบบ','Sign out':'ออกจากระบบ','Sign in to save your camp online and play with friends.':'เข้าสู่ระบบเพื่อบันทึกแคมป์ออนไลน์และเล่นกับเพื่อน','Silver':'เงิน','Skin':'ผิว','Skin tone':'สีผิว','Skip':'ข้าม','Sleep on time':'นอนตรงเวลา','Sleepy':'ง่วงนอน','Small steps':'ทีละก้าวเล็กๆ','So I can keep up with my kids':'เพื่อจะได้วิ่งเล่นกับลูกไหว',
+'Some short, some longer':'มีทั้งสั้นและยาว','Something else':'อย่างอื่น','Sound effects':'เสียงเอฟเฟกต์','Sparkly':'ตาเป็นประกาย','Spend coins':'ใช้เหรียญ','Spiky':'ผมตั้ง','Starry night':'คืนพระจันทร์ดาว','Start':'เริ่ม','Start a friend group':'สร้างกลุ่มเพื่อน','Start over':'เริ่มใหม่',
+'Start small. You can add or change habits any time with the + button.':'เริ่มจากเล็กๆ คุณเพิ่มหรือเปลี่ยนนิสัยได้ตลอดด้วยปุ่ม +','Stats':'สถิติ','Steady and balanced':'สม่ำเสมอและสมดุล','Straw hat':'หมวกฟาง','Striped tee':'เสื้อลายทาง','Study':'อ่านหนังสือเรียน','Sun':'ดวงอาทิตย์','Sunglasses':'แว่นกันแดด','Sunny dress':'เดรสสดใส','Sunset':'พระอาทิตย์ตก','Sunshine':'แสงแดด','Swimming':'ว่ายน้ำ',
+'Take vitamins':'กินวิตามิน','Tank top':'เสื้อกล้าม','Tap a habit to leave it out. Tap the “after…” tag to change when you’ll do it.':'แตะนิสัยเพื่อตัดออก แตะป้าย “หลัง…” เพื่อเปลี่ยนเวลาที่จะทำ','Tap a habit’s name to edit it. Swipe a number to change it, then tap the number to add.':'แตะชื่อนิสัยเพื่อแก้ไข ปัดตัวเลขเพื่อเปลี่ยนจำนวน แล้วแตะตัวเลขเพื่อเพิ่ม',
+'Tap anywhere to walk. Tap an item to check it out.':'แตะที่ไหนก็ได้เพื่อเดิน แตะของเพื่อดู','Tent':'เต็นท์','That’s normal. We’ll start with easy wins to get you moving.':'เป็นเรื่องปกติ เราจะเริ่มจากชัยชนะง่ายๆ ให้คุณได้เริ่มขยับ','The best home on the island. Message bottles hold the most coins.':'บ้านที่ดีที่สุดบนเกาะ ขวดข้อความจะมีเหรียญมากที่สุด',
+'The leaderboard counts points from habits only. Perks and items never add points, so it stays fair.':'กระดานอันดับนับแต้มจากนิสัยเท่านั้น โบนัสและไอเทมไม่เพิ่มแต้ม จึงยุติธรรม','Then we’ll start small. Little habits are plenty for now.':'งั้นเริ่มเล็กๆ ก่อน นิสัยเล็กๆ ก็เพียงพอแล้วสำหรับตอนนี้','There’s a lot going on right now':'ช่วงนี้มีเรื่องเยอะมาก',
+'There’s no wrong answer. It helps us choose how hard to start.':'ไม่มีคำตอบที่ผิด แค่ช่วยให้เราเลือกได้ว่าจะเริ่มยากแค่ไหน','This month':'เดือนนี้','This preview saves on this device only. Accounts and friends work in the installed app.':'เวอร์ชันพรีวิวนี้บันทึกในเครื่องนี้เท่านั้น บัญชีและเพื่อนใช้ได้ในแอปที่ติดตั้ง',
+'This sets how long and how much each habit asks of you. Harder habits pay more coins.':'ตัวเลือกนี้กำหนดว่าแต่ละนิสัยนานและหนักแค่ไหน นิสัยที่ยากกว่าได้เหรียญมากกว่า','This week':'สัปดาห์นี้','This week, resets Monday':'สัปดาห์นี้ รีเซ็ตทุกวันจันทร์','Thriving':'กำลังไปได้สวย','Tidy up':'จัดห้อง','Time':'เวลา','Time (minutes)':'เวลา (นาที)','Time of day':'ช่วงเวลาของวัน',
+'Tired lately, I need gentle steps':'ช่วงนี้เหนื่อย ขอเริ่มเบาๆ','Title':'ฉายา','Today':'วันนี้','Today’s list':'รายการวันนี้','Ton':'ต้น','Too tired':'เหนื่อยเกินไป','Tuxedo':'ทักซิโด้','Use':'ใช้','Very full':'ยุ่งมาก','Walk':'เดิน','Walk or exercise':'เดินหรือออกกำลังกาย','Walk up to an item on your island and tap it to use it.':'เดินไปหาของบนเกาะแล้วแตะเพื่อใช้งาน','Walk your island':'เดินเล่นบนเกาะ',
+'Water':'รดน้ำ','Water them once a day and they pay you back.':'รดน้ำวันละครั้งแล้วจะได้รางวัลตอบแทน','We added a phone-free habit.':'เราเพิ่มนิสัยปลอดโทรศัพท์ให้แล้ว','Wear':'สวม','Wearing':'กำลังสวม','Week':'สัปดาห์','Weekly':'รายสัปดาห์','Weekly bonus: +100 coins':'โบนัสรายสัปดาห์: +100 เหรียญ','Weekly points, resets Monday':'แต้มรายสัปดาห์ รีเซ็ตทุกวันจันทร์','Welcome':'ยินดีต้อนรับ','Welcome to Camp Habit':'ยินดีต้อนรับสู่ Camp Habit',
+'We’ll keep it light. Small wins still count.':'เราจะทำแบบเบาๆ ชัยชนะเล็กๆ ก็นับนะ','We’ll keep sessions short.':'เราจะทำให้แต่ละครั้งสั้นๆ','We’ll show this when you need a push.':'เราจะแสดงข้อความนี้เมื่อคุณต้องการแรงผลักดัน','What a day!':'วันนี้สุดยอด!','What do you already do?':'ตอนนี้คุณทำอะไรอยู่แล้วบ้าง?','What friends will see':'สิ่งที่เพื่อนจะเห็น','What usually gets in the way?':'อะไรมักเป็นอุปสรรค?','What would make your life better?':'อะไรจะทำให้ชีวิตคุณดีขึ้น?',
+'When do you usually have time?':'ปกติคุณว่างช่วงไหน?','When will you do it?':'จะทำเมื่อไหร่?','When you’ll do it':'เวลาที่จะทำ','White':'ขาว','White tee':'เสื้อยืดสีขาว','Why does it matter to you?':'ทำไมเรื่องนี้ถึงสำคัญกับคุณ?','Wink':'ขยิบตา','Witch hat':'หมวกแม่มด','Wooden sign':'ป้ายไม้','Year':'ปี','You':'คุณ','You are':'คุณคือ',
+'Your goals':'เป้าหมายของคุณ','Your habits':'นิสัยของคุณ','Your home. When you finish your day, a message bottle washes up with coins inside.':'บ้านของคุณ เมื่อทำครบทั้งวัน จะมีขวดข้อความที่มีเหรียญอยู่ข้างในลอยมาเกยฝั่ง','Your island':'เกาะของคุณ','Your island grows as you earn points. Finish every habit today and a bottle washes ashore.':'เกาะจะโตขึ้นเมื่อคุณได้แต้ม ทำนิสัยครบทุกอย่างวันนี้แล้วจะมีขวดลอยมาเกยฝั่ง',
+'Your island. Tap a spot to walk there.':'เกาะของคุณ แตะจุดที่อยากเดินไป','Your look':'ลุคของคุณ','Your look shows on your island and on the friends board. Many options are free. Some you earn by keeping up your habits.':'ลุคของคุณจะแสดงบนเกาะและบนกระดานเพื่อน หลายแบบใช้ฟรี บางแบบได้จากการทำนิสัยอย่างต่อเนื่อง','Your name':'ชื่อของคุณ','Your plan':'แผนของคุณ','Your reason':'เหตุผลของคุณ',
+'Your to-do board. Tap it to see which habits are still left today.':'กระดานสิ่งที่ต้องทำ แตะเพื่อดูว่าวันนี้ยังเหลือนิสัยอะไรบ้าง','Your tray':'ถาดของคุณ','You’ll get a code to share. Up to 20 friends.':'คุณจะได้รหัสไว้แชร์ ได้สูงสุด 20 คน','You were active 5 days this week.':'สัปดาห์นี้คุณแอคทีฟ 5 วัน',
+'active days':'วันแอคทีฟ','coins earned':'เหรียญที่ได้','habits finished':'นิสัยที่สำเร็จ','minutes':'นาที','points':'แต้ม','times all time':'ครั้ง ทั้งหมด','times this month':'ครั้ง เดือนนี้','you@example.com':'you@example.com','Your why':'เหตุผลของคุณ','Language':'ภาษา','Choose your language':'เลือกภาษา',
+'Variety, coins and friends help keep it fun.':'ความหลากหลาย เหรียญ และเพื่อน ช่วยให้สนุกต่อเนื่อง','Habits can happen any time of day.':'ทำนิสัยได้ทุกช่วงของวัน','Your plan mixes different kinds of habits.':'แผนของคุณผสมนิสัยหลายแบบ','Roast':'ย่าง','Done for today. Come back tomorrow.':'วันนี้ทำแล้ว พรุ่งนี้มาใหม่นะ','Back from this week’s trip. Sail again next week.':'กลับจากทริปสัปดาห์นี้แล้ว ออกเรือได้อีกทีสัปดาห์หน้า',
+'Today’s bottle is opened.':'เปิดขวดของวันนี้แล้ว','A bottle is waiting on the beach!':'มีขวดรออยู่ที่ชายหาด!','Bottles wash up when you finish 80% of your day.':'ขวดจะลอยมาเมื่อคุณทำครบ 80% ของวัน','The flowers perk up.':'ดอกไม้สดชื่นขึ้น','Perfectly golden.':'เหลืองทองกำลังดี','A coconut drops!':'มะพร้าวหล่นมาแล้ว!','You caught a tiny minnow.':'ได้ปลาซิวตัวจิ๋ว','You caught a silver fish!':'ได้ปลาเงิน!','A golden carp! What a catch.':'ปลาคาร์ปทอง! จับได้สุดยอด','You found a floating crate!':'เจอลังลอยน้ำ!','Purrr.':'เหมียว~',
+'Backup code copied':'คัดลอกรหัสสำรองแล้ว','Camp restored':'กู้คืนแคมป์แล้ว','Changes saved':'บันทึกแล้ว','Code copied':'คัดลอกรหัสแล้ว','Codes have 6 letters':'รหัสมี 6 ตัวอักษร','Couldn’t load groups':'โหลดกลุ่มไม่ได้','Couldn’t save online. Will retry.':'บันทึกออนไลน์ไม่ได้ จะลองใหม่','Enter an amount first':'ใส่จำนวนก่อน','Habit added':'เพิ่มนิสัยแล้ว','Habit archived':'เก็บนิสัยแล้ว','Name your group first':'ตั้งชื่อกลุ่มก่อน','Name your habit first':'ตั้งชื่อนิสัยก่อน',
+'Not enough room there. Try an open spot on land.':'ตรงนั้นที่ไม่พอ ลองหาที่ว่างบนบก','Pick an item from your tray first':'เลือกของจากถาดก่อน','Pick up to 3':'เลือกได้สูงสุด 3 ข้อ','Refreshing…':'กำลังรีเฟรช…','Select the code and copy it':'เลือกรหัสแล้วคัดลอก','Signed in. Your habits and look moved to your account.':'เข้าสู่ระบบแล้ว ย้ายนิสัยและลุคของคุณไปที่บัญชีแล้ว','Still saving. Try again in a second.':'กำลังบันทึก ลองอีกครั้งในอีกสักครู่',
+'That code doesn’t look right. Check you copied all of it.':'รหัสดูไม่ถูกต้อง ตรวจดูว่าคัดลอกครบไหม','Timer finished. Tap Finish':'จับเวลาครบแล้ว แตะ เสร็จ','Timer restarted':'เริ่มจับเวลาใหม่','Timer started':'เริ่มจับเวลา','Undo today’s progress before changing the habit type':'ยกเลิกความคืบหน้าวันนี้ก่อนเปลี่ยนประเภทนิสัย','Undone':'ยกเลิกแล้ว','You already spent those coins':'คุณใช้เหรียญนั้นไปแล้ว','You can’t reach that from here':'ไปตรงนั้นจากที่นี่ไม่ได้','You joined the group!':'เข้าร่วมกลุ่มแล้ว!','You left the group':'ออกจากกลุ่มแล้ว','You already have these habits':'คุณมีนิสัยเหล่านี้อยู่แล้ว',
+'Undo':'ยกเลิก','Off':'ปิด','1 is not at all, 10 is a lot.':'1 คือไม่เลย 10 คือมากที่สุด','Quick wins take a minute and give you coins every day.':'ชัยชนะเล็กๆ ใช้เวลาแค่นาทีเดียวและได้เหรียญทุกวัน','Goal quiz':'แบบทดสอบเป้าหมาย','Sign in to Camp Habit':'เข้าสู่ระบบ Camp Habit','Loading your camp…':'กำลังโหลดแคมป์ของคุณ…','Create your camper':'สร้างตัวละครของคุณ','Last step. This is how you’ll look on your island and to friends.':'ขั้นตอนสุดท้าย นี่คือหน้าตาของคุณบนเกาะและที่เพื่อนจะเห็น','Pick a language. You can change it later in Profile.':'เลือกภาษา เปลี่ยนได้ภายหลังในโปรไฟล์','Let’s go':'ไปกันเลย','Add to my habits':'เพิ่มในนิสัยของฉัน','Archive':'เก็บถาวร','Archive habit':'เก็บนิสัย','Cancel':'ยกเลิก','Delete':'ลบ','Edit':'แก้ไข','Copy':'คัดลอก','Workout':'ออกกำลังกาย','Mon':'จันทร์','Tue':'อังคาร','Wed':'พุธ','Thu':'พฤหัส','Fri':'ศุกร์','Sat':'เสาร์','camper':'นักแคมป์','friend':'เพื่อน','Invalid login credentials':'อีเมลหรือรหัสผ่านไม่ถูกต้อง'
+};
+const THU={pages:'หน้า',page:'หน้า',glasses:'แก้ว',glass:'แก้ว',km:'กม.',reps:'ครั้ง',rep:'ครั้ง',min:'นาที',servings:'ส่วน',serving:'ส่วน',laps:'รอบ',lap:'รอบ',sets:'เซ็ต',set:'เซ็ต',habits:'นิสัย',habit:'นิสัย',coins:'เหรียญ',coin:'เหรียญ',pts:'แต้ม',times:'ครั้ง',days:'วัน',day:'วัน'};
+const THM=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+const trList=s=>s.split(/, | and /).map(tr1).join(', ');
+const THP=[
+[/^\+(\d+) coins?$/,(m,a)=>`+${a} เหรียญ`],[/^\+(\d+) to (\d+) coins$/,(m,a,b)=>`+${a} ถึง ${b} เหรียญ`],[/^(\d+) coins?$/,(m,a)=>`${a} เหรียญ`],[/^\+(\d+)% (\w+)$/,(m,a,b)=>`+${a}% ${tr1(b)}`],
+[/^\+(\d+) coins \(finish bonus \+(\d+)\)$/,(m,a,b)=>`+${a} เหรียญ (โบนัสทำครบ +${b})`],[/^\+(\d+) coins \(perk \+(\d+)\)$/,(m,a,b)=>`+${a} เหรียญ (โบนัส +${b})`],
+[/^(\d+) of (\d+) active days$/,(m,a,b)=>`แอคทีฟ ${a} จาก ${b} วัน`],[/^(\d+) of (\d+) habits done$/,(m,a,b)=>`ทำแล้ว ${a} จาก ${b} นิสัย`],
+[/^(\d+) of (\d+) habits done today, (\d+) coins earned\. ?(.*)$/,(m,a,b,c,d)=>`วันนี้ทำแล้ว ${a} จาก ${b} นิสัย ได้ ${c} เหรียญ ${tr1(d)}`],[/^Finish your day for a bottle worth (\d+) coins\.$/,(m,a)=>`ทำครบทั้งวันเพื่อรับขวดที่มี ${a} เหรียญ`],
+[/^(\d+) pts$/,(m,a)=>`${a} แต้ม`],[/^(\d+) pts to unlock$/,(m,a)=>`ปลดล็อกที่ ${a} แต้ม`],[/^(\d+) pts to grow$/,(m,a)=>`อีก ${a} แต้มเกาะจะโตขึ้น`],
+[/^(\d+) reading sessions? finished this week\. Reading pays 10% more\.$/,(m,a)=>`สัปดาห์นี้อ่านหนังสือสำเร็จ ${a} ครั้ง การอ่านได้เหรียญเพิ่ม 10%`],[/^(\d+) workouts? finished this week\. Workouts pay 20% more\.$/,(m,a)=>`สัปดาห์นี้ออกกำลังกายสำเร็จ ${a} ครั้ง การออกกำลังกายได้เหรียญเพิ่ม 20%`],
+[/^([\d.]+)\/([\d.]+) (\w+)$/,(m,a,b,u)=>THU[u]?`${a}/${b} ${THU[u]}`:m],[/^([\d.]+) (\w+)$/,(m,a,u)=>THU[u]?`${a} ${THU[u]}`:m],[/^(\d+) out of 10$/,(m,a)=>`${a} จาก 10`],
+[/^(\d+) (\w+): 1, 2, 3… = (\d+) coins$/,(m,a,u,c)=>`${a} ${THU[u]||u}: 1, 2, 3… = ${c} เหรียญ`],
+[/^([\d.]+) (\w+) \(about (\d+) min\) × 3 × (\w+) \((×[\d.]+)\) = (\d+) coins$/,(m,a,u,b,d,x,c)=>`${a} ${THU[u]||u} (ประมาณ ${b} นาที) × 3 × ${tr1(d)} (${x}) = ${c} เหรียญ`],
+[/^(\d+) min × 3 × (\w+) \((×[\d.]+)\) = (\d+) coins$/,(m,a,d,x,c)=>`${a} นาที × 3 × ${tr1(d)} (${x}) = ${c} เหรียญ`],
+[/^(\d+) days a week$/,(m,a)=>`สัปดาห์ละ ${a} วัน`],[/^about (\d+) min a day$/,(m,a)=>`วันละประมาณ ${a} นาที`],[/^about (\d+) min per session$/,(m,a)=>`ประมาณ ${a} นาทีต่อครั้ง`],
+[/^Island level (\d+)(!?)$/,(m,a,b)=>`เกาะเลเวล ${a}${b}`],[/^Bottle \+(\d+)$/,(m,a)=>`ขวด +${a}`],[/^Edit (.+)$/,(m,a)=>`แก้ไข ${tr1(a)}`],[/^Change when: (.+)$/,(m,a)=>`เปลี่ยนเวลา: ${tr1(a)}`],
+[/^Add to my habits \((\d+)\)$/,(m,a)=>`เพิ่มในนิสัยของฉัน (${a})`],[/^Add to my habits$/,()=>'เพิ่มในนิสัยของฉัน'],[/^Next \((\d+)\)$/,(m,a)=>`ถัดไป (${a})`],[/^Use this plan \((\d+)\)$/,(m,a)=>`ใช้แผนนี้ (${a})`],[/^Scheduled: (.+)$/,(m,a)=>`ตามตาราง: ${a.split(', ').map(tr1).join(', ')}`],
+[/^Still to do: (.+?)(?: and (\d+) more)?\.$/,(m,a,b)=>`ยังเหลือ: ${trList(a)}${b?` และอีก ${b} อย่าง`:''}`],
+[/^You were active (\d+) days? this week\.$/,(m,a)=>`สัปดาห์นี้คุณแอคทีฟ ${a} วัน`],[/^You were active on (\d+)% of the days this month\.$/,(m,a)=>`เดือนนี้คุณแอคทีฟ ${a}% ของวันทั้งหมด`],
+[/^Your island just grew\. New in the shop: (.+)\.$/,(m,a)=>`เกาะของคุณโตขึ้นแล้ว ของใหม่ในร้าน: ${trList(a)}`],
+[/^Welcome to camp, (.+)!$/,(m,a)=>`ยินดีต้อนรับสู่แคมป์ ${tr1(a)}!`],[/^Welcome back, (.+)!$/,(m,a)=>`ยินดีต้อนรับกลับ ${tr1(a)}!`],[/^Leave (.+)$/,(m,a)=>`ออกจาก ${a}`],
+[/^One tap = (\d+) coins \((\w+)\)$/,(m,a,b)=>`แตะครั้งเดียว = ${a} เหรียญ (${tr1(b)})`],[/^(.+) amount\. Swipe left or right to change, tap to add$/,(m,a)=>`จำนวน ${tr1(a)} ปัดซ้ายหรือขวาเพื่อเปลี่ยน แตะเพื่อเพิ่ม`],
+[/^(.+) history$/,(m,a)=>`ประวัติ ${tr1(a)}`],
+[/^Bought (.+?)(\. It’s waiting for you on the island\.|\. Place it with Build on your island\.)?$/,(m,a,b)=>`ซื้อ ${tr1(a)} แล้ว${b?b.includes('waiting')?' กำลังรอคุณอยู่บนเกาะ':' วางของได้ด้วยปุ่ม สร้าง บนเกาะ':''}`],
+[/^Need (\d+) more coins$/,(m,a)=>`ต้องการอีก ${a} เหรียญ`],[/^Reach island level (\d+) to unlock this$/,(m,a)=>`เกาะต้องถึงเลเวล ${a} เพื่อปลดล็อก`],[/^Reach island level (\d+)$/,(m,a)=>`เกาะถึงเลเวล ${a}`],
+[/^Message in a bottle: \+(\d+) coins$/,(m,a)=>`ขวดข้อความ: +${a} เหรียญ`],[/^Group created! Code: (\w+)$/,(m,a)=>`สร้างกลุ่มแล้ว! รหัส: ${a}`],[/^Your code is (.+)$/,(m,a)=>`รหัสของคุณคือ ${a}`],
+[/^Couldn’t save that: (.*)$/,(m,a)=>`บันทึกไม่ได้: ${tr1(a)}`],[/^Couldn’t undo: (.*)$/,(m,a)=>`ยกเลิกไม่ได้: ${tr1(a)}`],[/^(.+) placed$/,(m,a)=>`วาง ${tr1(a)} แล้ว`],[/^(.+) back in tray$/,(m,a)=>`เก็บ ${tr1(a)} เข้าถาดแล้ว`],
+[/^Added (\d+) habits?$/,(m,a)=>`เพิ่ม ${a} นิสัยแล้ว`],[/^(.+) to earn this$/,(m,a)=>`${tr1(a)} เพื่อรับสิ่งนี้`],[/^Finish (\d+) habits$/,(m,a)=>`ทำนิสัยสำเร็จ ${a} ครั้ง`],[/^Own (\d+) island items$/,(m,a)=>`มีของบนเกาะ ${a} ชิ้น`],
+[/^(\d+) (habits?)$/,(m,a)=>`${a} นิสัย`],[/^(.+?) \+(\d+) coins$/,(m,a,b)=>`${tr1(a)} +${b} เหรียญ`],
+[/^(\d+) (ม\.ค\.|ก\.พ\.|มี\.ค\.|เม\.ย\.|พ\.ค\.|มิ\.ย\.|ก\.ค\.|ส\.ค\.|ก\.ย\.|ต\.ค\.|พ\.ย\.|ธ\.ค\.)$/,m=>m],[/^(ม\.ค\.|ก\.พ\.|มี\.ค\.|เม\.ย\.|พ\.ค\.|มิ\.ย\.|ก\.ค\.|ส\.ค\.|ก\.ย\.|ต\.ค\.|พ\.ย\.|ธ\.ค\.) (\d+)$/,(m,a,b)=>`${b} ${a}`]
+];
+function tr1(c){if(!c)return c;const d=TH[c];if(d!=null)return d;for(const[r,f]of THP){const m=c.match(r);if(m){const o=f(...m);if(o!==c)return o}}
+if(c.includes(' · '))return c.split(' · ').map(tr1).join(' · ');return c}
+function trS(s){const c=s.trim();if(!c||!/[A-Za-z]/.test(c))return s;const t=tr1(c);return t===c?s:s.replace(c,t)}
+const TR_SKIP={SCRIPT:1,STYLE:1,TEXTAREA:1,INPUT:1,CANVAS:1,SVG:1};
+function trNode(root){if(LANG!=='th'||!root)return;
+if(root.nodeType===3){const p=root.parentNode;if(p&&!TR_SKIP[p.nodeName.toUpperCase()]&&!p.closest('[data-notr]')){const v=root.nodeValue,t=trS(v);if(t!==v)root.nodeValue=t}return}
+if(root.nodeType!==1||TR_SKIP[root.nodeName.toUpperCase()]||root.closest('[data-notr]'))return;
+for(const k of ['placeholder','aria-label','title']){const v=root.getAttribute(k);if(v){const t=trS(v);if(t!==v)root.setAttribute(k,t)}}
+const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT|NodeFilter.SHOW_ELEMENT);let n;while(n=w.nextNode()){if(n.nodeType===3)trNode(n);else if(n!==root){for(const k of ['placeholder','aria-label','title']){const v=n.getAttribute(k);if(v){const t=trS(v);if(t!==v)n.setAttribute(k,t)}}}}}
+let LANG=(()=>{try{const l=localStorage.getItem('ch-lang');if(l==='th'||l==='en')return l}catch(_){}return /^th/i.test(navigator.language||'')?'th':'en'})();
+const EN_DATA={dn:['M','T','W','T','F','S','S'],dl:['Mon','Tue','Wed','Thu','Fri','Sat','Sun']};
+let trObs=null;
+function applyLang(){document.documentElement.lang=LANG;document.body.classList.toggle('th',LANG==='th');
+try{if(LANG==='th'){DAYN.splice(0,7,'จ','อ','พ','พฤ','ศ','ส','อา');DAYL.splice(0,7,'จันทร์','อังคาร','พุธ','พฤหัส','ศุกร์','เสาร์','อาทิตย์');MON.splice(0,12,...THM)}else{DAYN.splice(0,7,...EN_DATA.dn);DAYL.splice(0,7,...EN_DATA.dl)}}catch(_){}
+if(LANG==='th'){trNode(document.body);if(!trObs){trObs=new MutationObserver(ms=>{for(const m of ms){if(m.type==='childList')m.addedNodes.forEach(trNode);else trNode(m.target)}});trObs.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['placeholder','aria-label','title']})}}
+else if(trObs){trObs.disconnect();trObs=null}}
+function setLang(l){if(l!=='th'&&l!=='en'||l===LANG)return;const was=LANG;LANG=l;try{localStorage.setItem('ch-lang',l)}catch(_){}if(typeof S!=='undefined'){S.lang=l;save()}
+if(was==='th'){location.reload();return}applyLang();render()}
+
+const langSeg=small=>`<span class="lseg" data-notr role="group" aria-label="Language">${[['en','EN'],['th','TH']].map(([k,l])=>`<button class="${LANG===k?'':'ghost'}" data-a="lang" data-k="${k}" aria-pressed="${LANG===k}">${l}</button>`).join('')}</span>`;
 const obNew=redo=>{const g=S.goals||{};return{step:0,redo:!!redo,manual:false,goals:redo?[...(g.goals||[])].filter(x=>GOALS.some(y=>y[0]===x)):[],now:redo?[...(g.now||[])]:[],feel:redo?g.feel:null,load:redo?g.load:null,imp:redo?g.imp:null,conf:redo?g.conf:null,why:redo?(g.why||''):'',barr:redo?[...(g.barr||[])]:[],often:redo?g.often:null,way:redo?g.way:null,pace:redo?g.pace:null,wins:redo?[...(g.wins||[])]:[],plan:[],picks:['bed','water','reading']}};
-const obSteps=()=>{const q=['goals','now','feel','ruler','barr','often','pace',OB.manual?'pick':'plan'];return OB.redo?q:['you',...q,'how']};
+const obSteps=()=>{const q=['goals','now','feel','ruler','barr','often','pace',OB.manual?'pick':'plan'];return OB.redo?q:['lang',...q,'you','how']};
 const daysLbl=d=>d.length===7?'Every day':d.length===5&&[0,1,2,3,4].every(i=>d.includes(i))?'Weekdays':d.map(i=>DAYL[i]).join(', ');
 const winToSlot=w=>w==='n'?'e':w||'';
 function makePlan(){const goals=OB.goals.length?OB.goals:['home'],PI=Math.max(0,['easy','normal','hard','extreme'].indexOf(OB.pace||'normal')),of=OFTEN.find(o=>o[0]===(OB.often||'daily')),gentle=OB.feel==='low'||OB.feel==='over',way=OB.way||'mix',B=OB.barr,conf=OB.conf||6,wins=OB.wins.length?OB.wins:['e'];
@@ -481,15 +611,19 @@ const fmtM=m=>m>=60?Math.floor(m/60)+'h '+(m%60?m%60+'m':''):m+' min';
 function onbHtml(){const L=obSteps(),key=L[OB.step],dots=`<div class="obd">${L.map((_,i)=>`<i class="${i===OB.step?'on':''}"></i>`).join('')}</div>`,back=OB.step>0||OB.redo?`<button class="ghost" data-a="${OB.step>0?'obb':'obcancel'}">${OB.step>0?'Back':'Cancel'}</button>`:'<span></span>';
 const opt=(a,k,on,t,d,ic)=>`<button class="qopt ${on?'on':''}" data-a="${a}" data-k="${k}" aria-pressed="${on}">${ic?ico(ic,24):''}<span><b>${t}</b>${d?`<small>${d}</small>`:''}</span></button>`;
 const chip=(a,k,on,t)=>`<button data-a="${a}" data-k="${k}" class="${on?'on':''}" aria-pressed="${on}">${t}</button>`;
-const nav=(ok,label)=>`<div class="row2" style="margin-top:14px">${back}<button data-a="obn" ${ok?'':'disabled'}>${label||'Next'}</button></div>`;
+const nav=(ok,label)=>`<div class="row2 obnav">${back}<button data-a="obn" ${ok?'':'disabled'}>${label||'Next'}</button></div>`;
 const ruler=(a,v)=>`<div class="ruler">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<button data-a="${a}" data-k="${n}" class="${v===n?'on':''}" aria-label="${n} out of 10" aria-pressed="${v===n}">${n}</button>`).join('')}</div>`;
 let b;
-if(key==='you')b=`<h2 class="px">Welcome to Camp Habit</h2><p class="mut">Finish real-life habits, earn coins, and grow your own little island.</p>
+if(key==='lang')b=`<div class="obhero">${ico('island',48)}</div><h2 class="px" style="text-align:center">Welcome to Camp Habit</h2><p class="mut" style="text-align:center">Finish real-life habits, earn coins, and grow your own little island.</p>
+<div class="lbl">Choose your language</div><div class="qlist" data-notr>${[['en','English','Play in English'],['th','ภาษาไทย','เล่นเป็นภาษาไทย']].map(([k,t,d])=>`<button class="qopt ${LANG===k?'on':''}" data-a="lang" data-k="${k}" aria-pressed="${LANG===k}"><span class="langb">${k.toUpperCase()}</span><span><b>${t}</b><small>${d}</small></span></button>`).join('')}</div>
+<p class="mut" style="font-size:14px;margin:8px 0 0">Pick a language. You can change it later in Profile.</p>
+<div class="obnav"><button data-a="obn" style="width:100%">Let’s go</button><p class="mut" style="text-align:center;margin:8px 0 0;font-size:14px">Next, about 8 quick questions to build your plan.</p></div>`;
+else if(key==='you')b=`<h2 class="px">Create your camper</h2><p class="mut">Last step. This is how you’ll look on your island and to friends.</p>
 <div class="card hero">${hero(S.eq,112,1)}<div style="flex:1;min-width:0"><div class="lbl" style="margin-top:0">Your name</div><input id="pn2" value="${esc(S.name==='You'?'':S.name||'')}" maxlength="20" placeholder="Your name" aria-label="Your name"></div></div>
 <div class="lbl">Skin</div><div class="chips">${SKINS.map(c=>`<button data-a="skin" data-k="${c}" class="${(S.eq.skin||SKINS[1])===c?'on':''}" aria-label="Skin tone"><span class="swc" style="background:${c}"></span></button>`).join('')}</div>
 <div class="lbl">You are</div><div class="chips">${[['m','Male'],['f','Female']].map(([k,l])=>chip('body',k,(S.eq.body||'m')===k,l)).join('')}</div>
 <div class="lbl">Hair</div><div class="chips">${['short','long','bob','ponytail'].map(k=>chip('wear',k,S.eq.hstyle===k,CAT[k].n)).join('')}${['brown','black','blonde','ginger'].map(k=>`<button data-a="wear" data-k="${k}" class="${S.eq.hair===k?'on':''}" aria-label="${CAT[k].n} hair"><span class="swc" style="background:${CAT[k].c}"></span></button>`).join('')}</div>
-<button data-a="obn" style="width:100%;margin-top:16px">Next</button><p class="mut" style="text-align:center;margin:10px 0 0">Next, about 8 quick questions to build your plan.</p>`;
+${nav(true)}`;
 else if(key==='goals')b=`<h2 class="px">What would make your life better?</h2><p class="mut">Pick up to 3. Think about how you want to feel, not just what to do.</p><div class="pgrid">${GOALS.map(([k,t,ic])=>`<button data-a="obg" data-k="${k}" class="${OB.goals.includes(k)?'on':''}" aria-pressed="${OB.goals.includes(k)}">${ico(ic,24)}${t}</button>`).join('')}</div>${nav(OB.goals.length)}`;
 else if(key==='now')b=`<h2 class="px">What do you already do?</h2><p class="mut">Pick any you do most days. We’ll build on them instead of starting from zero.</p><div class="chips">${NOWDO.map(([k,t])=>chip('obnow',k,OB.now.includes(k),t)).join('')}</div>${nav(OB.now.length)}`;
 else if(key==='feel')b=`<h2 class="px">How do you feel about yourself lately?</h2><p class="mut">There’s no wrong answer. It helps us choose how hard to start.</p>
@@ -512,18 +646,18 @@ b=`<h2 class="px">Your plan</h2><div class="card psum"><b class="px">${on.length
 <div class="lbl">Quick wins</div><div class="qlist">${OB.plan.map((it,i)=>it.kind==='quick'?rowP(it,i):'').join('')}</div>
 <p class="mut" style="font-size:14px;margin:4px 0 0">Tap a habit to leave it out. Tap the “after…” tag to change when you’ll do it.</p>
 <button class="ghost" data-a="obmanual" style="width:100%;margin-top:10px;border:0">Pick my own habits instead</button>
-<div class="row2" style="margin-top:8px">${back}<button data-a="${OB.redo?'obdone':'obn'}" ${on.length?'':'disabled'}>${OB.redo?'Add to my habits ('+on.length+')':'Use this plan ('+on.length+')'}</button></div>`}
+<div class="row2 obnav">${back}<button data-a="${OB.redo?'obdone':'obn'}" ${on.length?'':'disabled'}>${OB.redo?'Add to my habits ('+on.length+')':'Use this plan ('+on.length+')'}</button></div>`}
 else if(key==='pick')b=`<h2 class="px">Pick your habits</h2><p class="mut">Start small. You can add or change habits any time with the + button.</p>
 <div class="pgrid">${PRESETS.filter(x=>x.k!=='custom').map(x=>`<button data-a="obp" data-k="${x.k}" class="${OB.picks.includes(x.k)?'on':''}" aria-pressed="${OB.picks.includes(x.k)}">${ico(x.i,24)}${x.n}</button>`).join('')}</div>
 <button class="ghost" data-a="obauto" style="width:100%;margin-top:10px;border:0">Back to my suggested plan</button>
-<div class="row2" style="margin-top:8px">${back}<button data-a="${OB.redo?'obdone':'obn'}" ${OB.picks.length?'':'disabled'}>${OB.redo?'Add to my habits':'Next'} (${OB.picks.length})</button></div>`;
+<div class="row2 obnav">${back}<button data-a="${OB.redo?'obdone':'obn'}" ${OB.picks.length?'':'disabled'}>${OB.redo?'Add to my habits':'Next'} (${OB.picks.length})</button></div>`;
 else b=`<h2 class="px">How it works</h2>
 <div class="cel-i">${ico('today',32)}<div><b>Finish habits</b><span>Each one pays coins. Harder habits pay more.</span></div></div>
 <div class="cel-i">${ico('shop',32)}<div><b>Spend coins</b><span>Every shop item does something on your island.</span></div></div>
 <div class="cel-i">${ico('island',32)}<div><b>Walk your island</b><span>It grows as you earn points. Finish your day and a bottle washes ashore.</span></div></div>
 <p class="qmsg">New habits take about two months to feel automatic. Missing a day is fine. Just pick it back up.</p>
-<div class="row2" style="margin-top:14px">${back}<button data-a="obdone">Start</button></div>`;
-return `<div class="bd"><div class="panel ob" role="dialog" aria-modal="true" aria-label="${OB.redo?'Goal quiz':'Welcome'}">${dots}${b}</div></div>`}
+<div class="row2 obnav">${back}<button data-a="obdone">Start</button></div>`;
+return `<div class="obpage" role="dialog" aria-modal="true" aria-label="${OB.redo?'Goal quiz':'Welcome'}"><div class="obin ob" id="obin">${dots}${b}</div></div>`}
 function obFinish(){const items=OB.manual?OB.picks.map(k=>({k,on:true,o:{slot:winToSlot(HWIN[k]||''),cue:''}})):OB.plan.filter(x=>x.on);
 S.goals={goals:OB.goals,now:OB.now,feel:OB.feel,load:OB.load,imp:OB.imp,conf:OB.conf,why:(OB.why||'').trim(),barr:OB.barr,often:OB.often,way:OB.way,pace:OB.pace,wins:OB.wins,at:Date.now()};
 const mk=(id,it)=>{const h=mkH(id,P(it.k).n,it.k,it.o);h.slot=it.o.slot||'';h.cue=it.o.cue||'';return h};
@@ -543,7 +677,7 @@ return `<div class="bd" data-a="close"><div class="panel" role="dialog" aria-mod
 <p class="mut" style="margin-bottom:0">Filled days are days you finished it. Outlined days are when it’s scheduled.</p></div></div>`}
 function renderSheet(){const el=document.getElementById('sh'),old=el.querySelector('.panel'),st=old?old.scrollTop:0;
 const pb=document.getElementById('plus');pb.hidden=tab!=='today';if(!pb.firstChild)pb.innerHTML=ico('plus',24);
-if(NET.need&&!NET.on&&!NET.guest){document.body.style.overflow='hidden';if(NET.user&&NET.busy){el.innerHTML='<div class="bd"><div class="panel ob" style="text-align:center"><h2 class="px">Loading your camp…</h2></div></div>';return}el.innerHTML=authHtml();return}
+if(NET.need&&!NET.on&&!NET.guest){document.body.style.overflow='hidden';if(NET.user&&NET.busy){el.innerHTML='<div class="obpage"><div class="obin ob" style="text-align:center;padding-top:30vh"><h2 class="px">Loading your camp…</h2></div></div>';return}el.innerHTML=authHtml();return}
 if(!S.onb||OB.redo){document.body.style.overflow='hidden';el.innerHTML=onbHtml();return}
 if(hh!=null){document.body.style.overflow='hidden';el.innerHTML=histHtml(hh);return}document.body.style.overflow=open||lg?'hidden':'';
 if(lg){const h=S.habits.find(x=>x.id===lg),U=UNITS[Q(h).u],lf=left(h),ch=[...new Set([...U.steps.filter(n=>n<lf),lf])];
@@ -932,7 +1066,7 @@ v.innerHTML=`<div class="pcard ${S.eq.banner}"><div>${hero(S.eq,128,1)}</div><di
 ${S.badges.length?`<div class="badges">${S.badges.map(k=>{const[y,mm]=k.split('-');return `<span>${ico('medal',32)}<small>${MON[mm-1]} ${y}</small></span>`}).join('')}</div>`:''}</div>
 <h2>Your habits</h2>${S.habits.filter(h=>!h.arch).map(h=>`<button class="card hrow" data-a="hh" data-k="${h.id}">${ico(hi(h),24)}<span>${esc(h.n)}<small>${summary(h)}</small></span>${ico('chevR')}</button>`).join('')}
 <h2>Account</h2><div class="card">${NET.on?`<div class="row2"><span style="min-width:0;overflow-wrap:anywhere">Signed in as<br><b>${esc(NET.user.email||'')}</b></span><button class="ghost" data-a="signout">Sign out</button></div>`:NET.need?`<p class="mut" style="margin-top:0">You’re playing offline. Progress stays on this device only.</p><button data-a="signin" style="width:100%">Sign in or create account</button>`:`<p class="mut" style="margin:0">This preview saves on this device only. Accounts and friends work in the installed app.</p>`}${NET.inst?'<button class="ghost" data-a="install" style="width:100%;margin-top:10px">Install Camp Habit app</button>':''}</div>
-<h2>Settings</h2><div class="card"><div class="row2"><span>Sound effects</span><button class="${S.mute?'ghost':''}" data-a="mute" aria-pressed="${!S.mute}">${S.mute?'Off':'On'}</button></div>
+<h2>Settings</h2><div class="card"><div class="row2" style="margin-bottom:10px"><span>Language</span>${langSeg(1)}</div><div class="row2"><span>Sound effects</span><button class="${S.mute?'ghost':''}" data-a="mute" aria-pressed="${!S.mute}">${S.mute?'Off':'On'}</button></div>
 <div class="row2" style="margin-top:10px"><span>Backup</span><span class="btns"><button class="ghost" data-a="bks">Save</button><button class="ghost" data-a="bkl">Restore</button></span></div>
 ${bk==='save'?`<p class="mut">Copy this code and keep it somewhere safe, like your notes app. Paste it into Restore on any device to bring your camp back.</p><textarea id="bko" readonly rows="4" aria-label="Backup code">${bkCode()}</textarea><button data-a="bkcopy" style="width:100%;margin-top:8px">Copy code</button>`:''}
 ${bk==='load'?`<p class="mut">Paste a backup code. This replaces everything on this device.</p><textarea id="bki" rows="4" aria-label="Backup code to restore" placeholder="Paste your code here"></textarea><button data-a="bkload" style="width:100%;margin-top:8px">Restore camp</button>`:''}</div>
@@ -968,7 +1102,7 @@ if(a==='obwin')OB.wins=OB.wins.includes(k)?OB.wins.filter(x=>x!==k):[...OB.wins,
 if(a==='obt'){const it=OB.plan[+k];if(it)it.on=!it.on}
 if(a==='obcue'){const it=OB.plan[+k];if(it){const all=[].concat(...['m','a','e','n'].map(w=>CUES[w].map(c=>[w,c]))),i=all.findIndex(x=>x[1]===it.o.cue),nx=all[(i+1)%all.length];it.o.cue=nx[1];it.o.slot=winToSlot(nx[0])}}
 if(a==='obmanual')OB.manual=true;if(a==='obauto'){OB.manual=false;if(!OB.plan.length)OB.plan=makePlan()}
-if(a==='obredo'){OB=obNew(true)}if(a==='obcancel'){OB=obNew()}
+if(a==='lang'){setLang(k);return}if(a==='obredo'){OB=obNew(true)}if(a==='obcancel'){OB=obNew()}
 if(a==='obp'){OB.picks=OB.picks.includes(k)?OB.picks.filter(x=>x!==k):[...OB.picks,k]}
 if(a==='obdone')obFinish();
 if(a==='hh')hh=+k;
@@ -1034,5 +1168,5 @@ document.addEventListener('submit',e=>{if(e.target.id==='aform'){e.preventDefaul
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&NET.on){refreshWallet();if(tab==='friends')loadGroups()}});
 addEventListener('beforeinstallprompt',e=>{e.preventDefault();NET.inst=e;if(tab==='profile')render()});
 if('serviceWorker' in navigator&&location.protocol==='https:'&&netAvail())navigator.serviceWorker.register('sw.js').catch(()=>{});
-OB=obNew();render();netBoot();
+OB=obNew();if(S.lang==='th'||S.lang==='en'){if(S.lang!==LANG){LANG=S.lang;try{localStorage.setItem('ch-lang',LANG)}catch(_){}}}else S.lang=LANG;applyLang();render();netBoot();
 </script></body></html>
