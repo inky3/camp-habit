@@ -1305,7 +1305,7 @@ return `<div class="seg2 tmode">${[['week','Week'],['month','Month']].map(([k,l]
 /* ---------- close-up portrait (64x64), soft anime pixel style ---------- */
 const PRC={};
 function prGrid(w,h,fn){const G=new Int16Array(w*h).fill(-1),M=[];
-const mat=(c,sh=0,ol)=>{let i=M.findIndex(m=>m.c===c&&m.sh===sh);if(i<0){M.push({c,sh,ol:ol||mixC(c,'#1d1830',.55)});i=M.length-1}return i};
+const mat=(c,sh=0,ol)=>{let i=M.findIndex(m=>m.c===c&&m.sh===sh);if(i<0){M.push({c,sh,ol:ol||mixC(c,'#1d1830',.45)});i=M.length-1}return i};
 const set=(x,y,m)=>{x=Math.round(x);y=Math.round(y);if(x>=0&&x<w&&y>=0&&y<h)G[y*w+x]=m};const get=(x,y)=>x>=0&&x<w&&y>=0&&y<h?G[y*w+x]:-1;
 const rect=(x0,y0,x1,y1,m)=>{for(let y=Math.round(y0);y<=Math.round(y1);y++)for(let x=Math.round(x0);x<=Math.round(x1);x++)set(x,y,m)};
 const ell=(cx,cy,rx,ry,m,f)=>{for(let y=0;y<h;y++)for(let x=0;x<w;x++)if(((x+.5-cx)/rx)**2+((y+.5-cy)/ry)**2<=1&&(!f||f(x,y)))set(x,y,m)};
@@ -1322,7 +1322,7 @@ const oc=CAT[eq.outfit]||CAT.blue,st=oc.st||'tee',fem=eq.body==='f',hc0=(CAT[eq.
 const cv=prGrid(64,64,({mat,set,get,rect,ell,poly,line})=>{
 const hdk=shade(hc,.55);
 const HB=mat(shade(hc,.8),0,shade(hc,.45)),HAIR=mat(hc,0,shade(hc,.45)),HD=mat(shade(hc,.68),0,shade(hc,.45)),HDD=mat(shade(hc,.52),0,shade(hc,.4)),HL=mat(mixC(hc,'#ffffff',.3),0,shade(hc,.45)),HLL=mat(mixC(hc,'#ffffff',.5),0,shade(hc,.45));
-const SKIN=mat(sk,0,shade(sk,.55)),SK2=mat(mixC(shade(sk,.86),'#c06070',.12),0,shade(sk,.55)),SK3=mat(mixC(shade(sk,.74),'#a04060',.15),0,shade(sk,.5)),SKL=mat(mixC(sk,'#ffffff',.3),0,shade(sk,.55)),BLU=mat(mixC(sk,'#ff6878',.3),0);
+const SKIN=mat(mixC(sk,'#fff4ea',.18),0,shade(sk,.6)),SK2=mat(mixC(shade(sk,.86),'#c06070',.12),0,shade(sk,.55)),SK3=mat(mixC(shade(sk,.74),'#a04060',.15),0,shade(sk,.5)),SKL=mat(mixC(sk,'#ffffff',.3),0,shade(sk,.55)),BLU=mat(mixC(sk,'#ff8a8a',.22),0);
 const OUT=mat(oc.c,1),OUTD=mat(shade(oc.c,.76),0),OUTL=mat(mixC(oc.c,'#ffffff',.25),0),TRIM=mat('#f4efe6',1);
 const ic=eq.ec||(['black','brown'].includes(eq.hair)?'#6a4030':mixC(hc,'#4a6fc8',.35));
 const LASH=mat(mixC(shade(hc,.3),'#2a1830',.6),0),IR1=mat(shade(ic,.45),0),IR2=mat(ic,0),IR3=mat(mixC(ic,'#f0b070',.4),0),PUP=mat(shade(ic,.25),0),EW=mat('#fffaf4',0),EWS=mat('#e8dcd8',0),LIP=mat(mixC(shade(sk,.6),'#d04a5a',.4),0),red=mat('#d0503c',1),Y=mat('#f6d35a',0),DK=mat('#2a2140',0);
@@ -1357,18 +1357,18 @@ for(let y=0;y<64;y++)for(let x=0;x<64;x++){if(get(x,y)!==SKIN||!face(x,y))contin
 for(let y=40;y<56;y++)for(let x=20;x<44;x++){if((get(x,y)===SKIN||get(x,y)===SK2)&&!face(x,y)&&face(x,y-1))set(x,y,SK2)}
 // ---- eyes
 const EY=33,EXs=[24,40];
-const eyeOpen=(cx,i,big)=>{const o=i?1:-1,t=big?1:0,b=EY+5+t;
- rect(cx-2,EY,cx+2,b,IR2);rect(cx-2,EY,cx+2,EY+1,IR1);rect(cx-1,b-1,cx+1,b,IR3);set(cx-2,b,SKIN);set(cx+2,b,SKIN);
- rect(cx-1,EY+2,cx+1,EY+3+t,PUP);rect(cx-2,EY+1,cx-1,EY+2,EW);set(cx+1,b-1,EW);
- rect(cx-3,EY-1,cx+3,EY-1,LASH);set(cx-3,EY,LASH);set(cx+3,EY,LASH);if(fem){set(cx+4*o,EY-2,LASH);set(cx+3*o,EY-2,LASH)}};
+const eyeOpen=(cx,i,big)=>{const o=i?1:-1,t=big?1:0,b=EY+6+t,l=cx-3,r=cx+2;
+ rect(l,EY,r,b,IR2);rect(l,EY,r,EY+2,IR1);rect(l+1,b-1,r-1,b,IR3);set(l,EY,SKIN);set(r,EY,SKIN);set(l,b,SKIN);set(r,b,SKIN);
+ rect(l+1,EY+3,r-1,EY+4+t,PUP);rect(r-2,EY+1,r-1,EY+2,EW);set(l+1,b-1,EW);
+ rect(l-1,EY-1,r+1,EY-1,LASH);rect(l,EY-2,r,EY-2,LASH);set(o<0?l-1:r+1,EY,LASH);set(o<0?l-2:r+2,EY-2,LASH);if(fem)set(o<0?l-2:r+2,EY-3,LASH)};
 const eyeArc=(cx)=>{line(cx-3,EY+3,cx-1,EY+1,LASH);rect(cx-1,EY+1,cx+1,EY+1,LASH);line(cx+1,EY+1,cx+3,EY+3,LASH)};
 EXs.forEach((cx,i)=>{if(ey==='eyhappy'||(ey==='eywink'&&i))eyeArc(cx);else if(ey==='eysleepy'){rect(cx-3,EY+3,cx+3,EY+3,LASH);rect(cx-2,EY+4,cx+2,EY+4,IR1)}else eyeOpen(cx,i,ey==='eybig')});
 // brows
-EXs.forEach((cx,i)=>{const o=i?1:-1;rect(cx-2,EY-4,cx+2,EY-4,HD);set(cx+3*o,EY-3,HD)});
+
 // nose, blush, mouth
 set(33,40,SK2);set(33,41,SK3);set(32,39,SKL);
-[[23,41],[41,41]].forEach(([x,y])=>{ell(x,y,3,1.1,BLU)});
-set(29,43,LIP);rect(30,44,34,44,LIP);set(35,43,LIP);rect(31,45,33,45,mat(mixC(sk,'#d04a5a',.25),0));
+[[21,42],[37,42]].forEach(([x,y])=>{ell(x+2.5,y-.5,3.2,1.2,BLU);for(let k=0;k<3;k++)set(x+1+k*2,y-1,mat(mixC(sk,'#ff6878',.5),0))});
+rect(31,44,33,44,LIP);
 // ---- front hair
 const sideL={short:42,bob:48,long:56,curly:44,spiky:38,bun:42,ponytail:42,pigtails:44,mohawk:0}[hs]??42;
 if(hs==='mohawk'){ell(32,14,6,10,HAIR);rect(26,4,38,20,HAIR)}
@@ -1377,7 +1377,7 @@ else{
  // side locks
  poly([[13,20],[20,22],[19,sideL-4],[15,sideL],[12,sideL-6]],HAIR);poly([[51,20],[44,22],[45,sideL-4],[49,sideL],[52,sideL-6]],HAIR);
  // bangs: pointed strands
- const B=[[16,22,33],[20,21,29],[25,21,26],[29,20,27],[34,20,25],[38,21,27],[43,21,28],[47,22,31],[50,23,34]];
+ const B=[[16,22,29],[20,21,25],[25,21,23],[29,20,25],[34,20,26],[38,21,28],[43,21,30],[47,22,36],[50,23,40]];
  B.forEach(([x,y,tip],i)=>poly([[x-4.2,y-2],[x+4.2,y-2],[x+(i%2?1.5:-1.5),tip]],HAIR));
  // dark gaps between strands
  B.forEach(([x,y,tip],i)=>{if(i===0)return;const px=x-2.2;for(let yy=y+2;yy<tip-4;yy++)if(get(px,yy)===HAIR&&get(px,yy+3)===HAIR)set(px,yy,HD)});
