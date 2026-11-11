@@ -677,3 +677,29 @@ begin
 end $$;
 revoke all on function public.spend_deco(text, integer) from public, anon;
 grant execute on function public.spend_deco(text, integer) to authenticated;
+
+-- farmland tiles (3 free + bought), plots on any tile, new island/home items, well/hammock/hot spring daily coins, scarecrow +10% crop sales
+-- (applied as migration farmland_and_more_items; functions buy_farmland, private.farmland_owned, plant_crop, harvest_crop, claim_reward updated)
+alter table public.plots drop constraint if exists plots_slot_check;
+alter table public.plots add constraint plots_slot_check check (slot between 0 and 4095);
+insert into public.items (id, kind, price, min_level) values
+('bench','island',200,0),('lamppost','island',260,0),('mailbox','island',220,0),('well','island',1500,1),('hammock','island',1800,1),('scarecrow','island',1200,1),
+('dock','island',2200,2),('windmill','island',4000,2),('spring','island',6000,3),('statue','island',8000,4),('tower','island',10000,4),
+('tv','home',500,0),('beanbag','home',300,0),('mirror','home',250,0),('wallshelf','home',220,0),('bigrug','home',480,0),('dtable','home',420,0),('counter','home',600,0),('cactus','home',120,0)
+on conflict (id) do update set kind = excluded.kind, price = excluded.price, min_level = excluded.min_level;
+create or replace function private.farmland_owned(uid uuid)
+returns integer language sql stable security definer set search_path = '' as $$
+  select 3 + (select count(*)::int from public.claims where user_id = uid and kind = 'farmland')
+$$;
+create or replace function public.buy_farmland()
+returns integer language plpgsql security definer set search_path = '' as $$
+declare uid uuid := auth.uid(); w record;
+begin
+  if uid is null then raise exception 'Not signed in'; end if;
+  if private.farmland_owned(uid) >= 200 then raise exception 'That is plenty of farmland'; end if;
+  select * into w from public.wallets where user_id = uid for update;
+  if w.coins < 25 then raise exception 'Not enough coins'; end if;
+  update public.wallets set coins = w.coins - 25 where user_id = uid;
+  insert into public.claims (user_id, kind, ref, period, amount) values (uid, 'farmland', gen_random_uuid()::text, 'buy', 25);
+  return w.coins - 25;
+end $$;
