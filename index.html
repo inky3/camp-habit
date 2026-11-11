@@ -1279,7 +1279,7 @@ tstrat:{n:'Strategist',t:'title',p:0,req:{txt:'Finish 20 chess habits',ok:()=>{c
 /* custom profile page */
 let cpo=false;
 function customHtml(){return `<div class="obpage" role="dialog" aria-modal="true" aria-label="Custom profile"><div class="obin sett"><div class="shead"><button class="ghost" data-a="cpx" aria-label="Back">${ico('chevL',20)}</button><h2 class="px">Custom profile</h2></div>
-<div class="pcard ${S.eq.banner}" style="min-height:110px;margin-bottom:12px"><div style="display:flex;align-items:flex-end;gap:6px">${portrait(S.eq,112)}${hero(S.eq,96,1)}</div><div class="pinfo"><b class="px">${esc(S.name||'You')}</b><span class="ptl">${CAT[S.eq.title]?CAT[S.eq.title].n:''}</span></div></div>
+<div class="pcard ${S.eq.banner}" style="min-height:110px;margin-bottom:12px"><div>${hero(S.eq,112,1)}</div><div class="pinfo"><b class="px">${esc(S.name||'You')}</b><span class="ptl">${CAT[S.eq.title]?CAT[S.eq.title].n:''}</span></div></div>
 <div class="card" style="display:flex;gap:8px;align-items:center;padding:8px 12px;margin-bottom:12px">${ico('coin')}<b>${S.coins}</b><span class="mut" style="margin-left:6px">Many looks are free. Others are earned with your habits.</span></div>
 ${lookUI(false)}<div style="height:calc(24px + env(safe-area-inset-bottom,0px))"></div></div></div>`}
 /* tracker */
@@ -1788,7 +1788,7 @@ return `<div class="card si ${lock?'lock':''} ${own?'own':''}"><div class="sh"><
 v.innerHTML=tabs+buildShop()+h+'<p class="mut">Walk up to an item on your island and tap it to use it.</p>'}
 else if(stab==='home'){v.innerHTML=tabs+homeShop()}
 else if(stab==='rw'){v.innerHTML=tabs+rewardsHtml()}
-else{v.innerHTML=tabs+`<div class="pcard ${S.eq.banner}" style="min-height:110px"><div>${portrait(S.eq,112)}</div><div class="pinfo"><b class="px">${esc(S.name||'You')}</b><span class="ptl">${CAT[S.eq.title].n}</span></div></div><p class="mut">Your look shows on your island and on the friends board. Many options are free. Some you earn by keeping up your habits.</p>`+lookUI(true)}}
+else{v.innerHTML=tabs+`<div class="pcard ${S.eq.banner}" style="min-height:110px"><div>${hero(S.eq,112,1)}</div><div class="pinfo"><b class="px">${esc(S.name||'You')}</b><span class="ptl">${CAT[S.eq.title].n}</span></div></div><p class="mut">Your look shows on your island and on the friends board. Many options are free. Some you earn by keeping up your habits.</p>`+lookUI(true)}}
 if(tab==='friends'&&NET.on){v.innerHTML=friendsOnline();if(!NET.gload)loadGroups()}
 else if(tab==='friends'){
 const all=[...FRIENDS,[S.name||'You',S.wp,S.eq,1]].sort((a,b)=>b[1]-a[1]);
@@ -1798,7 +1798,7 @@ if(tab==='profile'){
 const pers=[['day','Today'],['week','Week'],['month','Month'],['year','Year'],['all','All time']],s=stats(pd);
 const own=ty=>S.inv.filter(i=>CAT[i].t===ty).map(i=>{const c=CAT[i];return `<button data-a="wear" data-k="${i}" class="${S.eq[ty]===i?'on':''}" aria-label="${c.n}">${c.c?`<span class="swc" style="background:${c.c}"></span>`:ico(c.e,28)}</button>`}).join('');
 const bars=[...Array(7)].map((_,i)=>{const d=new Date(sod(Date.now()));d.setDate(d.getDate()-(6-i));const a=d.getTime(),e=new Date(d);e.setDate(e.getDate()+1);return{l:DAYN[(d.getDay()+6)%7],c:S.hist.filter(x=>x.t>=a&&x.t<e.getTime()).reduce((q,x)=>q+x.c,0)}}),mx=Math.max(1,...bars.map(x=>x.c));
-v.innerHTML=`<div class="pcard ${S.eq.banner}"><div>${portrait(S.eq,128)}</div><div class="pinfo"><b class="px">${esc(S.name||'You')}</b><span class="ptl">${CAT[S.eq.title].n}</span></div></div>
+v.innerHTML=`<div class="pcard ${S.eq.banner}"><div>${hero(S.eq,128,1)}</div><div class="pinfo"><b class="px">${esc(S.name||'You')}</b><span class="ptl">${CAT[S.eq.title].n}</span></div></div>
 <div class="card"><div class="lbl" style="margin-top:0">Name</div><input id="pn" value="${esc(S.name||'')}" maxlength="20" placeholder="You" aria-label="Display name"></div>
 <h2>Custom profile</h2><button class="card hrow" data-a="cp"><span style="width:40px;display:flex;justify-content:center">${hero(S.eq,40)}</span><span>Custom profile<small>Body, hair, outfits, hats, banners and titles</small></span>${ico('chevR')}</button>
 <h2>Stats</h2><div class="seg5">${pers.map(([k,l])=>`<button data-a="pd" data-k="${k}" class="${pd===k?'on':''}">${l}</button>`).join('')}</div>
