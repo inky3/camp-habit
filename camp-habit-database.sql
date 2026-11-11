@@ -510,3 +510,19 @@ end $$;
 
 -- wake-up check-ins count toward rest rewards
 update private.milestones set presets = array['wake','bed','sleep','tidy','teeth']::text[] where item_id in ('nightlamp','bed','wardrobe');
+
+-- clearing trees, bushes, rocks and stumps costs coins
+create or replace function public.clear_nature(p_kind text)
+returns integer language plpgsql security definer set search_path = '' as $$
+declare uid uuid := auth.uid(); cost integer; w record;
+begin
+  if uid is null then raise exception 'Not signed in'; end if;
+  cost := case p_kind when 'oak' then 25 when 'pine' then 25 when 'boulder' then 15 when 'stump' then 12 when 'berry' then 10 when 'bush' then 8 else null end;
+  if cost is null then raise exception 'You can''t clear that'; end if;
+  select * into w from public.wallets where user_id = uid for update;
+  if w.coins < cost then raise exception 'Not enough coins'; end if;
+  update public.wallets set coins = coins - cost where user_id = uid;
+  return w.coins - cost;
+end $$;
+revoke all on function public.clear_nature(text) from public, anon;
+grant execute on function public.clear_nature(text) to authenticated;
