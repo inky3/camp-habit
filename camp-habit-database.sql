@@ -565,3 +565,96 @@ begin
 end $$;
 revoke all on function public.clear_nature(text, text) from public, anon;
 grant execute on function public.clear_nature(text, text) to authenticated;
+
+-- garden plots, crop research (Field Journal)
+create table if not exists public.plots (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  slot integer not null check (slot between 0 and 5),
+  crop text not null,
+  planted_at timestamptz not null default now(),
+  primary key (user_id, slot)
+);
+alter table public.plots enable row level security;
+create policy "own plots" on public.plots for select to authenticated using (user_id = (select auth.uid()));
+create table if not exists public.research (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  crop text not null,
+  stage integer not null check (stage between 1 and 3),
+  rp integer not null default 0,
+  created_at timestamptz not null default now(),
+  primary key (user_id, crop, stage)
+);
+alter table public.research enable row level security;
+create policy "own research" on public.research for select to authenticated using (user_id = (select auth.uid()));
+create table if not exists private.crops (id text primary key, seed integer not null, sell integer not null, days integer not null, starter boolean not null default false);
+insert into private.crops (id, seed, sell, days, starter) values
+('basil',20,45,3,true),('pakbung',15,32,2,true),('chili',25,60,4,true),('lemongrass',30,75,5,false),('galangal',40,100,6,false),
+('eggplant',30,75,5,false),('makrut',60,160,8,false),('rice',50,130,7,false),('pumpkin',45,115,6,false),('tomato',35,85,5,false)
+on conflict (id) do update set seed = excluded.seed, sell = excluded.sell, days = excluded.days, starter = excluded.starter;
+create or replace function private.rp_left(uid uuid)
+returns integer language sql stable security definer set search_path = '' as $$
+  with ck as (
+    select case when position(':' in c.habit_key) > 0 then split_part(c.habit_key, ':', 1)
+      else (select h->>'p' from public.player_state ps, jsonb_array_elements(ps.data->'habits') h where ps.user_id = uid and h->>'id' = c.habit_key limit 1) end as preset
+    from public.checkins c where c.user_id = uid and c.finished)
+  select (select count(*)::int from ck where preset = any(array['reading','study','language','coding','music','deep','journal','draw','gratitude','meditate']))
+       - coalesce((select sum(rp)::int from public.research where user_id = uid), 0)
+$$;
+revoke all on function private.rp_left(uuid) from public, anon, authenticated;
+create or replace function public.plant_crop(p_slot integer, p_crop text)
+returns integer language plpgsql security definer set search_path = '' as $$
+declare uid uuid := auth.uid(); c record; w record;
+begin
+  if uid is null then raise exception 'Not signed in'; end if;
+  if p_slot < 0 or p_slot > 5 then raise exception 'Unknown plot'; end if;
+  select * into c from private.crops where id = p_crop;
+  if not found then raise exception 'Unknown crop'; end if;
+  if exists (select 1 from public.plots where user_id = uid and slot = p_slot) then raise exception 'That plot is already planted'; end if;
+  if not c.starter and not exists (select 1 from public.research where user_id = uid and crop = p_crop and stage = 1) then raise exception 'Discover this crop in your journal first'; end if;
+  select * into w from public.wallets where user_id = uid for update;
+  if w.coins < c.seed then raise exception 'Not enough coins'; end if;
+  update public.wallets set coins = coins - c.seed where user_id = uid;
+  insert into public.plots (user_id, slot, crop) values (uid, p_slot, p_crop);
+  return w.coins - c.seed;
+end $$;
+create or replace function public.harvest_crop(p_slot integer)
+returns integer language plpgsql security definer set search_path = '' as $$
+declare uid uuid := auth.uid(); pl record; c record; n integer; w record;
+begin
+  if uid is null then raise exception 'Not signed in'; end if;
+  select * into pl from public.plots where user_id = uid and slot = p_slot;
+  if not found then raise exception 'Nothing planted there'; end if;
+  select * into c from private.crops where id = pl.crop;
+  select count(distinct local_date) into n from public.checkins where user_id = uid and finished and created_at > pl.planted_at;
+  if n < c.days then raise exception 'Not ready yet. % of % days watered', n, c.days; end if;
+  delete from public.plots where user_id = uid and slot = p_slot;
+  insert into public.claims (user_id, kind, ref, period, amount) values (uid, 'harvest', pl.crop, gen_random_uuid()::text, c.sell);
+  update public.wallets set coins = coins + c.sell where user_id = uid returning * into w;
+  return w.coins;
+end $$;
+create or replace function public.research_unlock(p_crop text, p_stage integer, p_pay text default 'rp')
+returns integer language plpgsql security definer set search_path = '' as $$
+declare uid uuid := auth.uid(); cost integer; price integer; left_rp integer; w record;
+begin
+  if uid is null then raise exception 'Not signed in'; end if;
+  if not exists (select 1 from private.crops where id = p_crop) then raise exception 'Unknown crop'; end if;
+  if p_stage not between 1 and 3 then raise exception 'Unknown stage'; end if;
+  if not exists (select 1 from public.claims where user_id = uid and kind = 'harvest') and not exists (select 1 from public.plots where user_id = uid) then raise exception 'Plant your first crop to open the journal'; end if;
+  if p_stage > 1 and not exists (select 1 from public.research where user_id = uid and crop = p_crop and stage = p_stage - 1) then raise exception 'Unlock the earlier page first'; end if;
+  if exists (select 1 from public.research where user_id = uid and crop = p_crop and stage = p_stage) then raise exception 'Already unlocked'; end if;
+  cost := case p_stage when 1 then 3 when 2 then 5 else 8 end;
+  price := cost * 30;
+  if p_pay = 'rp' then
+    left_rp := private.rp_left(uid);
+    if left_rp < cost then raise exception 'Not enough research points'; end if;
+    insert into public.research (user_id, crop, stage, rp) values (uid, p_crop, p_stage, cost);
+    return left_rp - cost;
+  end if;
+  select * into w from public.wallets where user_id = uid for update;
+  if w.coins < price then raise exception 'Not enough coins'; end if;
+  update public.wallets set coins = w.coins - price where user_id = uid;
+  insert into public.research (user_id, crop, stage, rp) values (uid, p_crop, p_stage, 0);
+  return w.coins - price;
+end $$;
+revoke all on function public.plant_crop(integer, text), public.harvest_crop(integer), public.research_unlock(text, integer, text) from public, anon;
+grant execute on function public.plant_crop(integer, text), public.harvest_crop(integer), public.research_unlock(text, integer, text) to authenticated;
