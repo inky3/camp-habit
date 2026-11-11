@@ -1302,85 +1302,122 @@ return `<div class="seg2 tmode">${[['week','Week'],['month','Month']].map(([k,l]
 <div class="card tsum"><b>${all!=null?all+'%':'–'}</b><span>${tD} done · ${tM} missed</span><small class="mut">Filled circles are done days. Red ones were missed. Faded days weren’t scheduled.</small></div>${cards?`<div class="trkg">${cards}</div>`:'<div class="card">Add a habit to start tracking.</div>'}`}
 
 
-/* ---------- close-up portrait (48x48), Stardew-style bust ---------- */
+/* ---------- close-up portrait (64x64), soft anime pixel style ---------- */
 const PRC={};
+function prGrid(w,h,fn){const G=new Int16Array(w*h).fill(-1),M=[];
+const mat=(c,sh=0,ol)=>{let i=M.findIndex(m=>m.c===c&&m.sh===sh);if(i<0){M.push({c,sh,ol:ol||mixC(c,'#1d1830',.55)});i=M.length-1}return i};
+const set=(x,y,m)=>{x=Math.round(x);y=Math.round(y);if(x>=0&&x<w&&y>=0&&y<h)G[y*w+x]=m};const get=(x,y)=>x>=0&&x<w&&y>=0&&y<h?G[y*w+x]:-1;
+const rect=(x0,y0,x1,y1,m)=>{for(let y=Math.round(y0);y<=Math.round(y1);y++)for(let x=Math.round(x0);x<=Math.round(x1);x++)set(x,y,m)};
+const ell=(cx,cy,rx,ry,m,f)=>{for(let y=0;y<h;y++)for(let x=0;x<w;x++)if(((x+.5-cx)/rx)**2+((y+.5-cy)/ry)**2<=1&&(!f||f(x,y)))set(x,y,m)};
+const poly=(P,m,f)=>{for(let y=0;y<h;y++)for(let x=0;x<w;x++){const px=x+.5,py=y+.5;let ins=false;for(let i=0,j=P.length-1;i<P.length;j=i++){const[xi,yi]=P[i],[xj,yj]=P[j];if((yi>py)!==(yj>py)&&px<(xj-xi)*(py-yi)/(yj-yi)+xi)ins=!ins}if(ins&&(!f||f(x,y)))set(x,y,m)}};
+const line=(x0,y0,x1,y1,m)=>{const n=Math.max(Math.abs(x1-x0),Math.abs(y1-y0),1);for(let i=0;i<=n;i++)set(x0+(x1-x0)*i/n,y0+(y1-y0)*i/n,m)};
+fn({mat,set,get,rect,ell,poly,line});
+const cv=document.createElement('canvas');cv.width=w;cv.height=h;const g=cv.getContext('2d');
+for(let y=0;y<h;y++)for(let x=0;x<w;x++){const m=G[y*w+x];let c;
+if(m>=0){const md=M[m];c=md.c;if(md.sh){const d=get(x,y+1),r=get(x+1,y),u=get(x,y-1),l=get(x-1,y);if(d!==m&&d>=0&&M[d].sh!==2)c=mixC(c,'#2a2140',.2);else if(u<0||l<0)c=mixC(c,'#ffffff',.12)}}
+else{const n=[[0,1],[1,0],[-1,0],[0,-1]].map(([dx,dy])=>get(x+dx,y+dy)).find(v=>v>=0);if(n==null)continue;c=M[n].ol}
+g.fillStyle=c;g.fillRect(x,y,1,1)}return cv}
 function portraitCv(eq){const key=JSON.stringify(eq);if(PRC[key])return PRC[key];
-const oc=CAT[eq.outfit]||CAT.blue,st=oc.st||'tee',fem=eq.body==='f',hc=(CAT[eq.hair]||CAT.brown).c,sk=eq.skin||'#f1c27d',hs=eq.hstyle||'short',ey=eq.eyes||'eyn',ac=eq.acc,ht=eq.hat;
-const cv=mkSprite(48,48,({mat,set,get,rect,ell,poly,line})=>{
-const HAIR=mat(hc),HL=mat(mixC(hc,'#ffffff',.28),0),HD=mat(shade(hc,.72),0),SKIN=mat(sk,0),SKD=mat(shade(sk,.84),0),SKL=mat(mixC(sk,'#ffffff',.22),0),OUT=mat(oc.c),OUTD=mat(shade(oc.c,.76),0),TRIM=mat('#f4efe6'),
-EW=mat('#fffaf0',0),IR=mat('#5a3a2a',0),IRD=mat('#2a2140',0),DK=mat('#2a2140',0),MD=mat('#6a2a3a',0),MI=mat('#d8607a',0),BL=mat(mixC(sk,'#ff6f7f',.38),0),BROW=mat(shade(hc,.55),0),red=mat('#d0503c'),Y=mat('#f6d35a',0);
-const inHead=(x,y)=>((x+.5-24)/12.5)**2+((y+.5-23)/14)**2<=1;
-// cape behind
-if(ac==='cape')ell(24,50,23,12,red);
-// back hair
-if(hs==='long')poly([[10,15],[38,15],[41,47],[7,47]],HAIR);
-if(hs==='bob')ell(24,25,15.5,14.5,HAIR);
-if(hs==='ponytail'){ell(40.5,31,3.5,9,HAIR);rect(37,19,40,21,mat('#e07aa0',0))}
-if(hs==='pigtails'){ell(7.5,33,4,8,HAIR);ell(40.5,33,4,8,HAIR);rect(8,24,10,26,mat('#e07aa0',0));rect(38,24,40,26,mat('#e07aa0',0))}
-if(hs==='curly'){for(let a=0;a<14;a++){const t=Math.PI*(.95+a/13*1.1);ell(24+Math.cos(t)*14.5,21+Math.sin(t)*13.5,3.4,3.4,HAIR)}ell(9.5,30,3.2,4,HAIR);ell(38.5,30,3.2,4,HAIR)}
-// body
-if(st==='tank'){ell(24,51,20,11,SKIN);ell(24,52,13,10,OUT);rect(17,40,19,44,OUT);rect(29,40,31,44,OUT)}
-else ell(24,51,20.5,11.5,OUT);
-// neck
-rect(20,32,27,41,SKIN);rect(20,35,27,36,SKD);
+const oc=CAT[eq.outfit]||CAT.blue,st=oc.st||'tee',fem=eq.body==='f',hc0=(CAT[eq.hair]||CAT.brown).c,hc=(()=>{const n=parseInt(hc0.slice(1),16),l=((n>>16)*.3+((n>>8)&255)*.59+(n&255)*.11);return l<60?mixC(hc0,'#3c4a80',.45):hc0})(),sk=eq.skin||'#f1c27d',hs=eq.hstyle||'short',ey=eq.eyes||'eyn',ac=eq.acc,ht=eq.hat;
+const cv=prGrid(64,64,({mat,set,get,rect,ell,poly,line})=>{
+const hdk=shade(hc,.55);
+const HB=mat(shade(hc,.8),0,shade(hc,.45)),HAIR=mat(hc,0,shade(hc,.45)),HD=mat(shade(hc,.68),0,shade(hc,.45)),HDD=mat(shade(hc,.52),0,shade(hc,.4)),HL=mat(mixC(hc,'#ffffff',.3),0,shade(hc,.45)),HLL=mat(mixC(hc,'#ffffff',.5),0,shade(hc,.45));
+const SKIN=mat(sk,0,shade(sk,.55)),SK2=mat(mixC(shade(sk,.86),'#c06070',.12),0,shade(sk,.55)),SK3=mat(mixC(shade(sk,.74),'#a04060',.15),0,shade(sk,.5)),SKL=mat(mixC(sk,'#ffffff',.3),0,shade(sk,.55)),BLU=mat(mixC(sk,'#ff6878',.3),0);
+const OUT=mat(oc.c,1),OUTD=mat(shade(oc.c,.76),0),OUTL=mat(mixC(oc.c,'#ffffff',.25),0),TRIM=mat('#f4efe6',1);
+const ic=eq.ec||(['black','brown'].includes(eq.hair)?'#6a4030':mixC(hc,'#4a6fc8',.35));
+const LASH=mat(mixC(shade(hc,.3),'#2a1830',.6),0),IR1=mat(shade(ic,.45),0),IR2=mat(ic,0),IR3=mat(mixC(ic,'#ffffff',.35),0),PUP=mat(shade(ic,.25),0),EW=mat('#fffaf4',0),EWS=mat('#e8dcd8',0),LIP=mat(mixC(shade(sk,.6),'#d04a5a',.4),0),red=mat('#d0503c',1),Y=mat('#f6d35a',0),DK=mat('#2a2140',0);
+// ---- back hair
+const back={long:62,bob:47,pigtails:0,ponytail:0,short:40,curly:44,spiky:36,bun:38,mohawk:0}[hs]??40;
+if(ac==='cape')ell(32,70,31,16,red);
+if(back){poly([[13,24],[51,24],[52+(back>50?4:0),back],[44,back+2],[32,back-2],[20,back+2],[12-(back>50?4:0),back]],HB)}
+if(hs==='ponytail'){poly([[44,22],[52,26],[56,44],[52,54],[48,40]],HB)}
+if(hs==='pigtails'){ell(10,44,5,11,HB);ell(54,44,5,11,HB);rect(9,32,12,34,mat('#e07aa0'));rect(52,32,55,34,mat('#e07aa0'))}
+// ---- body
+if(st==='tank'){ell(32,70,27,16,SKIN);ell(32,72,17,14,OUT);rect(22,54,25,60,OUT);rect(39,54,42,60,OUT)}else ell(32,70,28,17,OUT);
+// neck + collarbone
+poly([[28,44],[36,44],[37,55],[27,55]],SKIN);rect(27,47,37,49,SK2);
 // outfit details
-if(st==='tee'||st==='dress'||st==='stripe'){ell(24,40,5,2.2,SKIN);for(let x=18;x<=29;x++){if(get(x,42)===OUT&&get(x,41)===SKIN)set(x,42,OUTD)}}
-if(st==='stripe'){[43,46].forEach(y=>{for(let x=4;x<44;x++)if(get(x,y)===OUT)set(x,y,TRIM)})}
-if(st==='dress'){for(let x=4;x<44;x++)if(get(x,45)===OUT)set(x,45,OUTD)}
-if(st==='hoodie'){ell(24,41,10.5,3.6,OUTD);ell(24,40.5,6,2,SKIN);line(21,43,21,47,TRIM);line(27,43,27,47,TRIM)}
-if(st==='sweater'){rect(18,39,29,41,OUTD);rect(20,39,27,40,SKIN)}
-if(st==='jacket'||st==='tux'){poly([[20,40],[28,40],[26,48],[22,48]],TRIM);line(20,40,23,47,OUTD);line(27,40,24,47,OUTD);if(st==='tux'){rect(21,40,26,41,red);set(23,41,mat('#8e2f2a',0));set(24,41,mat('#8e2f2a',0))}}
-if(st==='overall'){const J=mat('#4a6fa8');rect(17,43,30,47,J);rect(16,40,18,43,J);rect(29,40,31,43,J);set(17,43,Y);set(30,43,Y)}
-if(ac==='backpack'){const b=mat('#a0683a');rect(12,40,15,47,b);rect(32,40,35,47,b)}
-// ears and head (shadow crescent on the right)
-ell(11.6,25,2.3,3.3,SKD);ell(36.4,25,2.3,3.3,SKD);ell(12,25,1.5,2.4,SKIN);
-ell(24,23,12.5,14,SKD);ell(23.2,22.4,12,13.4,SKIN);
-// hair front
-const sideB={short:27,bob:34,long:36,curly:29,spiky:25,bun:27,ponytail:27,pigtails:27,mohawk:0}[hs]??27;
-const bang=x=>12+Math.round(4*(x-11)/26)+((x%4)===0?1:0);
-if(hs==='mohawk'){ell(24,12,4.5,8,HAIR);rect(20,4,28,14,HAIR,0)}
-else for(let y=4;y<=sideB;y++)for(let x=8;x<=40;x++){if(((x+.5-24)/15)**2+((y+.5-21)/14.5)**2>1)continue;
-if(y<=bang(x)||((x<=12||x>=36)&&y<=sideB)||(x<=14&&y<=bang(x)+3)||(x>=34&&y<=bang(x)+2))set(x,y,HAIR)}
-if(hs==='spiky')[[14,6],[19,4],[24,3],[29,4],[34,6]].forEach(([x,y])=>poly([[x-3,y+5],[x+3,y+5],[x,y-3]],HAIR));
-if(hs==='bun'){ell(24,5,6,4.5,HAIR);rect(21,8,27,9,HD)}
-// hair shine and strands
-for(let x=14;x<=32;x++){const y=Math.round(9+((x-23)**2)/32);if(get(x,y)===HAIR)set(x,y,HL);if(get(x,y+1)===HAIR&&x%3)set(x,y+1,HL)}
-[17,22,27,32].forEach(x=>{const b=bang(x);for(let y=b-3;y<=b;y++)if(get(x,y)===HAIR)set(x,y,HD)});
-// shadow under the hair
-for(let y=5;y<40;y++)for(let x=8;x<40;x++){const g=get(x,y);if((g===SKIN||g===SKL)&&get(x,y-1)===HAIR)set(x,y,SKD)}
-// eyebrows
-const E=[[18,25],[30,25]];
-E.forEach(([ex,eyy],i)=>{rect(ex-1,eyy-4,ex+1,eyy-4,BROW);set(i?ex+2:ex-2,eyy-3,BROW)});
-// eyes
-const open=(ex,eyy,big,i)=>{const t=big?1:0,o=i?1:-1;rect(ex-1,eyy-1-t,ex+1,eyy+2,IRD);rect(ex-1,eyy+1,ex+1,eyy+2,IR);set(ex-1,eyy+2,SKIN);set(ex+1,eyy+2,SKIN);set(ex,eyy+2,IR);set(ex-1,eyy-1-t,EW);if(big)set(ex+1,eyy+1,EW);
-rect(ex-1,eyy-2-t,ex+1,eyy-2-t,DK);set(ex+2*o,eyy-2-t,DK);if(fem)set(ex+2*o,eyy-3-t,DK)};
-const arc=(ex,eyy)=>{line(ex-2,eyy+1,ex,eyy-1,DK);line(ex,eyy-1,ex+2,eyy+1,DK)};
-E.forEach(([ex,eyy],i)=>{if(ey==='eyhappy'||(ey==='eywink'&&i))arc(ex,eyy);else if(ey==='eysleepy'){line(ex-2,eyy+1,ex+2,eyy+1,DK);set(ex-2,eyy,DK)}else open(ex,eyy,ey==='eybig',i)});
-// nose, cheeks, smile
-set(25,29,SKD);
-ell(14.5,30.5,2.4,1.2,BL);ell(33,30.5,2.4,1.2,BL);
-const LP=mat(mixC(shade(sk,.62),'#c04050',.35),0);set(20,31,LP);rect(21,32,27,32,LP);set(28,31,LP);
-// accessories on the face
-if(ac==='freckles'){const f=mat(shade(sk,.7),0);[[13,28],[15,29],[17,28],[31,28],[33,29],[35,28]].forEach(([x,y])=>set(x,y,f))}
-if(ac==='glasses'||ac==='shades'){E.forEach(([ex,eyy])=>{if(ac==='shades'){rect(ex-3,eyy-2,ex+3,eyy+3,DK);set(ex-2,eyy-1,mat('#8fc3e8',0))}else{rect(ex-3,eyy-3,ex+3,eyy-3,DK);rect(ex-3,eyy+3,ex+3,eyy+3,DK);rect(ex-3,eyy-3,ex-3,eyy+3,DK);rect(ex+3,eyy-3,ex+3,eyy+3,DK)}});line(21,24,27,24,DK);line(10,24,15,23,DK);line(33,23,38,24,DK)}
-if(ac==='mask'){const w=mat('#e8eef0');ell(24,32,10,5.5,w);line(12,28,15,30,DK);line(36,28,33,30,DK)}
-if(ac==='mustache'){const m=mat(shade(hc,.55),0);rect(20,30,28,31,m);set(19,32,m);set(29,32,m)}
-if(ac==='scarf'){rect(15,36,32,41,red);rect(27,41,30,47,red);for(let x=15;x<=32;x+=3)set(x,38,mat('#8e2f2a',0))}
-// hats
-if(ht==='cap'){ell(24,13,14.5,9,red,(x,y)=>y<=13);rect(9,13,39,15,mat('#8e2f2a'));set(24,4,mat('#fffaf0',0))}
-if(ht==='beanie'){const c=mat('#7a5ad8');ell(24,14,15.5,11,c,(x,y)=>y<=14);rect(8,12,40,16,mat('#b8a4f0'));ell(24,3,3,2.5,mat('#fffaf0'))}
-if(ht==='straw'){const c=mat('#efd08e');rect(14,3,34,12,c);rect(14,10,34,12,red);ell(24,14,23,3.5,c)}
-if(ht==='crown'){const g=mat('#f6d35a');rect(15,7,33,12,g);[[15,2],[23,1],[31,2]].forEach(([x,y])=>rect(x,y,x+2,7,g));set(19,9,mat('#d0503c',0));set(24,9,mat('#5a95c8',0));set(29,9,mat('#d0503c',0))}
-if(ht==='flowercrown'){const G=mat('#4f9a5a',0);for(let x=10;x<=38;x++)set(x,13,G);[[11,'#e07aa0'],[17,'#f6d35a'],[23,'#fffaf0'],[29,'#e07aa0'],[35,'#f6d35a']].forEach(([x,c])=>{const m=mat(c,0);rect(x,11,x+2,13,m);set(x+1,12,Y)})}
-if(ht==='phones'){const d=mat('#4a4458');ell(24,12,16,10,d,(x,y)=>y<=10&&((x+.5-24)/16)**2+((y+.5-12)/10)**2>.8);rect(7,20,12,30,d);rect(36,20,41,30,d);rect(9,23,10,27,mat('#e07aa0',0));rect(38,23,39,27,mat('#e07aa0',0))}
-if(ht==='bow'){const p=mat('#e07aa0');ell(30,8,3.5,2.8,p);ell(37,8,3.5,2.8,p);rect(33,7,34,9,mat('#a8486e',0))}
-if(ht==='witch'){const c=mat('#5a3fa8');poly([[13,13],[35,13],[28,-3]],c);rect(14,10,34,12,Y);ell(24,14,22,3,c)}
-if(ht==='party'){const c=mat('#e07aa0');poly([[16,13],[32,13],[24,-3]],c);for(let y=2;y<13;y+=4)for(let x=14;x<34;x++)if(get(x,y)===c)set(x,y,Y);ell(24,0,2,1.5,mat('#fffaf0'))}
-if(ht==='catears'){const p=mat('#f2a0b8',0);poly([[9,14],[18,9],[10,1]],HAIR);poly([[39,14],[30,9],[38,1]],HAIR);poly([[12,11],[16,9],[11.5,5]],p);poly([[36,11],[32,9],[36.5,5]],p)}
-if(ht==='bandana'){ell(24,15,15.5,10,red,(x,y)=>y<=14);[[16,8],[22,6],[29,7],[34,10],[19,12]].forEach(([x,y])=>set(x,y,mat('#fffaf0',0)));poly([[37,12],[44,9],[43,17]],red)}
-if(ht==='halo'){const y=mat('#f6d35a',0);for(let x=0;x<48;x++)for(let yy=0;yy<6;yy++){const d=((x+.5-24)/10)**2+((yy+.5-3)/2.3)**2;if(d<=1&&d>.45)set(x,yy,y)}}
+if(st==='tee'||st==='dress'||st==='stripe'){ell(32,55,7,3.2,SKIN);line(28,56,30,57,SK2);line(36,56,34,57,SK2);for(let x=22;x<=42;x++){if(get(x,57)===OUT&&get(x,56)===SKIN)set(x,57,OUTD)}}
+if(st==='stripe'){[59,63].forEach(y=>{for(let x=0;x<64;x++)if(get(x,y)===OUT){set(x,y,TRIM);set(x,y+1,TRIM)}})}
+if(st==='dress'){for(let x=0;x<64;x++)if(get(x,61)===OUT)set(x,61,OUTD)}
+if(st==='hoodie'){ell(32,56,14,4.6,OUTD);ell(32,55.5,8,2.6,SKIN);line(28,58,28,64,TRIM);line(36,58,36,64,TRIM)}
+if(st==='sweater'){rect(24,53,40,56,OUTD);rect(27,53,37,54,SKIN)}
+if(st==='jacket'||st==='tux'){poly([[27,54],[37,54],[35,64],[29,64]],TRIM);line(27,54,31,64,OUTD);line(37,54,33,64,OUTD);if(st==='tux'){rect(29,54,35,56,red)}}
+if(st==='overall'){const J=mat('#4a6fa8',1);rect(22,58,42,64,J);rect(21,54,24,58,J);rect(40,54,43,58,J);set(23,58,Y);set(41,58,Y)}
+// arm/shoulder shading
+for(let y=50;y<64;y++)for(let x=0;x<64;x++)if(get(x,y)===OUT&&(x<14||x>50))set(x,y,OUTD);
+if(ac==='backpack'){const b=mat('#a0683a',1);rect(15,53,19,64,b);rect(45,53,49,64,b)}
+// ---- face: round cranium + soft pointed chin
+const face=(x,y)=>{const px=x+.5,py=y+.5;if(((px-32)/14)**2+((py-27)/13)**2<=1)return true;if(py<27||py>48)return false;const t=(py-27)/21,hw=14*(1-t*t*.78)-t*2;return Math.abs(px-32)<=hw};
+for(let y=0;y<64;y++)for(let x=0;x<64;x++)if(face(x,y))set(x,y,SKIN);
+// ears
+ell(17.6,33,2.2,3.5,SK2);ell(46.4,33,2.2,3.5,SK2);
+// skin shading: right side and jaw
+for(let y=0;y<64;y++)for(let x=0;x<64;x++){if(get(x,y)!==SKIN||!face(x,y))continue;if(!face(x+2,y)||(!face(x,y+2)&&x>=31))set(x,y,SK2)}
+for(let y=40;y<56;y++)for(let x=20;x<44;x++){if((get(x,y)===SKIN||get(x,y)===SK2)&&!face(x,y)&&face(x,y-1))set(x,y,SK3);if((get(x,y)===SKIN||get(x,y)===SK2)&&!face(x,y)&&face(x,y-2)&&!face(x,y-1))set(x,y,SK2)}
+// ---- eyes
+const EY=33,EXs=[24,40];
+const eyeOpen=(cx,i,big)=>{const o=i?1:-1,t=big?1:0;
+ const ow=cx+3*o,iw=cx-3*o;rect(cx-3,EY,cx+3,EY+5+t,EW);set(ow,EY+5+t,SKIN);set(iw,EY+5+t,SKIN);set(ow,EY,EWS);
+ rect(Math.min(cx-2,iw),EY-t,Math.max(cx+2,iw),EY+4+t,IR2);rect(cx-2,EY+5+t,cx+2,EY+5+t,IR2);rect(Math.min(cx-2,iw),EY-t,Math.max(cx+2,iw),EY+1-t,IR1);rect(cx-1,EY+4+t,cx+1,EY+5+t,IR3);set(cx-2,EY+5+t,IR2);set(cx+2,EY+5+t,IR2);
+ rect(cx-1,EY+1,cx,EY+3,PUP);rect(cx-2,EY,cx-1,EY+1,EW);set(cx+1,EY+4,EW);
+ rect(cx-3,EY-1-t,cx+3,EY-1-t,LASH);rect(cx-2,EY-2-t,cx+2,EY-2-t,LASH);set(cx+4*o,EY-1-t,LASH);set(cx+4*o,EY-2-t,LASH);set(cx+5*o,EY-3-t,LASH);if(fem){set(cx+5*o,EY-2-t,LASH);set(cx+3*o,EY-3-t,LASH)}
+ set(cx+3*o,EY+6+t,SK2);set(cx+2*o,EY+6+t,SK2)};
+const eyeArc=(cx)=>{line(cx-3,EY+3,cx-1,EY+1,LASH);rect(cx-1,EY+1,cx+1,EY+1,LASH);line(cx+1,EY+1,cx+3,EY+3,LASH)};
+EXs.forEach((cx,i)=>{if(ey==='eyhappy'||(ey==='eywink'&&i))eyeArc(cx);else if(ey==='eysleepy'){rect(cx-3,EY+3,cx+3,EY+3,LASH);rect(cx-2,EY+4,cx+2,EY+4,IR1)}else eyeOpen(cx,i,ey==='eybig')});
+// brows
+EXs.forEach((cx,i)=>{const o=i?1:-1;rect(cx-1,EY-6,cx+1,EY-6,HD);set(cx+2*o,EY-5,HD)});
+// nose, blush, mouth
+set(33,40,SK2);set(33,41,SK3);set(32,39,SKL);
+[[23,41],[41,41]].forEach(([x,y])=>{ell(x,y,3.4,1.3,BLU);set(x-1,y,SKL)});
+set(30,44,LIP);rect(31,45,33,45,LIP);set(34,44,LIP);
+// ---- front hair
+const sideL={short:42,bob:48,long:56,curly:44,spiky:38,bun:42,ponytail:42,pigtails:44,mohawk:0}[hs]??42;
+if(hs==='mohawk'){ell(32,14,6,10,HAIR);rect(26,4,38,20,HAIR)}
+else{
+ ell(32,22,18.5,16,HAIR,(x,y)=>y<=25);
+ // side locks
+ poly([[13,20],[20,22],[19,sideL-4],[15,sideL],[12,sideL-6]],HAIR);poly([[51,20],[44,22],[45,sideL-4],[49,sideL],[52,sideL-6]],HAIR);
+ // bangs: pointed strands
+ const B=[[16,22,36],[20,21,32],[25,21,28],[29,21,30],[34,21,27],[38,21,29],[43,21,31],[47,22,34],[50,23,37]];
+ B.forEach(([x,y,tip],i)=>poly([[x-4.2,y-2],[x+4.2,y-2],[x+(i%2?1.5:-1.5),tip]],HAIR));
+ // dark gaps between strands
+ B.forEach(([x,y,tip],i)=>{if(i===0)return;const px=x-2.2;for(let yy=y+2;yy<tip-4;yy++)if(get(px,yy)===HAIR&&get(px,yy+3)===HAIR)set(px,yy,HD)});
+ // flyaways
+ line(31,7,29,3,HAIR);
+ if(hs==='spiky')[[18,10],[25,6],[32,4],[39,6],[46,10]].forEach(([x,y])=>poly([[x-4,y+8],[x+4,y+8],[x,y-4]],HAIR));
+ if(hs==='bun'){ell(32,5,7,5.5,HAIR);rect(28,9,36,10,HD)}
+ if(hs==='curly'){for(let a=0;a<16;a++){const t=Math.PI*(.95+a/15*1.1);ell(32+Math.cos(t)*18,23+Math.sin(t)*15,4,4,HAIR)}}
+}
+// strands from the crown
+if(hs!=='mohawk')[[20,23],[26,22],[38,22],[44,23]].forEach(([x,y])=>{for(let i=0;i<=12;i++){const t=i/12,px=Math.round(32+(x-32)*t),py=Math.round(9+(y-9)*t*t);if(get(px,py)===HAIR&&i>3)set(px,py,HD)}});
+// hair shading: underside darker, shine band
+for(let y=0;y<64;y++)for(let x=0;x<64;x++){const g=get(x,y);if(g===HAIR&&(get(x,y+1)===SKIN||get(x,y+1)===SK2||get(x,y+1)===EW))set(x,y,HD)}
+for(let x=16;x<=48;x++){const yy=Math.round(14+((x-32)**2)/40);if(get(x,yy)===HAIR&&(x%11)<9){set(x,yy,HL);if(get(x,yy+1)===HAIR&&(x%11)>1&&(x%11)<7)set(x,yy+1,HL);if((x%11)===3)set(x,yy-1,HLL)}}
+for(let y=0;y<64;y++)for(let x=0;x<64;x++){if(get(x,y)===HAIR&&x>40&&get(x+1,y)!==HAIR&&get(x+1,y)!==HL)set(x,y,HD)}
+// shadow of the hair on the forehead
+for(let y=0;y<50;y++)for(let x=0;x<64;x++){const g=get(x,y);if((g===SKIN)&&[HAIR,HD,HL].includes(get(x,y-1)))set(x,y,SK2)}
+// ---- accessories
+if(ac==='freckles')[[22,40],[24,41],[26,40],[38,40],[40,41],[42,40]].forEach(([x,y])=>set(x,y,SK3));
+if(ac==='glasses'||ac==='shades'){const F=mat('#3a3048',0);EXs.forEach(cx=>{if(ac==='shades'){rect(cx-4,EY-2,cx+4,EY+5,F);rect(cx-3,EY-1,cx-2,EY,mat('#8fc3e8',0))}else{rect(cx-4,EY-2,cx+4,EY-2,F);rect(cx-4,EY+6,cx+4,EY+6,F);rect(cx-4,EY-2,cx-4,EY+6,F);rect(cx+4,EY-2,cx+4,EY+6,F)}});rect(29,EY,35,EY,F);line(15,EY-1,20,EY,F);line(44,EY,49,EY-1,F)}
+if(ac==='mask'){const w=mat('#e8eef0',1);poly([[19,40],[45,40],[42,48],[32,51],[22,48]],w);line(18,37,20,40,DK);line(46,37,44,40,DK)}
+if(ac==='mustache'){const m=mat(shade(hc,.55),0);rect(27,43,37,44,m);set(26,45,m);set(38,45,m)}
+if(ac==='scarf'){rect(22,47,42,54,red);rect(36,54,40,64,red);for(let x=22;x<=42;x+=3)set(x,50,mat('#8e2f2a',0))}
+// ---- hats
+if(ht==='cap'){ell(32,16,19,11,red,(x,y)=>y<=17);rect(12,17,52,20,mat('#8e2f2a',1));set(32,5,mat('#fffaf0',0))}
+if(ht==='beanie'){const c=mat('#7a5ad8',1);ell(32,18,20,14,c,(x,y)=>y<=19);rect(11,16,53,21,mat('#b8a4f0',1));ell(32,4,4,3.3,mat('#fffaf0',1))}
+if(ht==='straw'){const c=mat('#efd08e',1);rect(19,3,45,15,c);rect(19,12,45,15,red);ell(32,18,30,4.5,c)}
+if(ht==='crown'){const g=mat('#f6d35a',1);rect(20,8,44,15,g);[[20,2],[30,1],[41,2]].forEach(([x,y])=>rect(x,y,x+3,8,g));set(25,11,mat('#d0503c',0));set(32,11,mat('#5a95c8',0));set(39,11,mat('#d0503c',0))}
+if(ht==='flowercrown'){const G=mat('#4f9a5a',0);for(let x=13;x<=51;x++)set(x,17,G);[[14,'#e07aa0'],[22,'#f6d35a'],[30,'#fffaf0'],[38,'#e07aa0'],[46,'#f6d35a']].forEach(([x,c])=>{const m=mat(c,0);rect(x,14,x+3,17,m);set(x+1,15,Y);set(x+2,16,Y)})}
+if(ht==='phones'){const d=mat('#4a4458',1);ell(32,16,21,13,d,(x,y)=>y<=13&&((x+.5-32)/21)**2+((y+.5-16)/13)**2>.82);rect(9,26,16,40,d);rect(48,26,55,40,d);rect(11,30,13,36,mat('#e07aa0',0));rect(50,30,52,36,mat('#e07aa0',0))}
+if(ht==='bow'){const p=mat('#e07aa0',1);ell(40,10,4.5,3.7,p);ell(49,10,4.5,3.7,p);rect(44,9,45,11,mat('#a8486e',0))}
+if(ht==='witch'){const c=mat('#5a3fa8',1);poly([[17,17],[47,17],[37,-4]],c);rect(19,13,45,16,Y);ell(32,18,30,4,c)}
+if(ht==='party'){const c=mat('#e07aa0',1);poly([[21,17],[43,17],[32,-4]],c);for(let y=2;y<17;y+=5)for(let x=18;x<46;x++)if(get(x,y)===c){set(x,y,Y);set(x,y+1,Y)}ell(32,0,2.6,2,mat('#fffaf0',0))}
+if(ht==='catears'){const p=mat('#f2a0b8',0);poly([[12,18],[24,12],[13,1]],HAIR);poly([[52,18],[40,12],[51,1]],HAIR);poly([[16,14],[21,12],[15,6]],p);poly([[48,14],[43,12],[49,6]],p)}
+if(ht==='bandana'){ell(32,19,20,13,red,(x,y)=>y<=18);[[21,10],[29,8],[38,9],[45,13],[25,15]].forEach(([x,y])=>set(x,y,mat('#fffaf0',0)));poly([[49,15],[58,11],[57,22]],red)}
+if(ht==='halo'){const yy=mat('#f6d35a',0);for(let x=0;x<64;x++)for(let y=0;y<8;y++){const d=((x+.5-32)/13)**2+((y+.5-4)/3)**2;if(d<=1&&d>.45)set(x,y,yy)}}
 });return PRC[key]=cv}
-function portrait(eq,sz){const k='P'+JSON.stringify(eq);if(!AVC[k])AVC[k]=portraitCv(eq).toDataURL();return `<img class="av por" src="${AVC[k]}" width="${sz}" height="${sz}" alt="">`}
+function portrait(eq,sz){const k='P2'+JSON.stringify(eq);if(!AVC[k])AVC[k]=portraitCv(eq).toDataURL();return `<img class="av por" src="${AVC[k]}" width="${sz}" height="${sz}" alt="">`}
 
 const FARMP=25,FARMFREE=3;
 const farmOwned=()=>FARMFREE+(S.farmB||0),farmPlaced=()=>Object.keys(S.farm||{}).length,farmFree=()=>Math.max(0,farmOwned()-farmPlaced());
