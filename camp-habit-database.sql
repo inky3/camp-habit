@@ -507,3 +507,6 @@ begin
   if amt > 0 then update public.wallets set coins = coins + amt where user_id = uid; end if;
   return amt;
 end $$;
+
+-- wake-up check-ins count toward rest rewards
+update private.milestones set presets = array['wake','bed','sleep','tidy','teeth']::text[] where item_id in ('nightlamp','bed','wardrobe');
