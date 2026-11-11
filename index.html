@@ -1325,7 +1325,7 @@ const HB=mat(shade(hc,.8),0,shade(hc,.45)),HAIR=mat(hc,0,shade(hc,.45)),HD=mat(s
 const SKIN=mat(sk,0,shade(sk,.55)),SK2=mat(mixC(shade(sk,.86),'#c06070',.12),0,shade(sk,.55)),SK3=mat(mixC(shade(sk,.74),'#a04060',.15),0,shade(sk,.5)),SKL=mat(mixC(sk,'#ffffff',.3),0,shade(sk,.55)),BLU=mat(mixC(sk,'#ff6878',.3),0);
 const OUT=mat(oc.c,1),OUTD=mat(shade(oc.c,.76),0),OUTL=mat(mixC(oc.c,'#ffffff',.25),0),TRIM=mat('#f4efe6',1);
 const ic=eq.ec||(['black','brown'].includes(eq.hair)?'#6a4030':mixC(hc,'#4a6fc8',.35));
-const LASH=mat(mixC(shade(hc,.3),'#2a1830',.6),0),IR1=mat(shade(ic,.45),0),IR2=mat(ic,0),IR3=mat(mixC(ic,'#ffffff',.35),0),PUP=mat(shade(ic,.25),0),EW=mat('#fffaf4',0),EWS=mat('#e8dcd8',0),LIP=mat(mixC(shade(sk,.6),'#d04a5a',.4),0),red=mat('#d0503c',1),Y=mat('#f6d35a',0),DK=mat('#2a2140',0);
+const LASH=mat(mixC(shade(hc,.3),'#2a1830',.6),0),IR1=mat(shade(ic,.45),0),IR2=mat(ic,0),IR3=mat(mixC(ic,'#f0b070',.4),0),PUP=mat(shade(ic,.25),0),EW=mat('#fffaf4',0),EWS=mat('#e8dcd8',0),LIP=mat(mixC(shade(sk,.6),'#d04a5a',.4),0),red=mat('#d0503c',1),Y=mat('#f6d35a',0),DK=mat('#2a2140',0);
 // ---- back hair
 const back={long:62,bob:47,pigtails:0,ponytail:0,short:40,curly:44,spiky:36,bun:38,mohawk:0}[hs]??40;
 if(ac==='cape')ell(32,70,31,16,red);
@@ -1357,16 +1357,14 @@ for(let y=0;y<64;y++)for(let x=0;x<64;x++){if(get(x,y)!==SKIN||!face(x,y))contin
 for(let y=40;y<56;y++)for(let x=20;x<44;x++){if((get(x,y)===SKIN||get(x,y)===SK2)&&!face(x,y)&&face(x,y-1))set(x,y,SK2)}
 // ---- eyes
 const EY=33,EXs=[24,40];
-const eyeOpen=(cx,i,big)=>{const o=i?1:-1,t=big?1:0;
- const ow=cx+3*o,iw=cx-3*o;rect(cx-3,EY,cx+3,EY+5+t,EW);set(ow,EY+5+t,SKIN);set(iw,EY+5+t,SKIN);set(ow,EY,EWS);
- rect(Math.min(cx-2,iw),EY-t,Math.max(cx+2,iw),EY+4+t,IR2);rect(cx-2,EY+5+t,cx+2,EY+5+t,IR2);rect(Math.min(cx-2,iw),EY-t,Math.max(cx+2,iw),EY-t,IR1);rect(cx-1,EY+4+t,cx+1,EY+5+t,IR3);set(cx-2,EY+5+t,IR2);set(cx+2,EY+5+t,IR2);
- rect(cx-1,EY+2,cx,EY+3,PUP);rect(cx-2,EY+1,cx-1,EY+2,EW);set(cx-1,EY+3,EW);set(cx+1,EY+4,EW);
- rect(cx-2,EY-1-t,cx+2,EY-1-t,LASH);set(cx+3*o,EY-t,LASH);if(fem){set(cx+4*o,EY-1-t,LASH);set(cx+3*o,EY-1-t,LASH)}
- set(cx+3*o,EY+6+t,SK2);set(cx+2*o,EY+6+t,SK2)};
+const eyeOpen=(cx,i,big)=>{const o=i?1:-1,t=big?1:0,b=EY+5+t;
+ rect(cx-2,EY,cx+2,b,IR2);rect(cx-2,EY,cx+2,EY+1,IR1);rect(cx-1,b-1,cx+1,b,IR3);set(cx-2,b,SKIN);set(cx+2,b,SKIN);
+ rect(cx-1,EY+2,cx+1,EY+3+t,PUP);rect(cx-2,EY+1,cx-1,EY+2,EW);set(cx+1,b-1,EW);
+ rect(cx-3,EY-1,cx+3,EY-1,LASH);set(cx-3,EY,LASH);set(cx+3,EY,LASH);if(fem){set(cx+4*o,EY-2,LASH);set(cx+3*o,EY-2,LASH)}};
 const eyeArc=(cx)=>{line(cx-3,EY+3,cx-1,EY+1,LASH);rect(cx-1,EY+1,cx+1,EY+1,LASH);line(cx+1,EY+1,cx+3,EY+3,LASH)};
 EXs.forEach((cx,i)=>{if(ey==='eyhappy'||(ey==='eywink'&&i))eyeArc(cx);else if(ey==='eysleepy'){rect(cx-3,EY+3,cx+3,EY+3,LASH);rect(cx-2,EY+4,cx+2,EY+4,IR1)}else eyeOpen(cx,i,ey==='eybig')});
 // brows
-EXs.forEach((cx,i)=>{const o=i?1:-1;rect(cx-1,EY-5,cx+1,EY-5,HDD);set(cx-2*o,EY-4,HDD)});
+EXs.forEach((cx,i)=>{const o=i?1:-1;rect(cx-2,EY-4,cx+2,EY-4,HD);set(cx+3*o,EY-3,HD)});
 // nose, blush, mouth
 set(33,40,SK2);set(33,41,SK3);set(32,39,SKL);
 [[23,41],[41,41]].forEach(([x,y])=>{ell(x,y,3,1.1,BLU)});
