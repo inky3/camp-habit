@@ -1334,7 +1334,7 @@ if(st==='overall'){const J=mat('#4a6fa8');rect(17,43,30,47,J);rect(16,40,18,43,J
 if(ac==='backpack'){const b=mat('#a0683a');rect(12,40,15,47,b);rect(32,40,35,47,b)}
 // ears and head (shadow crescent on the right)
 ell(11.6,25,2.3,3.3,SKD);ell(36.4,25,2.3,3.3,SKD);ell(12,25,1.5,2.4,SKIN);
-ell(24,23,12.5,14,SKD);ell(23.2,22.4,12,13.4,SKIN);ell(18,19,2.5,1.6,SKL,(x,y)=>inHead(x,y));
+ell(24,23,12.5,14,SKD);ell(23.2,22.4,12,13.4,SKIN);
 // hair front
 const sideB={short:27,bob:34,long:36,curly:29,spiky:25,bun:27,ponytail:27,pigtails:27,mohawk:0}[hs]??27;
 const bang=x=>12+Math.round(4*(x-11)/26)+((x%4)===0?1:0);
@@ -1350,16 +1350,16 @@ for(let x=14;x<=32;x++){const y=Math.round(9+((x-23)**2)/32);if(get(x,y)===HAIR)
 for(let y=5;y<40;y++)for(let x=8;x<40;x++){const g=get(x,y);if((g===SKIN||g===SKL)&&get(x,y-1)===HAIR)set(x,y,SKD)}
 // eyebrows
 const E=[[18,25],[30,25]];
-E.forEach(([ex,eyy])=>{set(ex-2,eyy-4,BROW);rect(ex-1,eyy-5,ex+1,eyy-5,BROW);set(ex+2,eyy-4,BROW)});
+E.forEach(([ex,eyy],i)=>{rect(ex-1,eyy-4,ex+1,eyy-4,BROW);set(i?ex+2:ex-2,eyy-3,BROW)});
 // eyes
-const open=(ex,eyy,big)=>{const t=big?1:0;rect(ex-2,eyy-t,ex+2,eyy+1,EW);rect(ex-1,eyy-1-t,ex+1,eyy+2,IR);rect(ex-1,eyy-t,ex,eyy+1,IRD);set(ex-1,eyy-1-t,EW);if(big)set(ex+1,eyy+1,EW);else set(ex+1,eyy+1,mat(mixC('#5a3a2a','#ffffff',.3),0));
-rect(ex-1,eyy-2-t,ex+1,eyy-2-t,DK);set(ex-2,eyy-1-t,DK);set(ex+2,eyy-1-t,DK);if(fem){set(ex+3,eyy-2-t,DK);set(ex-3,eyy-2-t,DK)}};
+const open=(ex,eyy,big,i)=>{const t=big?1:0,o=i?1:-1;rect(ex-1,eyy-1-t,ex+1,eyy+2,IRD);rect(ex-1,eyy+1,ex+1,eyy+2,IR);set(ex-1,eyy+2,SKIN);set(ex+1,eyy+2,SKIN);set(ex,eyy+2,IR);set(ex-1,eyy-1-t,EW);if(big)set(ex+1,eyy+1,EW);
+rect(ex-1,eyy-2-t,ex+1,eyy-2-t,DK);set(ex+2*o,eyy-2-t,DK);if(fem)set(ex+2*o,eyy-3-t,DK)};
 const arc=(ex,eyy)=>{line(ex-2,eyy+1,ex,eyy-1,DK);line(ex,eyy-1,ex+2,eyy+1,DK)};
-E.forEach(([ex,eyy],i)=>{if(ey==='eyhappy'||(ey==='eywink'&&i))arc(ex,eyy);else if(ey==='eysleepy'){line(ex-2,eyy+1,ex+2,eyy+1,DK);set(ex-2,eyy,DK)}else open(ex,eyy,ey==='eybig')});
+E.forEach(([ex,eyy],i)=>{if(ey==='eyhappy'||(ey==='eywink'&&i))arc(ex,eyy);else if(ey==='eysleepy'){line(ex-2,eyy+1,ex+2,eyy+1,DK);set(ex-2,eyy,DK)}else open(ex,eyy,ey==='eybig',i)});
 // nose, cheeks, smile
-set(24,29,SKD);set(25,30,SKD);
+set(25,29,SKD);
 ell(14.5,30.5,2.4,1.2,BL);ell(33,30.5,2.4,1.2,BL);
-set(20,31,MD);set(28,31,MD);rect(21,32,27,32,MD);set(21,33,MD);rect(22,33,26,33,MI);set(27,33,MD);rect(23,34,25,34,MD);
+const LP=mat(mixC(shade(sk,.62),'#c04050',.35),0);set(20,31,LP);rect(21,32,27,32,LP);set(28,31,LP);
 // accessories on the face
 if(ac==='freckles'){const f=mat(shade(sk,.7),0);[[13,28],[15,29],[17,28],[31,28],[33,29],[35,28]].forEach(([x,y])=>set(x,y,f))}
 if(ac==='glasses'||ac==='shades'){E.forEach(([ex,eyy])=>{if(ac==='shades'){rect(ex-3,eyy-2,ex+3,eyy+3,DK);set(ex-2,eyy-1,mat('#8fc3e8',0))}else{rect(ex-3,eyy-3,ex+3,eyy-3,DK);rect(ex-3,eyy+3,ex+3,eyy+3,DK);rect(ex-3,eyy-3,ex-3,eyy+3,DK);rect(ex+3,eyy-3,ex+3,eyy+3,DK)}});line(21,24,27,24,DK);line(10,24,15,23,DK);line(33,23,38,24,DK)}
