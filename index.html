@@ -1335,9 +1335,9 @@ if(hs==='pigtails'){ell(10,44,5,11,HB);ell(54,44,5,11,HB);rect(9,32,12,34,mat('#
 // ---- body
 if(st==='tank'){ell(32,70,27,16,SKIN);ell(32,72,17,14,OUT);rect(22,54,25,60,OUT);rect(39,54,42,60,OUT)}else ell(32,70,28,17,OUT);
 // neck + collarbone
-poly([[28,44],[36,44],[37,55],[27,55]],SKIN);rect(27,47,37,49,SK2);
+poly([[28,44],[36,44],[37,55],[27,55]],SKIN);
 // outfit details
-if(st==='tee'||st==='dress'||st==='stripe'){ell(32,55,7,3.2,SKIN);line(28,56,30,57,SK2);line(36,56,34,57,SK2);for(let x=22;x<=42;x++){if(get(x,57)===OUT&&get(x,56)===SKIN)set(x,57,OUTD)}}
+if(st==='tee'||st==='dress'||st==='stripe'){ell(32,55,7,3.2,SKIN);for(let x=22;x<=42;x++){if(get(x,57)===OUT&&get(x,56)===SKIN)set(x,57,OUTD)}}
 if(st==='stripe'){[59,63].forEach(y=>{for(let x=0;x<64;x++)if(get(x,y)===OUT){set(x,y,TRIM);set(x,y+1,TRIM)}})}
 if(st==='dress'){for(let x=0;x<64;x++)if(get(x,61)===OUT)set(x,61,OUTD)}
 if(st==='hoodie'){ell(32,56,14,4.6,OUTD);ell(32,55.5,8,2.6,SKIN);line(28,58,28,64,TRIM);line(36,58,36,64,TRIM)}
@@ -1354,23 +1354,23 @@ for(let y=0;y<64;y++)for(let x=0;x<64;x++)if(face(x,y))set(x,y,SKIN);
 ell(17.6,33,2.2,3.5,SK2);ell(46.4,33,2.2,3.5,SK2);
 // skin shading: right side and jaw
 for(let y=0;y<64;y++)for(let x=0;x<64;x++){if(get(x,y)!==SKIN||!face(x,y))continue;if(!face(x+2,y)||(!face(x,y+2)&&x>=31))set(x,y,SK2)}
-for(let y=40;y<56;y++)for(let x=20;x<44;x++){if((get(x,y)===SKIN||get(x,y)===SK2)&&!face(x,y)&&face(x,y-1))set(x,y,SK3);if((get(x,y)===SKIN||get(x,y)===SK2)&&!face(x,y)&&face(x,y-2)&&!face(x,y-1))set(x,y,SK2)}
+for(let y=40;y<56;y++)for(let x=20;x<44;x++){if((get(x,y)===SKIN||get(x,y)===SK2)&&!face(x,y)&&face(x,y-1))set(x,y,SK2)}
 // ---- eyes
 const EY=33,EXs=[24,40];
 const eyeOpen=(cx,i,big)=>{const o=i?1:-1,t=big?1:0;
  const ow=cx+3*o,iw=cx-3*o;rect(cx-3,EY,cx+3,EY+5+t,EW);set(ow,EY+5+t,SKIN);set(iw,EY+5+t,SKIN);set(ow,EY,EWS);
- rect(Math.min(cx-2,iw),EY-t,Math.max(cx+2,iw),EY+4+t,IR2);rect(cx-2,EY+5+t,cx+2,EY+5+t,IR2);rect(Math.min(cx-2,iw),EY-t,Math.max(cx+2,iw),EY+1-t,IR1);rect(cx-1,EY+4+t,cx+1,EY+5+t,IR3);set(cx-2,EY+5+t,IR2);set(cx+2,EY+5+t,IR2);
- rect(cx-1,EY+1,cx,EY+3,PUP);rect(cx-2,EY,cx-1,EY+1,EW);set(cx+1,EY+4,EW);
- rect(cx-3,EY-1-t,cx+3,EY-1-t,LASH);rect(cx-2,EY-2-t,cx+2,EY-2-t,LASH);set(cx+4*o,EY-1-t,LASH);set(cx+4*o,EY-2-t,LASH);set(cx+5*o,EY-3-t,LASH);if(fem){set(cx+5*o,EY-2-t,LASH);set(cx+3*o,EY-3-t,LASH)}
+ rect(Math.min(cx-2,iw),EY-t,Math.max(cx+2,iw),EY+4+t,IR2);rect(cx-2,EY+5+t,cx+2,EY+5+t,IR2);rect(Math.min(cx-2,iw),EY-t,Math.max(cx+2,iw),EY-t,IR1);rect(cx-1,EY+4+t,cx+1,EY+5+t,IR3);set(cx-2,EY+5+t,IR2);set(cx+2,EY+5+t,IR2);
+ rect(cx-1,EY+2,cx,EY+3,PUP);rect(cx-2,EY+1,cx-1,EY+2,EW);set(cx-1,EY+3,EW);set(cx+1,EY+4,EW);
+ rect(cx-2,EY-1-t,cx+2,EY-1-t,LASH);set(cx+3*o,EY-t,LASH);if(fem){set(cx+4*o,EY-1-t,LASH);set(cx+3*o,EY-1-t,LASH)}
  set(cx+3*o,EY+6+t,SK2);set(cx+2*o,EY+6+t,SK2)};
 const eyeArc=(cx)=>{line(cx-3,EY+3,cx-1,EY+1,LASH);rect(cx-1,EY+1,cx+1,EY+1,LASH);line(cx+1,EY+1,cx+3,EY+3,LASH)};
 EXs.forEach((cx,i)=>{if(ey==='eyhappy'||(ey==='eywink'&&i))eyeArc(cx);else if(ey==='eysleepy'){rect(cx-3,EY+3,cx+3,EY+3,LASH);rect(cx-2,EY+4,cx+2,EY+4,IR1)}else eyeOpen(cx,i,ey==='eybig')});
 // brows
-EXs.forEach((cx,i)=>{const o=i?1:-1;rect(cx-1,EY-6,cx+1,EY-6,HD);set(cx+2*o,EY-5,HD)});
+EXs.forEach((cx,i)=>{const o=i?1:-1;rect(cx-1,EY-5,cx+1,EY-5,HDD);set(cx-2*o,EY-4,HDD)});
 // nose, blush, mouth
 set(33,40,SK2);set(33,41,SK3);set(32,39,SKL);
-[[23,41],[41,41]].forEach(([x,y])=>{ell(x,y,3.4,1.3,BLU);set(x-1,y,SKL)});
-set(30,44,LIP);rect(31,45,33,45,LIP);set(34,44,LIP);
+[[23,41],[41,41]].forEach(([x,y])=>{ell(x,y,3,1.1,BLU)});
+set(29,43,LIP);rect(30,44,34,44,LIP);set(35,43,LIP);rect(31,45,33,45,mat(mixC(sk,'#d04a5a',.25),0));
 // ---- front hair
 const sideL={short:42,bob:48,long:56,curly:44,spiky:38,bun:42,ponytail:42,pigtails:44,mohawk:0}[hs]??42;
 if(hs==='mohawk'){ell(32,14,6,10,HAIR);rect(26,4,38,20,HAIR)}
@@ -1379,7 +1379,7 @@ else{
  // side locks
  poly([[13,20],[20,22],[19,sideL-4],[15,sideL],[12,sideL-6]],HAIR);poly([[51,20],[44,22],[45,sideL-4],[49,sideL],[52,sideL-6]],HAIR);
  // bangs: pointed strands
- const B=[[16,22,36],[20,21,32],[25,21,28],[29,21,30],[34,21,27],[38,21,29],[43,21,31],[47,22,34],[50,23,37]];
+ const B=[[16,22,33],[20,21,29],[25,21,26],[29,20,27],[34,20,25],[38,21,27],[43,21,28],[47,22,31],[50,23,34]];
  B.forEach(([x,y,tip],i)=>poly([[x-4.2,y-2],[x+4.2,y-2],[x+(i%2?1.5:-1.5),tip]],HAIR));
  // dark gaps between strands
  B.forEach(([x,y,tip],i)=>{if(i===0)return;const px=x-2.2;for(let yy=y+2;yy<tip-4;yy++)if(get(px,yy)===HAIR&&get(px,yy+3)===HAIR)set(px,yy,HD)});
@@ -1392,11 +1392,11 @@ else{
 // strands from the crown
 if(hs!=='mohawk')[[20,23],[26,22],[38,22],[44,23]].forEach(([x,y])=>{for(let i=0;i<=12;i++){const t=i/12,px=Math.round(32+(x-32)*t),py=Math.round(9+(y-9)*t*t);if(get(px,py)===HAIR&&i>3)set(px,py,HD)}});
 // hair shading: underside darker, shine band
-for(let y=0;y<64;y++)for(let x=0;x<64;x++){const g=get(x,y);if(g===HAIR&&(get(x,y+1)===SKIN||get(x,y+1)===SK2||get(x,y+1)===EW))set(x,y,HD)}
+for(let y=0;y<64;y++)for(let x=0;x<64;x++){const g=get(x,y);if(g===HAIR&&(get(x,y+1)===SKIN||get(x,y+1)===SK2)&&(x+y)%3===0)set(x,y,HD)}
 for(let x=16;x<=48;x++){const yy=Math.round(14+((x-32)**2)/40);if(get(x,yy)===HAIR&&(x%11)<9){set(x,yy,HL);if(get(x,yy+1)===HAIR&&(x%11)>1&&(x%11)<7)set(x,yy+1,HL);if((x%11)===3)set(x,yy-1,HLL)}}
 for(let y=0;y<64;y++)for(let x=0;x<64;x++){if(get(x,y)===HAIR&&x>40&&get(x+1,y)!==HAIR&&get(x+1,y)!==HL)set(x,y,HD)}
 // shadow of the hair on the forehead
-for(let y=0;y<50;y++)for(let x=0;x<64;x++){const g=get(x,y);if((g===SKIN)&&[HAIR,HD,HL].includes(get(x,y-1)))set(x,y,SK2)}
+for(let y=0;y<50;y++)for(let x=0;x<64;x++){const g=get(x,y);if(g===SKIN&&[HAIR,HD,HL].includes(get(x,y-1))&&x>34)set(x,y,SK2)}
 // ---- accessories
 if(ac==='freckles')[[22,40],[24,41],[26,40],[38,40],[40,41],[42,40]].forEach(([x,y])=>set(x,y,SK3));
 if(ac==='glasses'||ac==='shades'){const F=mat('#3a3048',0);EXs.forEach(cx=>{if(ac==='shades'){rect(cx-4,EY-2,cx+4,EY+5,F);rect(cx-3,EY-1,cx-2,EY,mat('#8fc3e8',0))}else{rect(cx-4,EY-2,cx+4,EY-2,F);rect(cx-4,EY+6,cx+4,EY+6,F);rect(cx-4,EY-2,cx-4,EY+6,F);rect(cx+4,EY-2,cx+4,EY+6,F)}});rect(29,EY,35,EY,F);line(15,EY-1,20,EY,F);line(44,EY,49,EY-1,F)}
