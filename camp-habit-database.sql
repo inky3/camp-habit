@@ -840,3 +840,11 @@ begin
 end $function$;
 revoke all on function public.friend_view(uuid) from public, anon;
 grant execute on function public.friend_view(uuid) to authenticated;
+
+-- pets (Nov 2026): chicken, hamster, bird, chihuahua, dog; cat repriced. claim_reward 'item' amounts:
+-- cat/dog/chihua/bird 5 per day; chicken 8 (needs a finished habit today); hamster = finished habits today, max 10.
+insert into public.items (id,kind,price,min_level) values
+('chicken','island',1200,0),('hamster','island',1500,0),('bird','island',2000,1),('chihua','island',2400,1),('dog','island',3000,1)
+on conflict (id) do update set price = excluded.price, min_level = excluded.min_level, kind = excluded.kind;
+update public.items set price = 3000 where id = 'cat';
+-- (claim_reward replaced in migration "pets"; see Supabase migration history for the full body)
