@@ -816,3 +816,27 @@ as $function$
   select (select count(*)::int from ck where preset = any(array['reading','study','language','coding','music','deep','journal','draw','gratitude','meditate','chess']))
        - coalesce((select sum(rp)::int from public.research where user_id = uid), 0)
 $function$;
+
+-- friend profiles and island visits (Nov 2026)
+create or replace function public.friend_view(p_user uuid)
+ returns jsonb language plpgsql stable security definer set search_path to ''
+as $function$
+declare uid uuid := auth.uid(); r jsonb;
+begin
+  if uid is null then raise exception 'Not signed in'; end if;
+  if p_user <> uid and not exists (
+    select 1 from public.group_members a join public.group_members b on a.group_id = b.group_id
+    where a.user_id = uid and b.user_id = p_user) then raise exception 'Not in a group with this player'; end if;
+  select jsonb_build_object(
+    'name', p.name, 'look', p.look, 'island', p.island,
+    'points', coalesce(w.points, 0),
+    'done', (select count(*) from public.checkins c where c.user_id = p_user and c.finished),
+    'days', (select count(distinct c.local_date) from public.checkins c where c.user_id = p_user),
+    'items', (select count(*) from public.inventory i where i.user_id = p_user),
+    'plots', coalesce((select jsonb_agg(jsonb_build_object('slot', pl.slot, 'crop', pl.crop, 't', pl.planted_at)) from public.plots pl where pl.user_id = p_user), '[]'::jsonb))
+  into r from public.profiles p left join public.wallets w on w.user_id = p.id where p.id = p_user;
+  if r is null then raise exception 'Player not found'; end if;
+  return r;
+end $function$;
+revoke all on function public.friend_view(uuid) from public, anon;
+grant execute on function public.friend_view(uuid) to authenticated;
