@@ -848,3 +848,25 @@ insert into public.items (id,kind,price,min_level) values
 on conflict (id) do update set price = excluded.price, min_level = excluded.min_level, kind = excluded.kind;
 update public.items set price = 3000 where id = 'cat';
 -- (claim_reward replaced in migration "pets"; see Supabase migration history for the full body)
+
+-- ===== Friendship update (Nov 2026) =====
+-- Full function bodies live in the Supabase migration history: "pets", "friendship_update", "pet_homes_rewards".
+create table if not exists public.social (
+  id bigint generated always as identity primary key,
+  from_user uuid not null references auth.users(id) on delete cascade,
+  to_user uuid not null references auth.users(id) on delete cascade,
+  kind text not null check (kind in ('cheer','note','water')),
+  body text, day date not null, seen boolean not null default false,
+  created_at timestamptz not null default now(),
+  unique (from_user, to_user, kind, day));
+alter table public.social enable row level security;
+-- New functions: private.mates, private.user_today, private.owns,
+--   public.friend_view (habits with hide flag, streak, pets, fish, sent-today),
+--   public.social_send (cheer +5 coins to friend, note <= 80 chars, water = friend's plots 1 h faster; once per kind per day),
+--   public.social_inbox, public.group_new_code, public.group_remove, public.group_delete (creator only).
+-- Changed: leave_group (creator leaving hands the group to the oldest member), buy_item (fish need an aquarium),
+--   claim_reward (pet homes raise pet gifts), private.home_bottle (fish count as furniture).
+insert into public.items (id,kind,price,min_level) values
+('coop','island',500,0),('hamcage','island',450,0),('birdhouse','island',400,0),('doghouse','island',600,0),('catbed','island',500,0),
+('goldfish','fish',150,0),('betta','fish',250,0),('clownfish','fish',350,0),('koi','fish',500,0)
+on conflict (id) do update set price = excluded.price, min_level = excluded.min_level, kind = excluded.kind;
