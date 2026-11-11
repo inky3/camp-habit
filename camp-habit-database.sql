@@ -658,3 +658,22 @@ begin
 end $$;
 revoke all on function public.plant_crop(integer, text), public.harvest_crop(integer), public.research_unlock(text, integer, text) from public, anon;
 grant execute on function public.plant_crop(integer, text), public.harvest_crop(integer), public.research_unlock(text, integer, text) to authenticated;
+
+-- paths and fences: pay per painted tile (positions are kept in player_state)
+create or replace function public.spend_deco(p_kind text, p_count integer)
+returns integer language plpgsql security definer set search_path = '' as $$
+declare uid uuid := auth.uid(); each integer; total integer; w record;
+begin
+  if uid is null then raise exception 'Not signed in'; end if;
+  if p_count < 1 or p_count > 500 then raise exception 'Too many tiles at once'; end if;
+  each := case p_kind when 'dirt' then 1 when 'gravel' then 2 when 'stone' then 4 when 'plank' then 5 when 'brick' then 6
+                      when 'wfence' then 8 when 'picket' then 10 when 'swall' then 10 else null end;
+  if each is null then raise exception 'Unknown tile'; end if;
+  total := each * p_count;
+  select * into w from public.wallets where user_id = uid for update;
+  if w.coins < total then raise exception 'Not enough coins'; end if;
+  update public.wallets set coins = w.coins - total where user_id = uid;
+  return w.coins - total;
+end $$;
+revoke all on function public.spend_deco(text, integer) from public, anon;
+grant execute on function public.spend_deco(text, integer) to authenticated;
