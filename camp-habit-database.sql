@@ -526,3 +526,42 @@ begin
 end $$;
 revoke all on function public.clear_nature(text) from public, anon;
 grant execute on function public.clear_nature(text) to authenticated;
+
+-- price rebalance (island/home up, cosmetics down)
+update public.items i set price = v.p from (values ('sign',270),('flower',480),('fire',720),('rock',1200),('palm',1080),('book',1800),('boat',3000),('hut',3600),('pond',3750),('cat',4800),('cabin',9600),('lodge',18000),('lighthouse',12000),('red',150),('pink',300),('hblue',300),('silver',450),('hpurple',300),('mint',300),('bun',200),('spiky',200),('pigtails',200),('curly',200),('mohawk',300),('eysleepy',100),('eywink',150),('eybig',150),('stripe',200),('orange',300),('purple',300),('overall',400),('dress',400),('sweater',250),('jacket',350),('rain',300),('bdress',400),('pdress',400),('tux',750),('khaki',100),('pwhite',150),('pred',150),('pgreen',150),('glasses',150),('shades',250),('scarf',200),('backpack',300),('mask',150),('mustache',150),('cape',450),('beanie',200),('straw',300),('phones',350),('cap',350),('flowercrown',450),('bow',150),('bandana',200),('party',250),('catears',400),('witch',450),('halo',750),('crown',1200),('bnight',200),('bsakura',300),('bocean',200),('bforest',250),('bcandy',300),('baurora',450),('bretro',600),('towl',100),('tbird',100),('tsun',100),('thustle',250),('tlegend',1500),('stool',90),('ftable',180),('plant',150),('lamp',240),('rug',320),('painting',300),('window',260),('clock',350),('shelf',420),('sofa',800),('aquarium',1100),('fireplace',1800)) as v(id,p) where i.id = v.id and i.kind <> 'reward';
+
+-- clearing with workout energy: 1 energy per finished workout check-in
+create or replace function private.energy_left(uid uuid)
+returns integer language sql stable security definer set search_path = '' as $$
+  with ck as (
+    select case when position(':' in c.habit_key) > 0 then split_part(c.habit_key, ':', 1)
+      else (select h->>'p' from public.player_state ps, jsonb_array_elements(ps.data->'habits') h where ps.user_id = uid and h->>'id' = c.habit_key limit 1) end as preset
+    from public.checkins c where c.user_id = uid and c.finished)
+  select (select count(*)::int from ck where preset = any(array['walk','run','cycle','swim','pushups','gym','stretch','yoga','plank','jumprope']))
+       - coalesce((select sum(amount)::int from public.claims where user_id = uid and kind = 'energy'), 0)
+$$;
+revoke all on function private.energy_left(uuid) from public, anon, authenticated;
+drop function if exists public.clear_nature(text);
+-- public.clear_nature(p_kind text, p_pay text default 'coins'): see migration rebalance_prices_and_energy_clearing
+create or replace function public.clear_nature(p_kind text, p_pay text default 'coins')
+returns integer language plpgsql security definer set search_path = '' as $$
+declare uid uuid := auth.uid(); cost integer; w record; en integer;
+begin
+  if uid is null then raise exception 'Not signed in'; end if;
+  if p_pay = 'energy' then
+    cost := case p_kind when 'oak' then 3 when 'pine' then 3 when 'boulder' then 2 when 'stump' then 2 when 'berry' then 1 when 'bush' then 1 else null end;
+    if cost is null then raise exception 'You can''t clear that'; end if;
+    en := private.energy_left(uid);
+    if en < cost then raise exception 'Not enough workout energy'; end if;
+    insert into public.claims (user_id, kind, ref, period, amount) values (uid, 'energy', gen_random_uuid()::text, 'spend', cost);
+    return en - cost;
+  end if;
+  cost := case p_kind when 'oak' then 25 when 'pine' then 25 when 'boulder' then 15 when 'stump' then 12 when 'berry' then 10 when 'bush' then 8 else null end;
+  if cost is null then raise exception 'You can''t clear that'; end if;
+  select * into w from public.wallets where user_id = uid for update;
+  if w.coins < cost then raise exception 'Not enough coins'; end if;
+  update public.wallets set coins = coins - cost where user_id = uid;
+  return w.coins - cost;
+end $$;
+revoke all on function public.clear_nature(text, text) from public, anon;
+grant execute on function public.clear_nature(text, text) to authenticated;
