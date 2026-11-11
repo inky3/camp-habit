@@ -703,3 +703,10 @@ begin
   insert into public.claims (user_id, kind, ref, period, amount) values (uid, 'farmland', gen_random_uuid()::text, 'buy', 25);
   return w.coins - 25;
 end $$;
+
+-- furniture unlocks by home tier (0 tent, 1 hut, 2 cabin); cat moves to island level 3
+alter table public.items add column if not exists min_home integer not null default 0;
+update public.items set min_home = 1 where id in ('window','clock','painting','shelf','mirror','wallshelf','dtable','sofa');
+update public.items set min_home = 2 where id in ('tv','aquarium','fireplace','bigrug','counter');
+update public.items set min_level = 2 where id = 'cat';
+-- public.buy_item now also checks items.min_home against the player's home (see migration furniture_by_home_tier)
