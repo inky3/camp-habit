@@ -2109,4 +2109,7 @@ ${it(ico('gear',28),'Group tools','Group creators can make a new code, remove me
 if(LANG==='th')trNode(o);document.body.appendChild(o);const b=o.querySelector('[data-a="pngo"]');if(b)b.focus()}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-a="pngo"]');if(!b)return;e.stopImmediatePropagation();const ck=document.getElementById('pnno');if(ck&&ck.checked){S.pn=S.pn||{};S.pn[PATCH.id]=1;save()}const o=document.getElementById('patch');if(o)o.remove();if(NET.on)loadInbox(true)},true);
 setTimeout(()=>patchPop(),1700);
+
+/* preview builds show a label so they are never mistaken for the live app */
+(function(){const h=location.hostname;if(!(/-git-/.test(h)||/^camp-habit-[a-z0-9]{8,}-/.test(h)))return;const b=document.createElement('div');b.textContent='PREVIEW';b.setAttribute('aria-hidden','true');b.style.cssText='position:fixed;top:calc(6px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:9999;background:#e0607a;color:#fff;font:700 11px/1 system-ui,sans-serif;letter-spacing:1px;padding:4px 10px;border-radius:99px;pointer-events:none;opacity:.92';document.body.appendChild(b)})();
 </script></body></html>
