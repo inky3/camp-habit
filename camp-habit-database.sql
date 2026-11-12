@@ -870,3 +870,11 @@ insert into public.items (id,kind,price,min_level) values
 ('coop','island',500,0),('hamcage','island',450,0),('birdhouse','island',400,0),('doghouse','island',600,0),('catbed','island',500,0),
 ('goldfish','fish',150,0),('betta','fish',250,0),('clownfish','fish',350,0),('koi','fish',500,0)
 on conflict (id) do update set price = excluded.price, min_level = excluded.min_level, kind = excluded.kind;
+
+-- Notifications update (2026-11-12)
+-- push_subs: one row per phone that turned on notifications (endpoint, keys, prefs incl. quiet hours, lang).
+-- push_log: de-duplicates reminders and the evening check per user per day.
+-- push_save / push_remove: signed-in player links or unlinks this phone.
+-- push_cfg: service-role only; reads VAPID keys and the hook secret from Vault.
+-- Trigger push_social on public.social calls the `push` edge function; pg_cron job push-tick runs every 5 minutes.
+-- Edge function `push`: friend messages, habit reminders (habit.rem = 'HH:MM'), evening check, test.
