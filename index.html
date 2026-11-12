@@ -2118,7 +2118,7 @@ setTimeout(()=>patchPop(),1700);
 :root[data-tod] .sky .htx{flex:1;min-width:0}
 :root[data-tod] .sky h1{font-size:20px;line-height:1.15;color:var(--hdrTx);overflow-wrap:anywhere}
 :root[data-tod] .sky p{color:var(--hdrSub);font-size:14px;margin:3px 0 0;opacity:1}
-:root[data-tod] .sky .wallet{position:relative;margin-top:12px;align-items:center}
+:root[data-tod] .sky .wallet{position:relative;margin-top:12px;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:6px}:root[data-tod] .sky .wallet .chip[hidden]{display:none}:root[data-tod] .sky .wallet .chip{min-height:30px}
 :root[data-tod] .sky .chip{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:0;background:var(--plaque);color:var(--hdrTx);font-family:'Pixelify Sans','Kanit',monospace;font-weight:700;padding:5px 10px;margin:3px;box-shadow:0 -3px 0 0 var(--edge),0 3px 0 0 var(--edge),-3px 0 0 0 var(--edge),3px 0 0 0 var(--edge)}
 :root[data-tod] .sky .hpro{position:relative;display:flex;align-items:center;gap:10px;margin-top:12px}
 :root[data-tod] .sky .hpro b{font:600 13px/1 'Pixelify Sans','Kanit',monospace;white-space:nowrap}
@@ -2168,9 +2168,9 @@ function greet(){const h=new Date().getHours(),t=todNow(),n=(S.name&&S.name!=='Y
 (function(){const sky=document.querySelector('.sky');if(!sky||sky.dataset.cozy)return;sky.dataset.cozy=1;
 const plus=document.getElementById('plus');if(plus){plus.classList.add('fab');plus.innerHTML=ico('plus',30);document.body.appendChild(plus)}
 const row=sky.querySelector('.row');const av=document.createElement('span');av.className='hav';av.id='hav';row.insertBefore(av,row.firstChild);row.className='hdrow';row.children[1].className='htx';
-const w=sky.querySelector('.wallet');const c=document.getElementById('c');if(c)row.appendChild(c);
+const w=sky.querySelector('.wallet');const r=document.createElement('span');r.className='chip';r.id='rpc';w.appendChild(r);
 const pro=document.createElement('div');pro.className='hpro';pro.id='hpro';sky.insertBefore(pro,w);
-const o=document.createElement('span');o.className='orb';sky.insertBefore(o,sky.firstChild);
+
 [[30,14],[120,40],[210,10],[300,34],[352,70],[76,86],[262,92],[184,64]].forEach(([x,y])=>{const s=document.createElement('span');s.className='star';s.style.left=x+'px';s.style.top=y+'px';sky.insertBefore(s,sky.firstChild)})})();
 function cozy(){const t=todApply(),r=document.documentElement;
 sky:{const sky=document.querySelector('.sky');if(!sky)break sky;sky.querySelectorAll('.star').forEach(s=>s.hidden=t!=='night')}
@@ -2179,7 +2179,7 @@ const nv=document.getElementById('nv'),cur=tab==='shop'?'island':tab;
 if(nv)nv.innerHTML=[['today','today','Today'],['island','island','Island'],['friends','friends','Friends'],['profile','profile','Me']].map(([k,i,l])=>`<button data-a="tab" data-k="${k}" class="${cur===k?'on':''}" ${cur===k?'aria-current="page"':''}><b>${ico(i,24)}</b>${l}</button>`).join('');
 const pro=document.getElementById('hpro'),ttl=document.getElementById('ttl'),sub=document.getElementById('sub'),plus=document.getElementById('plus');
 if(plus)plus.classList.toggle('off',tab!=='today'||!!VIS);
-const p=document.getElementById('p');if(p)p.parentElement.hidden=tab==='today';
+const rc=document.getElementById('rpc');if(rc){const on=!VIS&&(journalOpen()||rpLeft()>0);rc.hidden=!on;if(on)rc.innerHTML=ico('reading',18)+' '+rpLeft()+' research';rc.title='Research points: earned from Mind habits, spent in the Field Journal'}
 if(tab==='today'&&vd===di()&&!VIS){const hs=S.habits.filter(h=>!h.arch&&h.days.includes(vd)),dn=hs.filter(isDone).length,d=new Date();
 ttl.textContent=greet();sub.textContent=DAYL[vd]+' '+d.getDate()+' '+MON[d.getMonth()];
 if(pro){pro.hidden=!hs.length;const n=Math.min(hs.length,10),on=hs.length?Math.round(dn/hs.length*n):0;pro.innerHTML=`<b>${dn} of ${hs.length} done</b><span class="pips">${[...Array(n)].map((_,i)=>`<i class="${i<on?'on':''}"></i>`).join('')}</span>`}}
@@ -2187,7 +2187,7 @@ else if(pro)pro.hidden=true;
 const v=document.getElementById('v');
 if(tab==='island'&&!VIS&&!IS.inside){const ib=v&&v.querySelector('.ibar');if(ib&&!ib.querySelector('[data-k="shop"]')){const b=document.createElement('button');b.dataset.a='tab';b.dataset.k='shop';b.innerHTML=ico('shop',20)+'Shop';ib.appendChild(b)}}
 if(tab==='shop'&&v&&!v.querySelector('.shopbk')){const b=document.createElement('button');b.className='ghost shopbk';b.dataset.a='tab';b.dataset.k='island';b.innerHTML=ico('chevL',20)+'Back to island';v.insertBefore(b,v.firstChild)}
-if(LANG==='th'){[nv,ttl,sub,pro,v&&v.querySelector('.ibar'),v&&v.querySelector('.shopbk')].forEach(n=>{if(n)trNode(n)})}}
+if(LANG==='th'){[nv,ttl,sub,pro,document.getElementById('rpc'),v&&v.querySelector('.ibar'),v&&v.querySelector('.shopbk')].forEach(n=>{if(n)trNode(n)})}}
 {const _rc=render;render=function(){_rc();try{cozy()}catch(e){console.error(e)}}}
 setInterval(()=>{const r=document.documentElement,b=r.dataset.tod;if(todApply()!==b)render()},60000);
 todApply();render();
